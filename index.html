@@ -291,7 +291,7 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
     el.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; pref[key] = b.getAttribute("data-v"); paint(); savePref(); if (after) after(); });
     paint();
   }
-  seg("seg-motion", "motion", function () { if (pref.motion === "on") askGyro(); });
+  seg("seg-motion", "motion", function () { if (pref.motion === "on") { askGyro(); if (W.__mzero) W.__mzero(); } });
   seg("seg-level", "level", function () { autoLevel = pref.level === "auto" ? guessLevel() : pref.level; sizeAll(); });
   seg("seg-sound", "sound", function () { sound(pref.sound === "on"); });
 
@@ -511,7 +511,7 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
   /* ------------------------------------------------------------ input: scroll, pointer, taps, gyroscope */
   var us = W.scrollY / W.innerHeight, vel = 0, lastU = us;
   var ptr = [0, 0, 0], ptrAt = -9, tap = [0, 0, 99, 0];
-  var tilt = [0, 0, 0], tiltT = [0, 0, 0], gyroLive = false, beta0 = null, alpha0 = null;
+  var tilt = [0, 0, 0], tiltT = [0, 0, 0], gyroLive = false;
   function now() { return performance.now() / 1000; }
   var introStart = 0;
   W.addEventListener("pointermove", function (e) {
@@ -535,17 +535,48 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
     try { if (W.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === "function") DeviceOrientationEvent.requestPermission().catch(function () {}); } catch (e) {}
   }
   var gyroAsked = false;
+  /* the apps' motion engine (MfxMotion): full 3D orientation as a quaternion, so lying down, on your side or overhead
+     all behave the same; where you hold the phone is zero; ~1 degree dead zone, jerk limit, 120 ms low-pass, 25 degree range;
+     hold a new posture 2 s and the zero follows; double tap the background recentres */
+  var G = (function () {
+    var D2R = Math.PI / 180, RANGE = 25 * D2R, q0 = null, q = null, raw = [0, 0, 0], out = [0, 0, 0], lastT = 0, steadyAt = 0, last = [0, 0], settling = false;
+    function quat(a, b, g) { var x = (b || 0) * D2R / 2, y = (g || 0) * D2R / 2, z = (a || 0) * D2R / 2, cX = Math.cos(x), cY = Math.cos(y), cZ = Math.cos(z), sX = Math.sin(x), sY = Math.sin(y), sZ = Math.sin(z);
+      return [cX * cY * cZ - sX * sY * sZ, sX * cY * cZ - cX * sY * sZ, cX * sY * cZ + sX * cY * sZ, cX * cY * sZ + sX * sY * cZ]; }
+    function mul(a, b) { return [a[0] * b[0] - a[1] * b[1] - a[2] * b[2] - a[3] * b[3], a[0] * b[1] + a[1] * b[0] + a[2] * b[3] - a[3] * b[2], a[0] * b[2] - a[1] * b[3] + a[2] * b[0] + a[3] * b[1], a[0] * b[3] + a[1] * b[2] - a[2] * b[1] + a[3] * b[0]]; }
+    function norm(a) { var n = Math.hypot(a[0], a[1], a[2], a[3]) || 1; return [a[0] / n, a[1] / n, a[2] / n, a[3] / n]; }
+    function slerp(a, b, s) { var d = a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3]; if (d < 0) { b = [-b[0], -b[1], -b[2], -b[3]]; d = -d; }
+      if (d > .9995) return norm([a[0] + (b[0] - a[0]) * s, a[1] + (b[1] - a[1]) * s, a[2] + (b[2] - a[2]) * s, a[3] + (b[3] - a[3]) * s]);
+      var th = Math.acos(d), sn = Math.sin(th), wa = Math.sin((1 - s) * th) / sn, wb = Math.sin(s * th) / sn; return [a[0] * wa + b[0] * wb, a[1] * wa + b[1] * wb, a[2] * wa + b[2] * wb, a[3] * wa + b[3] * wb]; }
+    function cl(v) { return v < -1 ? -1 : v > 1 ? 1 : v; }
+    function dz(v) { var m = Math.abs(v); return m <= .05 ? 0 : (v < 0 ? -1 : 1) * (m - .05) / .95; }
+    function feed(e) {
+      q = norm(quat(e.alpha, e.beta, e.gamma));
+      var now = performance.now(), dt = lastT ? Math.min(.2, (now - lastT) / 1000) : .016; lastT = now;
+      if (!q0) { q0 = q; raw = [0, 0, 0]; out = [0, 0, 0]; steadyAt = now; return out; }
+      var d = mul([q0[0], -q0[1], -q0[2], -q0[3]], q); if (d[0] < 0) d = [-d[0], -d[1], -d[2], -d[3]];
+      var s = Math.hypot(d[1], d[2], d[3]), ang = 2 * Math.atan2(s, d[0]), k = s > 1e-6 ? ang / s : 2;
+      var n = [dz(cl(d[2] * k / RANGE)), dz(cl(d[1] * k / RANGE)), dz(cl(d[3] * k / RANGE))], a = 1 - Math.exp(-dt / .12);
+      for (var i = 0; i < 3; i++) { raw[i] += Math.max(-.3, Math.min(.3, n[i] - raw[i])); out[i] += (raw[i] - out[i]) * a; }
+      if (Math.abs(raw[0] - last[0]) > .04 || Math.abs(raw[1] - last[1]) > .04) { steadyAt = now; last = [raw[0], raw[1]]; }
+      if (!settling && now - steadyAt > 2000 && ang > 10 * D2R) settling = true;
+      if (settling) { q0 = slerp(q0, q, Math.min(1, dt * 1.6)); if (ang < 1.5 * D2R) settling = false; }
+      return out;
+    }
+    return { feed: feed, zero: function () { q0 = null; settling = false; } };
+  })();
   W.addEventListener("deviceorientation", function (e) {
-    if (e.beta == null || pref.motion !== "on") return;
+    if (e.beta == null || e.gamma == null || pref.motion !== "on") return;
     gyroLive = true;
-    if (beta0 == null) { beta0 = e.beta; alpha0 = e.alpha || 0; }
-    beta0 += (e.beta - beta0) * .004;   /* the resting angle follows slowly, so holding the phone differently re-centres */
-    var tw = ((e.alpha || 0) - alpha0 + 540) % 360 - 180;
-    tiltT[0] = Math.max(-1.4, Math.min(1.4, (e.gamma || 0) / 26));
-    tiltT[1] = Math.max(-1.4, Math.min(1.4, (e.beta - beta0) / 26));
-    tiltT[2] = Math.max(-.9, Math.min(.9, tw * Math.PI / 180 * 1.4));
-    alpha0 += (((e.alpha || 0) - alpha0 + 540) % 360 - 180) * .01;
+    var o = G.feed(e);
+    tiltT[0] = o[0]; tiltT[1] = o[1]; tiltT[2] = Math.max(-.9, Math.min(.9, o[2] * .61));
   });
+  W.__mzero = G.zero;
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) G.zero(); });   /* back on screen: new zero */
+  var lastTap = 0;
+  document.addEventListener("pointerup", function (e) {
+    var el = e.target; if (el && el.closest && el.closest("button,a,input,select,label,[role=button]")) return;
+    var now = performance.now(); if (now - lastTap < 320) { G.zero(); lastTap = 0; } else lastTap = now;
+  }, { passive: true });
   /* phones without the gyroscope in this frame: dragging tilts the scene */
   var drag = null;
   W.addEventListener("touchstart", function (e) { if (!gyroLive && e.touches.length === 1) drag = [e.touches[0].clientX, e.touches[0].clientY]; }, { passive: true });
