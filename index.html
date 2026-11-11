@@ -6,7 +6,7 @@
 <title>Meridian Family</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 /* One visual world: the night the five pictures live in. A fixed WebGL film behind, scroll drives the camera;
    the words sit in glass on the side (desktop) or low on the screen (phone), so every subject stays in view. */
@@ -167,7 +167,7 @@ footer b { color: var(--ink); font-weight: 600; }
   <div><h3>Motion</h3><div class="seg" id="seg-motion" role="group" aria-label="Motion"><button type="button" data-v="off">Off</button><button type="button" data-v="system">System</button><button type="button" data-v="on">On</button></div>
     <small>Off: the pictures stand still. System: they live, no gyroscope. On: the gyroscope in every direction, twist included (phones; on a computer the pointer tilts the scene).</small></div>
   <div><h3>Level</h3><div class="seg" id="seg-level" role="group" aria-label="Level"><button type="button" data-v="auto">Auto</button><button type="button" data-v="high">High</button><button type="button" data-v="mid">Mid</button><button type="button" data-v="low">Low</button></div>
-    <small>High up to 120 frames a second, Mid up to 90, Low up to 60: the same levels as the apps. Auto starts high and steps down if the device cannot hold it.</small>
+    <small>Maximum targets: High up to 120 frames a second, Mid up to 90, Low up to 60, as in the apps. Actual rates are not guaranteed and depend on the screen and device. Auto starts high and steps down if the device cannot hold it.</small>
     <small class="fps" id="fps"></small></div>
   <div><h3>Sound</h3><div class="seg" id="seg-sound" role="group" aria-label="Sound"><button type="button" data-v="off">Off</button><button type="button" data-v="on">On</button></div>
     <small>A quiet tone for each world, made live in the page.</small></div>
@@ -179,19 +179,19 @@ footer b { color: var(--ink); font-weight: 600; }
   <section class="sec hero" id="s-intro" data-u="0">
     <p class="eyebrow">Meridian Family · five Android apps</p>
     <h1>Five apps.<br>One living phone.</h1>
-    <p>Meridian turns an Android phone into an AI workstation: models on the phone, Termux, performance controls and a knowledge cloud, connected through one hub. No root needed.</p>
+    <p>Meridian turns an Android phone into an AI workstation: models on the phone, Termux, performance controls and a knowledge cloud, connected through one hub. Main features work without root; some advanced extras need it.</p>
     <span class="cue">Scroll to fly in · tap for sound</span>
   </section>
 
   <section class="sec family" id="s-family" data-u="1.2">
     <div class="card"><p class="num">The family</p><h2>Core in the middle.</h2>
-      <p>Chat, Gaming, Parallel and NullCloud around it. Every picture here is an app's own living background, drawn by the same engine the apps use.</p></div>
+      <p>Chat, Gaming, Parallel and NullCloud around it. These are animated presentations using the apps' background artwork, not app screenshots. The site's scenes and transitions are adapted for the web.</p></div>
   </section>
 
   <section class="sec app" id="s-core" data-u="2" data-app="0">
     <div class="card" id="c-core"><p class="num">01 · Meridian Core</p><h2>The hub that holds it together.</h2>
       <p>Core starts the family and keeps what the apps share: plans, results, learned cards, readings. Its helper has ADB shell rights over Wireless debugging, which is how the other apps change system settings without root.</p>
-      <ul class="facts"><li>Hub for four apps</li><li>ADB helper, no root</li><li>An activity log of every action</li></ul>
+      <ul class="facts"><li>Hub for four apps</li><li>ADB helper, no root</li><li>An activity log of recent Core events</li></ul>
       <p class="try">Move your finger or pointer around the sphere.</p></div>
   </section>
 
@@ -204,21 +204,21 @@ footer b { color: var(--ink); font-weight: 600; }
 
   <section class="sec app" id="s-gaming" data-u="6" data-app="2">
     <div class="card" id="c-gaming"><p class="num">03 · Meridian Gaming</p><h2>Performance, measured.</h2>
-      <p>Live clocks for every CPU cluster and the GPU, Clock profiles from Normal to Cool, heat guard, Release RAM, Game Optimizing Service off. It all runs through Core without root, and every value is read back, so you see what the phone really did.</p>
-      <ul class="facts"><li>Clusters and GPU, live</li><li>Five Clock profiles</li><li>Every value read back</li></ul>
+      <p>Live CPU/GPU readings, five Clock profiles, heat guard, Release RAM and Samsung GOS controls. Main features run through Core without root. The OEM may refuse some changes; some advanced extras need root.</p>
+      <ul class="facts"><li>Clusters and GPU, live</li><li>Five Clock profiles</li><li>Device-dependent controls</li></ul>
       <p class="try">Tap the dragon: a shockwave breaks the rings apart.</p></div>
   </section>
 
   <section class="sec app right" id="s-parallel" data-u="8" data-app="3">
     <div class="card" id="c-parallel"><p class="num">04 · Meridian Parallel</p><h2>Termux, with a co-pilot.</h2>
       <p>One-tap plans, a console that fixes known errors, phone controls, and Meridian Doctor: it reads the phone first, offers one fix at a time, runs it only after you approve, then checks again.</p>
-      <ul class="facts"><li>Autofix for 66 known errors</li><li>Meridian Doctor across 10 areas</li><li>Every fix verified</li></ul>
+      <ul class="facts"><li>Autofix for 66 known errors</li><li>Meridian Doctor across 10 areas</li><li>Doctor rechecks after each fix</li></ul>
       <p class="try">Scroll faster: the braid runs faster.</p></div>
   </section>
 
   <section class="sec app" id="s-nullcloud" data-u="10" data-app="4">
     <div class="card" id="c-nullcloud"><p class="num">05 · Meridian NullCloud</p><h2>Links in. Knowledge out.</h2>
-      <p>Share a link or paste text. NullCloud returns a summary, the steps, or answers to your question, with a model on the phone or your provider, and keeps what it learns for the rest of the family.</p>
+      <p>Share a link or paste text. NullCloud returns a summary, the steps, or answers to your question, with a local model on the phone, and keeps what it learns for the rest of the family.</p>
       <ul class="facts"><li>Summary, steps, answers</li><li>Works with models on the phone</li><li>Learns into the shared library</li></ul>
       <p class="try">Your scroll speed drives the stream into the cloud.</p></div>
   </section>
@@ -228,7 +228,7 @@ footer b { color: var(--ink); font-weight: 600; }
       <p>A plan from Chat runs in Parallel. Gaming's tweaks show up in Chat. What one app learns, the others can use. Tap a world in the orbit to fly back in.</p>
       <div class="specs">
         <div class="spec"><b>Motion</b><span>Off, System, On. The gyroscope in every direction, twist included.</span></div>
-        <div class="spec"><b>Level</b><span class="nums">High 120 · Mid 90 · Low 60 frames a second</span></div>
+        <div class="spec"><b>Level</b><span class="nums">High up to 120 · Mid up to 90 · Low up to 60 frames a second: maximum targets, not guaranteed rates.</span></div>
         <div class="spec"><b>Built on</b><span>Android and Termux, on a Galaxy S26</span></div>
       </div></div>
   </section>
@@ -243,6 +243,41 @@ footer b { color: var(--ink); font-weight: 600; }
         <a href="https://xdaforums.com/m/termuxsolutions.13482532/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3M9 7h6M9 10h4"/></svg><span><b>XDA</b><small>termuxSolutions</small></span></a>
       </div>
       <p class="mail">Email: <b>kalyx.solutions@proton.me</b></p></div>
+  </section>
+  <section class="sec maker" id="s-requirements" aria-labelledby="requirements-h">
+    <div class="card"><p class="num">Before you start</p><h2 id="requirements-h">Requirements</h2>
+      <div class="specs">
+        <div class="spec"><b>Version</b><span>Meridian 2.5.1 (versionCode 51), the five-app build described here.</span></div>
+        <div class="spec"><b>Android</b><span>Core: Android 11+. Chat, Gaming, Parallel and NullCloud: Android 8+. The complete family therefore needs Android 11+.</span></div>
+        <div class="spec"><b>Termux</b><span>Install Termux from F-Droid for local models and shell commands. Complete the app's setup, enable external-app commands in Termux and grant its RUN_COMMAND permission when requested.</span></div>
+        <div class="spec"><b>Core helper</b><span>Enable Developer options and Wireless debugging, then complete ADB pairing in Core. The helper provides ADB shell rights, not root. Available controls depend on the phone.</span></div>
+        <div class="spec"><b>Family signing</b><span>Install all five apps signed with the same signing certificate. Their signature-protected family permissions require it; unsigned APKs are not installable releases.</span></div>
+      </div>
+      <!-- Download URL: add only after a verified, consistently family-signed release is available. No download link is supplied here. -->
+    </div>
+  </section>
+  <section class="sec maker" id="s-permissions" aria-labelledby="permissions-h">
+    <div class="card"><p class="num">Access on your phone</p><h2 id="permissions-h">Permissions</h2>
+      <p>Summary of manifest-declared access in 2.5.1, not a list of automatic grants. Android asks for runtime permissions or special access where required; individual features may need setup.</p>
+      <div class="specs">
+        <div class="spec"><b>All five apps</b><span>Internet, Termux RUN_COMMAND and signature-protected family access for communication on this phone.</span></div>
+        <div class="spec"><b>Core</b><span>Network status, Wi-Fi multicast discovery, package installation requests, usage access, foreground service and notifications, plus the shared family permissions.</span></div>
+        <div class="spec"><b>Chat</b><span>Network/Wi-Fi status, microphone and biometric access, plus the common permissions above.</span></div>
+        <div class="spec"><b>Gaming</b><span>Network/Wi-Fi status, background-process control, usage access, system settings, Do Not Disturb access, overlay, foreground service and notifications, plus common family access.</span></div>
+        <div class="spec"><b>Parallel</b><span>Network/Wi-Fi status, microphone and biometric access, plus the common permissions above.</span></div>
+        <div class="spec"><b>NullCloud</b><span>Internet, Termux RUN_COMMAND and signature-protected family access. This build does not declare microphone or overlay permissions.</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec maker" id="s-privacy" aria-labelledby="privacy-h">
+    <div class="card"><p class="num">Local work, clear limits</p><h2 id="privacy-h">Privacy &amp; pricing</h2>
+      <div class="specs">
+        <div class="spec"><b>Local-first</b><span>Local models, commands and the shared library can run or stay on this phone. Network access is needed for model downloads, web links and online providers. Local inference can work offline after setup and downloads.</span></div>
+        <div class="spec"><b>Online choices</b><span>Chat and Parallel can use an online AI provider you configure; requests and their included content then go to that provider. NullCloud uses a local model. This website also loads fonts from Google Fonts.</span></div>
+        <div class="spec"><b>Price</b><span>The Meridian apps are free. Some AI providers may charge or apply usage limits; their fees are separate. Check your chosen provider's terms and privacy information before using it.</span></div>
+      </div>
+      <!-- Privacy policy URL: add a reviewed policy when available. This summary is not a substitute for that policy. -->
+    </div>
   </section>
 </main>
 <footer><b>Meridian Family</b> · © 2026 Alen Požun</footer>
