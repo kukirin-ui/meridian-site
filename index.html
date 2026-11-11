@@ -4,9 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Meridian Family</title>
+<meta name="description" content="Meridian Family: five Android apps (local AI chat, a gaming tuner, a Linux workspace, a private cloud, and the Core that links them), built and run entirely on a phone in Termux. By Alen Požun.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kukirin-ui.github.io/meridian-site/">
+<meta property="og:title" content="Meridian Family">
+<meta property="og:description" content="Meridian Family: five Android apps (local AI chat, a gaming tuner, a Linux workspace, a private cloud, and the Core that links them), built and run entirely on a phone in Termux. By Alen Požun.">
+<meta property="og:image" content="https://kukirin-ui.github.io/meridian-site/assets/meridian-card-1200x630.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Alen Požun","email":"mailto:kalyx.solutions@proton.me","url":"https://kukirin-ui.github.io/meridian-site/","sameAs":["https://x.com/termuxSolutions","https://github.com/kukirin-ui","https://www.linkedin.com/in/alenpozun/"],"knowsAbout":["Android","Kotlin","Termux","llama.cpp","WebGL"]}</script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Meridian Family">
+<meta name="twitter:description" content="Meridian Family: five Android apps (local AI chat, a gaming tuner, a Linux workspace, a private cloud, and the Core that links them), built and run entirely on a phone in Termux. By Alen Požun.">
+<meta name="twitter:image" content="https://kukirin-ui.github.io/meridian-site/assets/meridian-card-1200x630.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* One visual world: the night the five pictures live in. A fixed WebGL film behind, scroll drives the camera;
    the words sit in glass on the side (desktop) or low on the screen (phone), so every subject stays in view. */
@@ -98,13 +111,14 @@ button { font: inherit; color: inherit; }
 .maker { min-height: 70vh; display: flex; align-items: flex-end; padding-bottom: 6vh; }
 .maker .card { max-width: 520px; }
 .maker .who { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.maker .who h2 { font-size: clamp(26px, 3vw, 36px); margin: 8px 0 6px; }
+.maker .who h2 { font-size: clamp(19px, 2vw, 23px); letter-spacing: .06em; margin: 8px 0 6px; }
 .maker .who span { color: var(--mute); font-size: 14px; }
 .links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
 .links a { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 12px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255, 255, 255, .04);
   color: var(--ink); text-decoration: none; transition: border-color .2s, background .2s; }
 .links a:hover, .links a:focus-visible { border-color: rgba(72, 216, 255, .6); background: rgba(72, 216, 255, .08); }
-.links svg { flex: 0 0 22px; width: 22px; height: 22px; stroke: var(--cyan); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.links svg { flex: 0 0 22px; width: 22px; height: 22px; fill: var(--ink); }
+.links a:hover svg { fill: var(--cyan); }
 .links b { display: block; font: 700 14px/1.1 var(--display); letter-spacing: .12em; text-transform: uppercase; }
 .links small { display: block; color: var(--mute); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .links span { min-width: 0; }
@@ -112,6 +126,55 @@ button { font: inherit; color: inherit; }
 .mail b { color: var(--ink); font-weight: 600; user-select: all; }
 @media (max-width: 899px) { .maker .card { margin: 0 auto; } }
 @media (max-width: 440px) { .links { grid-template-columns: 1fr; } }
+
+/* about: who, numbers, how it is built, the road so far, what I can help with */
+.about { padding-top: 14vh; padding-bottom: 6vh; }
+.about .card { max-width: 640px; margin: 0 auto; --acc: var(--violet); }
+.about .lead { font-size: 17px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 18px 0 4px; }
+.stat { padding: 12px 8px; border-radius: 14px; background: rgba(255, 255, 255, .04); border: 1px solid var(--line); text-align: center; }
+.stat b { display: block; font: 700 clamp(26px, 6vw, 34px)/1 var(--display); color: var(--ink); font-variant-numeric: tabular-nums; text-shadow: 0 0 18px rgba(180, 92, 255, .55); }
+.stat span { display: block; margin-top: 6px; font-size: 11.5px; line-height: 1.3; color: var(--mute); }
+.about h3 { font: 600 13px/1 var(--display); letter-spacing: .3em; text-transform: uppercase; color: var(--acc); margin: 22px 0 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.chips span { padding: 6px 11px; border-radius: 999px; font-size: 13px; color: #dfe6ff; background: rgba(255, 255, 255, .05); border: 1px solid var(--line); }
+.road { list-style: none; margin: 0; padding: 0 0 0 18px; border-left: 1px solid var(--line); display: grid; gap: 14px; }
+.road li { position: relative; }
+.road li::before { content: ""; position: absolute; left: -23px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 10px var(--acc); }
+.road b { display: block; font: 700 15px/1.2 var(--display); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
+.road small { display: block; font: 600 12px/1 var(--display); letter-spacing: .2em; color: var(--acc); margin-bottom: 4px; }
+.road p { font-size: 14px; }
+.help { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.help div { padding: 12px 14px; border-radius: 14px; background: rgba(255, 255, 255, .04); border: 1px solid var(--line); font-size: 14px; color: #cfd7f3; }
+.help b { display: block; color: var(--ink); font-weight: 700; margin-bottom: 3px; }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
+.cta .open { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink); margin-right: auto; }
+.cta .open::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 10px #3ddc84; animation: blink 2.4s ease-in-out infinite; }
+@keyframes blink { 50% { opacity: .35; } }
+.btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 999px; font: 700 14px/1 var(--display); letter-spacing: .14em; text-transform: uppercase; text-decoration: none;
+  color: var(--void); background: linear-gradient(120deg, var(--cyan), var(--violet)); box-shadow: 0 6px 24px rgba(120, 90, 255, .35); }
+.btn.ghost { color: var(--ink); background: rgba(255, 255, 255, .05); border: 1px solid var(--line); box-shadow: none; }
+.rv { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1); }
+.rv.in { opacity: 1; transform: none; }
+.progress { position: fixed; z-index: 6; left: 0; top: 0; height: 2px; width: 100%; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, var(--cyan), var(--violet), var(--ember)); box-shadow: 0 0 10px var(--violet); pointer-events: none; }
+footer nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 10px; }
+footer nav a { color: var(--mute); text-decoration: none; }
+footer nav a:hover { color: var(--ink); }
+@media (max-width: 520px) { .stats { grid-template-columns: repeat(2, 1fr); } .help { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } .cta .open::before { animation: none; } }
+
+.toplinks { display: flex; gap: 14px; margin-left: auto; }
+.toplinks a { font: 600 12px/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--ink); text-decoration: none; opacity: .85; padding: 8px 2px; }
+.toplinks a:hover { opacity: 1; color: var(--cyan); }
+@media (max-width: 560px) { .bar .chapter { display: none; } .bar .brand b { display: none; } .toplinks { gap: 10px; } .toplinks a { font-size: 11px; letter-spacing: .14em; } }
+.mail a { text-decoration: none; }
+/* the reading light: a glow runs through the text letter by letter, in the world's colour, then the text settles */
+.lit .sw { background-image: linear-gradient(100deg, var(--tc) 0%, var(--tc) 44%, #fff 47.5%, var(--acc, var(--cyan)) 50%, #fff 52.5%, var(--tc) 56%, var(--tc) 100%);
+  background-size: 260% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: readlight var(--d, 1.6s) cubic-bezier(.45, .1, .4, 1) var(--w, 0s) forwards; }
+@keyframes readlight { to { background-position: 0% 0; } }
+.sw { --tc: #cfd7f3; } h2.sw, h1.sw { --tc: var(--ink); } .facts li.sw { --tc: #dfe6ff; }
+html.still-text .lit .sw { animation: none; -webkit-text-fill-color: currentColor; background: none; }
+@media (prefers-reduced-motion: reduce) { .lit .sw { animation: none; -webkit-text-fill-color: currentColor; background: none; } }
 footer { position: relative; z-index: 1; padding: 40px 16px 48px; text-align: center; color: var(--mute); font-size: 13px; }
 footer b { color: var(--ink); font-weight: 600; }
 
@@ -160,6 +223,7 @@ footer b { color: var(--ink); font-weight: 600; }
 <header class="bar">
   <a class="brand" href="#top" aria-label="Meridian, back to the top"><img id="emblem" alt=""><b>MERIDIAN</b></a>
   <span class="chapter" id="chapter"><i>00</i> · Meridian</span>
+  <nav class="toplinks" aria-label="Pages"><a href="showcase.html">Showcase</a><a href="docs.html">Docs</a></nav>
   <button class="setbtn" id="setbtn" type="button" aria-expanded="false" aria-controls="settings">Motion &amp; sound</button>
 </header>
 
@@ -167,10 +231,10 @@ footer b { color: var(--ink); font-weight: 600; }
   <div><h3>Motion</h3><div class="seg" id="seg-motion" role="group" aria-label="Motion"><button type="button" data-v="off">Off</button><button type="button" data-v="system">System</button><button type="button" data-v="on">On</button></div>
     <small>Off: the pictures stand still. System: they live, no gyroscope. On: the gyroscope in every direction, twist included (phones; on a computer the pointer tilts the scene).</small></div>
   <div><h3>Level</h3><div class="seg" id="seg-level" role="group" aria-label="Level"><button type="button" data-v="auto">Auto</button><button type="button" data-v="high">High</button><button type="button" data-v="mid">Mid</button><button type="button" data-v="low">Low</button></div>
-    <small>Maximum targets: High up to 120 frames a second, Mid up to 90, Low up to 60, as in the apps. Actual rates are not guaranteed and depend on the screen and device. Auto starts high and steps down if the device cannot hold it.</small>
+    <small>High up to 120 frames a second, Mid up to 90, Low up to 60: the same levels as the apps. Auto starts high and steps down if the device cannot hold it.</small>
     <small class="fps" id="fps"></small></div>
   <div><h3>Sound</h3><div class="seg" id="seg-sound" role="group" aria-label="Sound"><button type="button" data-v="off">Off</button><button type="button" data-v="on">On</button></div>
-    <small>A quiet tone for each world, made live in the page.</small></div>
+    <small>A live score: each world has its own chords, the notes run faster when you scroll faster, and the sound opens up the deeper you go.</small></div>
 </section>
 
 <nav class="rail" id="rail" aria-label="Chapters"></nav>
@@ -179,19 +243,19 @@ footer b { color: var(--ink); font-weight: 600; }
   <section class="sec hero" id="s-intro" data-u="0">
     <p class="eyebrow">Meridian Family · five Android apps</p>
     <h1>Five apps.<br>One living phone.</h1>
-    <p>Meridian turns an Android phone into an AI workstation: models on the phone, Termux, performance controls and a knowledge cloud, connected through one hub. Main features work without root; some advanced extras need it.</p>
+    <p>Meridian turns an Android phone into an AI workstation: models on the phone, Termux, performance controls and a knowledge cloud, connected through one hub. No root needed.</p>
     <span class="cue">Scroll to fly in · tap for sound</span>
   </section>
 
   <section class="sec family" id="s-family" data-u="1.2">
     <div class="card"><p class="num">The family</p><h2>Core in the middle.</h2>
-      <p>Chat, Gaming, Parallel and NullCloud around it. These are animated presentations using the apps' background artwork, not app screenshots. The site's scenes and transitions are adapted for the web.</p></div>
+      <p>Chat, Gaming, Parallel and NullCloud around it. Every picture here is an app's own living background, drawn by the same engine the apps use.</p></div>
   </section>
 
   <section class="sec app" id="s-core" data-u="2" data-app="0">
     <div class="card" id="c-core"><p class="num">01 · Meridian Core</p><h2>The hub that holds it together.</h2>
       <p>Core starts the family and keeps what the apps share: plans, results, learned cards, readings. Its helper has ADB shell rights over Wireless debugging, which is how the other apps change system settings without root.</p>
-      <ul class="facts"><li>Hub for four apps</li><li>ADB helper, no root</li><li>An activity log of recent Core events</li></ul>
+      <ul class="facts"><li>Hub for four apps</li><li>ADB helper, no root</li><li>An activity log of every action</li></ul>
       <p class="try">Move your finger or pointer around the sphere.</p></div>
   </section>
 
@@ -204,21 +268,21 @@ footer b { color: var(--ink); font-weight: 600; }
 
   <section class="sec app" id="s-gaming" data-u="6" data-app="2">
     <div class="card" id="c-gaming"><p class="num">03 · Meridian Gaming</p><h2>Performance, measured.</h2>
-      <p>Live CPU/GPU readings, five Clock profiles, heat guard, Release RAM and Samsung GOS controls. Main features run through Core without root. The OEM may refuse some changes; some advanced extras need root.</p>
-      <ul class="facts"><li>Clusters and GPU, live</li><li>Five Clock profiles</li><li>Device-dependent controls</li></ul>
+      <p>Live clocks for every CPU cluster and the GPU, Clock profiles from Normal to Cool, heat guard, Release RAM, Game Optimizing Service off. It all runs through Core without root, and every value is read back, so you see what the phone really did.</p>
+      <ul class="facts"><li>Clusters and GPU, live</li><li>Five Clock profiles</li><li>Every value read back</li></ul>
       <p class="try">Tap the dragon: a shockwave breaks the rings apart.</p></div>
   </section>
 
   <section class="sec app right" id="s-parallel" data-u="8" data-app="3">
     <div class="card" id="c-parallel"><p class="num">04 · Meridian Parallel</p><h2>Termux, with a co-pilot.</h2>
       <p>One-tap plans, a console that fixes known errors, phone controls, and Meridian Doctor: it reads the phone first, offers one fix at a time, runs it only after you approve, then checks again.</p>
-      <ul class="facts"><li>Autofix for 66 known errors</li><li>Meridian Doctor across 10 areas</li><li>Doctor rechecks after each fix</li></ul>
+      <ul class="facts"><li>Autofix for 66 known errors</li><li>Meridian Doctor across 10 areas</li><li>Every fix verified</li></ul>
       <p class="try">Scroll faster: the braid runs faster.</p></div>
   </section>
 
   <section class="sec app" id="s-nullcloud" data-u="10" data-app="4">
     <div class="card" id="c-nullcloud"><p class="num">05 · Meridian NullCloud</p><h2>Links in. Knowledge out.</h2>
-      <p>Share a link or paste text. NullCloud returns a summary, the steps, or answers to your question, with a local model on the phone, and keeps what it learns for the rest of the family.</p>
+      <p>Share a link or paste text. NullCloud returns a summary, the steps, or answers to your question, with a model on the phone or your provider, and keeps what it learns for the rest of the family.</p>
       <ul class="facts"><li>Summary, steps, answers</li><li>Works with models on the phone</li><li>Learns into the shared library</li></ul>
       <p class="try">Your scroll speed drives the stream into the cloud.</p></div>
   </section>
@@ -228,59 +292,53 @@ footer b { color: var(--ink); font-weight: 600; }
       <p>A plan from Chat runs in Parallel. Gaming's tweaks show up in Chat. What one app learns, the others can use. Tap a world in the orbit to fly back in.</p>
       <div class="specs">
         <div class="spec"><b>Motion</b><span>Off, System, On. The gyroscope in every direction, twist included.</span></div>
-        <div class="spec"><b>Level</b><span class="nums">High up to 120 · Mid up to 90 · Low up to 60 frames a second: maximum targets, not guaranteed rates.</span></div>
+        <div class="spec"><b>Level</b><span class="nums">High 120 · Mid 90 · Low 60 frames a second</span></div>
         <div class="spec"><b>Built on</b><span>Android and Termux, on a Galaxy S26</span></div>
       </div></div>
   </section>
+  <section class="sec about" id="s-about" aria-labelledby="about-h">
+    <div class="card"><p class="num">About</p><h2 id="about-h" class="rv">One person. One phone. Five apps.</h2>
+      <p class="lead rv">Meridian is built and run entirely on a Galaxy S26, in Termux, with no PC. I design the apps, direct AI coding agents to build them, and test every build on the phone itself.</p>
+      <div class="stats rv">
+        <div class="stat"><b data-count="5">5</b><span>apps in one family</span></div>
+        <div class="stat"><b data-count="66">66</b><span>known errors fixed automatically</span></div>
+        <div class="stat"><b data-count="10">10</b><span>areas Meridian Doctor checks</span></div>
+        <div class="stat"><b data-count="0">0</b><span>PCs used to build it</span></div>
+      </div>
+      <h3 class="rv">How it is built</h3>
+      <p class="rv" style="font-size:14px">Core is a Kotlin app. Chat, Gaming, Parallel and NullCloud are rebuilt with apktool. Every interface is a web view, and the living backgrounds are drawn with WebGL2, the same engine as this page. GitHub Actions builds all five; I sign them on the phone.</p>
+      <div class="chips rv" style="margin-top:12px"><span>Kotlin</span><span>Java</span><span>smali · apktool</span><span>JavaScript</span><span>WebGL2</span><span>Web Audio</span><span>Python</span><span>Termux</span><span>llama.cpp</span><span>ADB, no root</span><span>GitHub Actions</span></div>
+      <h3 class="rv">The road so far</h3>
+      <ol class="road rv">
+        <li><small>2020 – 2022</small><b>IT technician</b><p>Custom gaming PCs, servers, laptop and PC repair, system diagnostics.</p></li>
+        <li><small>2026</small><b>Self-taught into Android and on-device AI</b><p>Local models on phone chips, Termux tools, and the first Meridian dashboard.</p></li>
+        <li><small>Now</small><b>Meridian 2.5.1</b><p>Five signed apps, one CI pipeline, and a helper that changes system settings without root.</p></li>
+      </ol>
+      <h3 class="rv">What I can help with</h3>
+      <div class="help rv">
+        <div><b>Android apps</b>Kotlin apps, and existing APKs rebuilt with apktool.</div>
+        <div><b>AI on the phone</b>llama.cpp models running locally, measured on real phone chips.</div>
+        <div><b>Termux tooling</b>Scripts, automation and fixes that run on the phone.</div>
+        <div><b>Living interfaces</b>WebGL and Web Audio pages like this one.</div>
+      </div>
+      <div class="cta rv"><span class="open">Open to work</span><a class="btn" href="#s-maker">Contact</a></div>
+    </div>
+  </section>
   <section class="sec maker" id="s-maker" aria-labelledby="maker-h">
     <div class="card"><p class="num">Made by</p>
-      <div class="who"><h2 id="maker-h">Alen Požun</h2><span>Zagreb, Croatia</span></div>
+      <div class="who"><h2 id="maker-h">Alen Požun</h2></div>
       <p>Self-taught. I build Android apps and local AI on a phone alone, in Termux, with no PC: I design and direct the Meridian apps and build them with AI coding agents. Before that I worked as an IT technician, building and repairing PCs and servers. Open to remote work.</p>
       <div class="links">
-        <a href="https://x.com/termuxSolutions" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><span><b>X</b><small>@termuxSolutions</small></span></a>
-        <a href="https://github.com/kukirin-ui" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg><span><b>GitHub</b><small>kukirin-ui</small></span></a>
-        <a href="https://www.linkedin.com/in/alenpozun/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/></svg><span><b>LinkedIn</b><small>alenpozun</small></span></a>
-        <a href="https://xdaforums.com/m/termuxsolutions.13482532/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3M9 7h6M9 10h4"/></svg><span><b>XDA</b><small>termuxSolutions</small></span></a>
+        <a href="https://x.com/termuxSolutions" target="_blank" rel="noopener"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg><span><b>X</b><small>@termuxSolutions</small></span></a>
+        <a href="https://github.com/kukirin-ui" target="_blank" rel="noopener"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span><b>GitHub</b><small>kukirin-ui</small></span></a>
+        <a href="https://www.linkedin.com/in/alenpozun/" target="_blank" rel="noopener"><svg class="logo" viewBox="0 0 448 512" aria-hidden="true"><path d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8c0-14.3 5.7-27.9 15.8-38S39.6 0 53.8 0s27.9 5.7 38 15.8 15.8 23.8 15.8 38c0 29.7-24.1 54.3-53.8 54.3M447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z"/></svg><span><b>LinkedIn</b><small>alenpozun</small></span></a>
+        <a href="https://xdaforums.com/m/termuxsolutions.13482532/" target="_blank" rel="noopener"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.84 3.052V0h7.843v17.583H13.84v-3.024h4.591V3.052zM5.569 14.53V3.024h4.592V0H2.318v17.583H6.98L10.16 24v-9.483z"/></svg><span><b>XDA</b><small>termuxSolutions</small></span></a>
       </div>
-      <p class="mail">Email: <b>kalyx.solutions@proton.me</b></p></div>
-  </section>
-  <section class="sec maker" id="s-requirements" aria-labelledby="requirements-h">
-    <div class="card"><p class="num">Before you start</p><h2 id="requirements-h">Requirements</h2>
-      <div class="specs">
-        <div class="spec"><b>Version</b><span>Meridian 2.5.1 (versionCode 51), the five-app build described here.</span></div>
-        <div class="spec"><b>Android</b><span>Core: Android 11+. Chat, Gaming, Parallel and NullCloud: Android 8+. The complete family therefore needs Android 11+.</span></div>
-        <div class="spec"><b>Termux</b><span>Install Termux from F-Droid for local models and shell commands. Complete the app's setup, enable external-app commands in Termux and grant its RUN_COMMAND permission when requested.</span></div>
-        <div class="spec"><b>Core helper</b><span>Enable Developer options and Wireless debugging, then complete ADB pairing in Core. The helper provides ADB shell rights, not root. Available controls depend on the phone.</span></div>
-        <div class="spec"><b>Family signing</b><span>Install all five apps signed with the same signing certificate. Their signature-protected family permissions require it; unsigned APKs are not installable releases.</span></div>
-      </div>
-      <!-- Download URL: add only after a verified, consistently family-signed release is available. No download link is supplied here. -->
-    </div>
-  </section>
-  <section class="sec maker" id="s-permissions" aria-labelledby="permissions-h">
-    <div class="card"><p class="num">Access on your phone</p><h2 id="permissions-h">Permissions</h2>
-      <p>Summary of manifest-declared access in 2.5.1, not a list of automatic grants. Android asks for runtime permissions or special access where required; individual features may need setup.</p>
-      <div class="specs">
-        <div class="spec"><b>All five apps</b><span>Internet, Termux RUN_COMMAND and signature-protected family access for communication on this phone.</span></div>
-        <div class="spec"><b>Core</b><span>Network status, Wi-Fi multicast discovery, package installation requests, usage access, foreground service and notifications, plus the shared family permissions.</span></div>
-        <div class="spec"><b>Chat</b><span>Network/Wi-Fi status, microphone and biometric access, plus the common permissions above.</span></div>
-        <div class="spec"><b>Gaming</b><span>Network/Wi-Fi status, background-process control, usage access, system settings, Do Not Disturb access, overlay, foreground service and notifications, plus common family access.</span></div>
-        <div class="spec"><b>Parallel</b><span>Network/Wi-Fi status, microphone and biometric access, plus the common permissions above.</span></div>
-        <div class="spec"><b>NullCloud</b><span>Internet, Termux RUN_COMMAND and signature-protected family access. This build does not declare microphone or overlay permissions.</span></div>
-      </div>
-    </div>
-  </section>
-  <section class="sec maker" id="s-privacy" aria-labelledby="privacy-h">
-    <div class="card"><p class="num">Local work, clear limits</p><h2 id="privacy-h">Privacy &amp; pricing</h2>
-      <div class="specs">
-        <div class="spec"><b>Local-first</b><span>Local models, commands and the shared library can run or stay on this phone. Network access is needed for model downloads, web links and online providers. Local inference can work offline after setup and downloads.</span></div>
-        <div class="spec"><b>Online choices</b><span>Chat and Parallel can use an online AI provider you configure; requests and their included content then go to that provider. NullCloud uses a local model. This website also loads fonts from Google Fonts.</span></div>
-        <div class="spec"><b>Price</b><span>The Meridian apps are free. Some AI providers may charge or apply usage limits; their fees are separate. Check your chosen provider's terms and privacy information before using it.</span></div>
-      </div>
-      <!-- Privacy policy URL: add a reviewed policy when available. This summary is not a substitute for that policy. -->
-    </div>
+      <p class="mail">Email: <a href="mailto:kalyx.solutions@proton.me"><b>kalyx.solutions@proton.me</b></a></p></div>
   </section>
 </main>
-<footer><b>Meridian Family</b> · © 2026 Alen Požun</footer>
+<footer><nav aria-label="Footer"><a href="#top">Back to the top</a><a href="#s-about">About</a><a href="#s-maker">Contact</a><a href="showcase.html">Showcase</a><a href="docs.html">Docs</a></nav><b>Meridian Family</b> · © 2026 Alen Požun · Built on a phone</footer>
+<div class="progress" id="progress" aria-hidden="true"></div>
 <p class="loading" id="loading" role="status">Loading the worlds…</p>
 
 <script>
@@ -305,7 +363,9 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
 
   /* ------------------------------------------------------------ chapters */
   var CH = [{ u: 0, n: "00", t: "Meridian" }, { u: 1.2, n: "··", t: "The family" }, { u: 2, n: "01", t: "Core" }, { u: 4, n: "02", t: "Chat" }, { u: 6, n: "03", t: "Gaming" },
-    { u: 8, n: "04", t: "Parallel" }, { u: 10, n: "05", t: "NullCloud" }, { u: 12, n: "∞", t: "One system" }];
+    { u: 8, n: "04", t: "Parallel" }, { u: 10, n: "05", t: "NullCloud" }, { u: 12, n: "∞", t: "One system" }, { id: "s-about", n: "AB", t: "About" }, { id: "s-maker", n: "@", t: "Contact" }];
+  function syncCH() { CH.forEach(function (c) { if (c.id) { var e = $(c.id); if (e) c.u = e.offsetTop / W.innerHeight; } }); }
+  syncCH(); W.addEventListener("resize", syncCH);
   var rail = $("rail");
   CH.forEach(function (c, i) { var b = D.createElement("button"); b.type = "button"; b.setAttribute("aria-label", c.t); b.innerHTML = "<span>" + c.t + "</span>"; b.onclick = function () { goU(c.u + (i >= 2 && i <= 6 ? .55 : i === 7 ? .5 : 0)); }; rail.appendChild(b); });
   function goU(u) { W.scrollTo({ top: u * W.innerHeight, behavior: reduce ? "auto" : "smooth" }); }
@@ -412,8 +472,13 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
     " o=vec4(c*mask*uAlpha,mask*uAlpha);}";
 
   /* the space between the worlds */
-  var FS_SPACE = "#version 300 es\nprecision highp float;\nin vec2 vUv;out vec4 o;uniform vec2 uRes;uniform float uTime;uniform vec3 uTilt;uniform float uA;\n" + LIB +
-    "void main(){vec2 a=vec2(uRes.x/uRes.y,1.);vec2 p=(vUv-.5)*a;vec3 c=vec3(.012,.008,.03)+vec3(.06,.03,.14)*exp(-dot(p-vec2(.25,.1),p-vec2(.25,.1))*3.)+vec3(.02,.07,.12)*exp(-dot(p+vec2(.3,.15),p+vec2(.3,.15))*4.);\n" +
+  var FS_SPACE = "#version 300 es\nprecision highp float;\nin vec2 vUv;out vec4 o;uniform vec2 uRes;uniform float uTime;uniform vec3 uTilt;uniform float uA;uniform vec3 uCol;uniform float uDepth;uniform float uBeat;uniform float uAdd;\n" + LIB +
+    "vec3 night(vec2 p){vec2 q=rot(uTilt.z*.6)*(p+vec2(-uTilt.x,uTilt.y)*.07);float t=uTime*.045+uDepth*.32;q=rot(t*.25)*q;vec3 f=vec3(0.);\n" +
+    " for(int i=0;i<3;i++){float fi=float(i);float d=fract(t*.55+fi/3.);float fd=smoothstep(0.,.3,d)*smoothstep(1.,.68,d);vec2 z=rot(fi*2.1+t*.2)*q*mix(8.,.4,d)+vec2(sin(t+fi),cos(t*.8-fi))*.45;\n" +
+    "  float tr=1e3,tp=1e3;for(int j=0;j<5;j++){z=abs(z)/(dot(z,z)+.0015)-.6;z=rot(t*.07+fi*.4)*z;tr=min(tr,abs(dot(z,z)-.35));tp=min(tp,length(z));}\n" +
+    "  float it=exp(-tr*34.)*.9+exp(-tp*8.)*.25;vec3 lc=mix(uCol,uCol.zxy*.55+vec3(.18,.1,.32),.5+.5*sin(fi*1.7+t*2.3));f+=lc*it*fd;}\n" +
+    " return f*(.24+.22*uBeat)*(1.-.55*smoothstep(.3,1.15,length(p)));}\n" +
+    "void main(){vec2 a=vec2(uRes.x/uRes.y,1.);vec2 p=(vUv-.5)*a;if(uAdd>.5){o=vec4(night(p)*uA*1.5,1.);return;}vec3 c=night(p)*.7+vec3(.012,.008,.03)+vec3(.06,.03,.14)*exp(-dot(p-vec2(.25,.1),p-vec2(.25,.1))*3.)+vec3(.02,.07,.12)*exp(-dot(p+vec2(.3,.15),p+vec2(.3,.15))*4.);\n" +
     " for(int l=0;l<3;l++){float fl=float(l);vec2 w=(vUv+vec2(-uTilt.x,uTilt.y)*.012*(1.+fl))*a*(40.+fl*35.);vec2 id=floor(w),f=fract(w)-.5;float r=h2(id+fl*9.1);\n" +
     "  if(r>.93){vec2 o2=vec2(h2(id+2.1),h2(id+5.3))-.5;c+=vec3(.7,.8,1.)*smoothstep(.09,0.,length(f-o2*.7))*(.35+.4*sin(uTime*(1.+r*2.)+r*50.))*(1.-fl*.25);}}\n" +
     " o=vec4(c*uA,1.);}";
@@ -460,9 +525,17 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
     " float l=max(c.r,max(c.g,c.b));o=vec4(c*max(l-uThr,0.)/max(l,1e-4),1.);}";
   var FS_BLUR = "#version 300 es\nprecision highp float;\nin vec2 vUv;out vec4 o;uniform sampler2D src;uniform vec2 uDir;\n" +
     "void main(){vec3 c=texture(src,vUv).rgb*.227;c+=(texture(src,vUv+uDir*1.385).rgb+texture(src,vUv-uDir*1.385).rgb)*.316;c+=(texture(src,vUv+uDir*3.231).rgb+texture(src,vUv-uDir*3.231).rgb)*.07;o=vec4(c,1.);}";
-  var FS_OUT = "#version 300 es\nprecision highp float;\nin vec2 vUv;out vec4 o;uniform sampler2D scene;uniform sampler2D bloom;uniform sampler2D bloom2;uniform float uBloom;uniform vec2 uRes;uniform float uTime;\n" + LIB +
-    "void main(){vec3 c=texture(scene,vUv).rgb+(texture(bloom,vUv).rgb*.9+texture(bloom2,vUv).rgb*1.1)*uBloom;\n" +
+  var FS_OUT = "#version 300 es\nprecision highp float;\nin vec2 vUv;out vec4 o;uniform sampler2D scene;uniform sampler2D bloom;uniform sampler2D bloom2;uniform float uBloom;uniform vec2 uRes;uniform float uTime;uniform float uVel;uniform vec4 uFlash;uniform vec4 uShock;uniform float uBeat;uniform vec4 uHold;uniform vec3 uTint;\n" + LIB +
+    "void main(){vec2 asp=vec2(uRes.x/uRes.y,1.);vec2 cc=vUv-.5;float rd=length(cc*asp);vec2 sp=(vUv-uShock.zw)*asp;float sr=length(sp);float sw=uShock.y*exp(-pow((sr-uShock.x)*12.,2.));\n" +
+    " vec2 hp=(vUv-uHold.xy)*asp;float hr=length(hp);vec2 uv=vUv-normalize(sp+1e-5)/asp*sw*.03-normalize(hp+1e-5)/asp*uHold.z*.014*exp(-hr*6.);\n" +
+    " vec3 c=vec3(0.);float k=uVel*.075;for(int i=0;i<6;i++){c+=texture(scene,.5+(uv-.5)*(1.-k*float(i)/6.)).rgb;}c/=6.;\n" +
+    " float ab=.0015+uVel*.009+sw*.01;c.r=mix(c.r,texture(scene,.5+(uv-.5)*(1.+ab)).r,.75);c.b=mix(c.b,texture(scene,.5+(uv-.5)*(1.-ab)).b,.75);\n" +
+    " c+=(texture(bloom,uv).rgb*.9+texture(bloom2,uv).rgb*1.1)*uBloom*(1.+.3*uBeat);\n" +
     " c=c/(1.+.12*c)*1.12;vec2 p=(vUv-.5)*vec2(uRes.x/uRes.y,1.);c*=1.-.32*smoothstep(.45,1.15,length(p));\n" +
+    " c+=uFlash.rgb*uFlash.a*(.55-.35*rd)+uFlash.rgb*sw*.9;\n" +
+    " float ha=uHold.z,an=atan(hp.y,hp.x);float ring=exp(-pow((hr-(.03+.1*ha))*75.,2.))*ha;float spk=pow(.5+.5*sin(an*9.+uTime*7.*(.5+ha)),16.)*exp(-hr*10.)*ha;\n" +
+    " float orb=0.;for(int i=0;i<6;i++){float a2=uTime*(1.6+ha*2.5)+float(i)*1.047;vec2 op=vec2(cos(a2),sin(a2))*(.05+.1*ha);orb+=exp(-length(hp-op)*140.);}\n" +
+    " c+=uTint*(ring*1.6+spk*.8+exp(-hr*28.)*ha*.9+orb*ha*1.2)+vec3(1.)*exp(-hr*60.)*ha*.6;\n" +
     " c+=(h2(vUv*uRes+fract(uTime*7.)*91.)-.5)*.018;o=vec4(c,1.);}";
 
   function sh(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) + "\n" + src.slice(0, 200)); return s; }
@@ -527,9 +600,10 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
     return { t: t, f: f, w: w, h: h };
   }
   function freeTarget(x) { if (x) { gl.deleteTexture(x.t); gl.deleteFramebuffer(x.f); } }
+  var rscale = 1;
   function sizeAll() {
     var lv = level();
-    dpr = Math.min(W.devicePixelRatio || 1, lv === "high" ? 2 : lv === "mid" ? 1.5 : 1);
+    dpr = Math.min(W.devicePixelRatio || 1, lv === "high" ? 2 : lv === "mid" ? 1.5 : 1) * rscale;
     Wd = Math.max(1, Math.round(W.innerWidth * dpr)); Ht = Math.max(1, Math.round(W.innerHeight * dpr));
     cv.width = Wd; cv.height = Ht;
     if (fbo) { freeTarget(fbo.scene); freeTarget(fbo.a); freeTarget(fbo.b); freeTarget(fbo.c); freeTarget(fbo.d); }
@@ -557,14 +631,25 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
   W.addEventListener("keydown", firstGesture);
   W.addEventListener("pointerdown", function (e) {
     firstGesture();
+    if (e.button > 0) return;
     if (e.target.closest("button, a, .card, .panel-set, .bar")) return;
     ptr[0] = e.clientX * dpr; ptr[1] = (W.innerHeight - e.clientY) * dpr; ptrAt = now();
     tap = [ptr[0], ptr[1], 0, 1]; tapAt = now();
+    holding = true; holdT0 = now(); holdP = [e.clientX / W.innerWidth, 1 - e.clientY / W.innerHeight]; shock = [0, reduce ? 0 : .45, holdP[0], holdP[1]];
     var hit = hitDisc(ptr[0], ptr[1]); if (hit >= 0) { goU(2 + hit * 2 + .55); ping(hit, 1.6); return; }
     ping(curApp, 1); if (curApp === 2) breakAt = now();
     if (pref.motion === "on") askGyro();
   });
-  var tapAt = -9, breakAt = -9;
+  var tapAt = -9, breakAt = -9, holdSnd = false;
+  W.addEventListener("pointermove", function (e) { if (holding) holdP = [e.clientX / W.innerWidth, 1 - e.clientY / W.innerHeight]; }, { passive: true });
+  function release(burst) { if (!holding) return; holding = false;
+    if (burst && holdA > .25) { shock = [0, reduce ? 0 : 1.5 * holdA + .3, holdP[0], holdP[1]]; flashA = reduce ? 0 : .35 + .4 * holdA; flashC = col.slice(); }
+    if (holdSnd) { holdSound(false, burst ? holdA : 0); holdSnd = false; } }
+  W.addEventListener("pointerup", function () { release(true); });
+  D.addEventListener("contextmenu", function (e) { if (!e.target.closest(".card, a, button, .panel-set")) e.preventDefault(); });
+  W.addEventListener("pointercancel", function () { release(false); holdA = 0; });
+  W.addEventListener("scroll", function () { if (holding && now() - holdT0 < .25) { release(false); holdA = 0; } }, { passive: true });
+  setInterval(function () { if (holding && !holdSnd && now() - holdT0 > .25) { holdSnd = true; holdSound(true); } }, 60);
   function askGyro() {
     if (gyroAsked) return; gyroAsked = true;
     try { if (W.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === "function") DeviceOrientationEvent.requestPermission().catch(function () {}); } catch (e) {}
@@ -697,35 +782,151 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
     gl.drawArrays(gl.POINTS, 0, lvlNum() > 1 ? 1400 : 600);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   }
-  function space(a) { gl.useProgram(P.space.p); gl.uniform2f(P.space.u.uRes, Wd, Ht); gl.uniform1f(P.space.u.uTime, frameT); gl.uniform3f(P.space.u.uTilt, tilt[0], tilt[1], tilt[2]); gl.uniform1f(P.space.u.uA, a); gl.drawArrays(gl.TRIANGLES, 0, 3); }
+  /* each world's colour: Core gold, Chat violet, Gaming ember, Parallel blue, NullCloud teal */
+  var WCOL = [[.95, .72, .34], [.66, .48, 1], [1, .42, .16], [.28, .6, 1], [.16, .86, .74]];
+  var col = [.66, .48, 1], beat = 0, flashA = 0, flashC = [1, 1, 1], shock = [9, 0, .5, .5], prevApp = -2, pendArr = -1, pendAt = 0, holding = false, holdT0 = 0, holdA = 0, holdP = [.5, .5];
+  function space(a, add) { var S = P.space.u; gl.useProgram(P.space.p); gl.uniform2f(S.uRes, Wd, Ht); gl.uniform1f(S.uTime, frameT); gl.uniform3f(S.uTilt, tilt[0], tilt[1], tilt[2]); gl.uniform1f(S.uA, a);
+    gl.uniform3f(S.uCol, col[0], col[1], col[2]); gl.uniform1f(S.uDepth, us); gl.uniform1f(S.uBeat, beat); gl.uniform1f(S.uAdd, add ? 1 : 0); gl.drawArrays(gl.TRIANGLES, 0, 3); }
   function logoRect() { var wide = Wd > Ht, w = wide ? Math.min(Wd * .5, Ht * .52 * 1.5) : Math.min(Wd * .96, Ht * .5 * 1.5), h = w / 1.5, cx = Wd / 2, cy = Ht * (wide ? .67 : .66); return [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2]; }
 
-  /* ------------------------------------------------------------ sound: one quiet chord per world, made live */
-  var AC = null, master = null, voices = [];
-  var CHORDS = [[98, 147, 196], [110, 165, 220], [82.4, 123.5, 185], [123.5, 185, 247], [130.8, 196, 261.6]];
+  /* ------------------------------------------------------------ sound: a live score, mixed like a track
+     drums: a synthesized kick (pitch drop + click) on 1 and 3, on every beat while you move; hats on the off-beats;
+            a soft clap on 2 and 4 once the beat is running
+     bass:  a sub and a mid layer, syncopated on the chord root (audible on a phone speaker too)
+     pad:   three detuned saws per note through a breathing filter and a chorus, pumping with the kick (sidechain)
+     plucks: an arpeggio with a filter envelope, 8ths, 16ths when you scroll fast
+     mix:   ping-pong echo, a stereo hall with pre-delay, tape saturation, EQ, a limiter at the end
+     each world: its own progression; arriving: a riser into a bell on the next beat; tap: a note in key;
+     hold: the music rises with you; release: an impact and a chord. */
+  var AC = null, out = null, music = null, duck = null, verbF = null, drums = null, echo = null, hall = null, chorus = null, noiseB = null;
+  var t0 = 0, nextT = 0, step = 0, wNow = 0, energy = 0, four = false, riser = null;
+  var BPM = 100, SPB = 60 / BPM, S16 = SPB / 4;
+  var PROG = [
+    [[48, 55, 64, 71], [45, 52, 60, 67], [41, 48, 57, 64], [43, 50, 59, 65]],   /* Core: Cmaj7 Am7 Fmaj7 G7 */
+    [[50, 57, 66, 73], [47, 54, 62, 69], [43, 50, 59, 66], [45, 52, 61, 66]],   /* Chat: Dmaj7 Bm7 Gmaj7 A6 */
+    [[40, 47, 55, 62], [36, 43, 52, 59], [43, 50, 55, 62], [38, 45, 54, 62]],   /* Gaming: Em7 Cmaj7 G D */
+    [[42, 49, 57, 64], [38, 45, 54, 61], [45, 52, 61, 64], [40, 47, 56, 63]],   /* Parallel: F#m7 Dmaj7 A E */
+    [[43, 50, 59, 66], [40, 47, 55, 62], [36, 43, 52, 59], [38, 45, 54, 62]]];  /* NullCloud: Gmaj7 Em7 Cmaj7 D */
+  function hz(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+  function beatClock() { return AC && AC.state === "running" ? Math.max(0, AC.currentTime - t0) : frameT; }
+  function chordNow() { return PROG[wNow][Math.floor(Math.max(0, step - 1) / 32) % 4]; }
+  function hallIR(sec) {   /* a stereo hall: decorrelated noise, exponential decay, highs fade faster than lows */
+    var n = Math.floor(AC.sampleRate * sec), b = AC.createBuffer(2, n, AC.sampleRate);
+    for (var ch = 0; ch < 2; ch++) { var d = b.getChannelData(ch), lp = 0;
+      for (var i = 0; i < n; i++) { var k = i / n, a = .08 + .6 * k; lp += (Math.random() * 2 - 1 - lp) * (1 - a); d[i] = lp * Math.pow(1 - k, 3.2) * (i < AC.sampleRate * .004 ? i / (AC.sampleRate * .004) : 1); } }
+    return b;
+  }
   function sound(on) {
     try {
       if (on && !AC) {
-        AC = new (W.AudioContext || W.webkitAudioContext)(); master = AC.createGain(); master.gain.value = 0; master.connect(AC.destination);
-        var verb = AC.createBiquadFilter(); verb.type = "lowpass"; verb.frequency.value = 1400; verb.connect(master);
-        CHORDS.forEach(function (ch) {
-          var g = AC.createGain(); g.gain.value = 0; g.connect(verb);
-          ch.forEach(function (f, k) { var o = AC.createOscillator(); o.type = k ? "sine" : "triangle"; o.frequency.value = f; o.detune.value = (k - 1) * 6; var og = AC.createGain(); og.gain.value = k ? .18 : .12; o.connect(og); og.connect(g); o.start(); });
-          voices.push(g);
-        });
+        AC = new (W.AudioContext || W.webkitAudioContext)({ latencyHint: "interactive" });
+        var lim = AC.createDynamicsCompressor(); lim.threshold.value = -4; lim.knee.value = 2; lim.ratio.value = 20; lim.attack.value = .002; lim.release.value = .12; lim.connect(AC.destination);
+        var sat = AC.createWaveShaper(), cv2 = new Float32Array(2048); for (var i = 0; i < 2048; i++) { var x = i / 1023.5 - 1; cv2[i] = Math.tanh(x * 1.6) / Math.tanh(1.6); } sat.curve = cv2; sat.oversample = "2x"; sat.connect(lim);
+        var hs = AC.createBiquadFilter(); hs.type = "highshelf"; hs.frequency.value = 9000; hs.gain.value = 2.5; hs.connect(sat);
+        var ls = AC.createBiquadFilter(); ls.type = "lowshelf"; ls.frequency.value = 95; ls.gain.value = 2; ls.connect(hs);
+        out = AC.createGain(); out.gain.value = 0; out.connect(ls);
+        /* music bus: sidechain duck, then the depth filter */
+        var lp = AC.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 900; lp.Q.value = .9; lp.connect(out); verbF = lp.frequency;
+        duck = AC.createGain(); duck.connect(lp); music = AC.createGain(); music.gain.value = .9; music.connect(duck);
+        drums = AC.createGain(); drums.gain.value = .9; drums.connect(out);
+        /* hall with 28 ms pre-delay */
+        hall = AC.createGain(); var pre = AC.createDelay(.1); pre.delayTime.value = .028; var conv = AC.createConvolver(); conv.buffer = hallIR(3.6); var hr = AC.createGain(); hr.gain.value = .42;
+        hall.connect(pre); pre.connect(conv); conv.connect(hr); hr.connect(out);
+        /* ping-pong echo, dotted eighth, darker each repeat */
+        echo = AC.createGain(); var dl = AC.createDelay(2), dr = AC.createDelay(2), f1 = AC.createGain(), f2 = AC.createGain(), dp = AC.createBiquadFilter(), pl = AC.createStereoPanner(), pr = AC.createStereoPanner(), er = AC.createGain();
+        dl.delayTime.value = dr.delayTime.value = SPB * .75; f1.gain.value = f2.gain.value = .4; dp.type = "lowpass"; dp.frequency.value = 2600; pl.pan.value = -.8; pr.pan.value = .8; er.gain.value = .5;
+        echo.connect(dl); dl.connect(pl); pl.connect(er); dl.connect(f1); f1.connect(dp); dp.connect(dr); dr.connect(pr); pr.connect(er); dr.connect(f2); f2.connect(dl); er.connect(duck); er.connect(hall);
+        /* chorus for the pad: two modulated delays, left and right */
+        chorus = AC.createGain(); [[-1, .63], [1, .81]].forEach(function (cfg) { var d = AC.createDelay(.05), lfo = AC.createOscillator(), lg = AC.createGain(), pn = AC.createStereoPanner();
+          d.delayTime.value = .014; lfo.frequency.value = cfg[1]; lg.gain.value = .0035; lfo.connect(lg); lg.connect(d.delayTime); lfo.start(); pn.pan.value = cfg[0] * .9; chorus.connect(d); d.connect(pn); pn.connect(music); });
+        chorus.connect(music);
+        var nb = AC.createBuffer(1, AC.sampleRate, AC.sampleRate), nd = nb.getChannelData(0); for (var k = 0; k < nd.length; k++) nd[k] = Math.random() * 2 - 1; noiseB = nb;
+        buildPad();
+        t0 = nextT = AC.currentTime + .08; step = 0;
       }
-      if (AC) { if (on && AC.state === "suspended") AC.resume(); master.gain.setTargetAtTime(on ? .16 : 0, AC.currentTime, .4); }
+      if (AC) { if (on && AC.state === "suspended") AC.resume(); out.gain.setTargetAtTime(on ? .62 : 0, AC.currentTime, .4); }
     } catch (e) {}
   }
-  function ping(i, s) {
-    if (!AC || pref.sound !== "on" || i < 0) return;
-    try { var o = AC.createOscillator(), g = AC.createGain(); o.type = "sine"; o.frequency.value = CHORDS[i][2] * 2; g.gain.value = 0; o.connect(g); g.connect(master);
-      g.gain.setTargetAtTime(.25 * s, AC.currentTime, .005); g.gain.setTargetAtTime(0, AC.currentTime + .06, .35); o.start(); o.stop(AC.currentTime + 2.5); } catch (e) {}
+  var pad = [], padF = null;
+  function buildPad() {
+    var pf = AC.createBiquadFilter(); pf.type = "lowpass"; pf.frequency.value = 1100; pf.Q.value = .7; padF = pf.frequency;
+    var lfo = AC.createOscillator(), lg = AC.createGain(); lfo.frequency.value = .09; lg.gain.value = 420; lfo.connect(lg); lg.connect(pf.frequency); lfo.start();
+    var pg = AC.createGain(); pg.gain.value = .5; pf.connect(pg); pg.connect(chorus); var ps = AC.createGain(); ps.gain.value = .35; pg.connect(ps); ps.connect(hall);
+    for (var v = 0; v < 4; v++) { var g = AC.createGain(), pn = AC.createStereoPanner(); g.gain.value = .045; pn.pan.value = [-.5, .3, -.2, .55][v]; g.connect(pn); pn.connect(pf); var vo = [];
+      [-11, 0, 11].forEach(function (c) { var o = AC.createOscillator(); o.type = "sawtooth"; o.detune.value = c + (Math.random() - .5) * 4; o.frequency.value = hz(PROG[0][0][v]); o.connect(g); o.start(); vo.push(o); }); pad.push(vo); }
   }
-  function mixSound(wts) { if (!AC || pref.sound !== "on") return; voices.forEach(function (g, k) { g.gain.setTargetAtTime(wts[k] || 0, AC.currentTime, .25); }); }
+  function env(g, at, a, peak, dec) { g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(peak, at + a); g.gain.setTargetAtTime(0, at + a, dec); }
+  function noise(at, len, type, f, q, vol, dest, pan) { var s = AC.createBufferSource(), fl = AC.createBiquadFilter(), g = AC.createGain(), pn = AC.createStereoPanner();
+    s.buffer = noiseB; s.playbackRate.value = .9 + Math.random() * .2; fl.type = type; fl.frequency.value = f; fl.Q.value = q || .7; pn.pan.value = pan || 0;
+    env(g, at, .001, vol, len / 3); s.connect(fl); fl.connect(g); g.connect(pn); pn.connect(dest || drums); s.start(at, Math.random() * .5, len + .2); return g; }
+  function kick(at, vol) { var o = AC.createOscillator(), g = AC.createGain(); o.type = "sine"; o.frequency.setValueAtTime(155, at); o.frequency.exponentialRampToValueAtTime(46, at + .11);
+    g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(vol, at + .003); g.gain.setTargetAtTime(0, at + .02, .16); o.connect(g); g.connect(drums); o.start(at); o.stop(at + .9);
+    noise(at, .012, "highpass", 2200, .5, vol * .25);
+    duck.gain.cancelScheduledValues(at); duck.gain.setValueAtTime(duck.gain.value, at); duck.gain.linearRampToValueAtTime(.38, at + .012); duck.gain.setTargetAtTime(1, at + .03, .11); }
+  function clap(at, vol) { for (var i = 0; i < 3; i++) noise(at + i * .011, i === 2 ? .16 : .02, "bandpass", 1300, 1.1, vol * (i === 2 ? 1 : .7)); var r = noise(at, .25, "bandpass", 1500, .8, vol * .4, hall); }
+  function bass(m, at, len, vol) { var o = AC.createOscillator(), o2 = AC.createOscillator(), f = AC.createBiquadFilter(), g = AC.createGain(), g2 = AC.createGain();
+    o.type = "sine"; o.frequency.value = hz(m - 24); o2.type = "sawtooth"; o2.frequency.value = hz(m - 12); f.type = "lowpass"; f.Q.value = 3;
+    f.frequency.setValueAtTime(900, at); f.frequency.setTargetAtTime(160, at + .01, .09); env(g, at, .006, vol, len / 2.5); g2.gain.value = .32;
+    o.connect(g); o2.connect(f); f.connect(g2); g2.connect(g); g.connect(music); o.start(at); o2.start(at); o.stop(at + len + .5); o2.stop(at + len + .5); }
+  function pluck(f, at, len, vol, pan, sendE) { var o = AC.createOscillator(), o2 = AC.createOscillator(), fl = AC.createBiquadFilter(), g = AC.createGain(), pn = AC.createStereoPanner();
+    o.type = "sawtooth"; o2.type = "square"; o.frequency.value = f; o2.frequency.value = f * 1.002; fl.type = "lowpass"; fl.Q.value = 4;
+    fl.frequency.setValueAtTime(Math.min(9000, f * 9), at); fl.frequency.setTargetAtTime(f * 1.4, at + .005, .07); env(g, at, .003, vol, len / 3); pn.pan.value = pan || 0;
+    o.connect(fl); o2.connect(fl); fl.connect(g); g.connect(pn); pn.connect(music); var hs = AC.createGain(); hs.gain.value = .3; pn.connect(hs); hs.connect(hall); if (sendE) pn.connect(echo);
+    o.start(at); o2.start(at); o.stop(at + len + .3); o2.stop(at + len + .3); }
+  function bell(f, at, vol, pan) { var c = AC.createOscillator(), m = AC.createOscillator(), mg = AC.createGain(), g = AC.createGain(), pn = AC.createStereoPanner();
+    c.frequency.value = f; m.frequency.value = f * 3.5; mg.gain.setValueAtTime(f * 2.2, at); mg.gain.setTargetAtTime(0, at, .5); m.connect(mg); mg.connect(c.frequency);
+    env(g, at, .002, vol, .9); pn.pan.value = pan || 0; c.connect(g); g.connect(pn); pn.connect(music); pn.connect(hall); pn.connect(echo); c.start(at); m.start(at); c.stop(at + 4); m.stop(at + 4); }
+  function schedule(s, at) {
+    var ch = PROG[wNow][Math.floor(s / 32) % 4], inBar = s % 16, beatN = s % 4 === 0;
+    if (s % 32 === 0) pad.forEach(function (vo, v) { vo.forEach(function (o) { o.frequency.setTargetAtTime(hz(ch[v]), at, .25); }); });
+    if (s % 16 === 0) four = energy > .22;
+    if (beatN && (four || inBar === 0 || inBar === 8)) kick(at, inBar === 0 ? .95 : .8);
+    if (four && (inBar === 4 || inBar === 12)) clap(at, .3);
+    if (s % 4 === 2) noise(at, .05, "highpass", 7500, .8, .1 + energy * .06, drums, .25);
+    else if (four && s % 2 === 1) noise(at, .025, "highpass", 9000, .8, .035, drums, -.25);
+    if ([0, 3, 6, 8, 11, 14].indexOf(inBar) >= 0) bass(ch[0] + (inBar === 14 ? 7 : 0), at, inBar % 8 === 0 ? .32 : .16, inBar % 8 === 0 ? .55 : .38);
+    var dense = energy > .45, play = dense || s % 2 === 0;
+    if (play) { var pat = [0, 1, 2, 3, 2, 1, 3, 2], k = (dense ? s : s / 2) % 8, oct = (Math.floor(s / 8) % 2) * 12;
+      pluck(hz(ch[pat[k]] + 12 + oct), at, dense ? .16 : .26, (dense ? .05 : .055) * (k === 0 ? 1.35 : 1) * (.75 + energy * .5), k % 2 ? .5 : -.5, true); }
+  }
+  function ping(i, s) {   /* a tap: a note of the chord that is playing, in key, with echo */
+    if (!AC || pref.sound !== "on" || AC.state !== "running") return;
+    try { var ch = chordNow(), at = AC.currentTime + .005, m = ch[1 + Math.floor(Math.random() * 3)] + 24; pluck(hz(m), at, .5, .09 * (s || 1), (Math.random() - .5) * .6, true); bell(hz(m + 12), at, .025 * (s || 1), 0); } catch (e) {}
+  }
+  function arriveAt(i, at) {   /* a world arrives: a riser into a bell chord, landing on the beat */
+    if (!AC || pref.sound !== "on" || AC.state !== "running") return;
+    try { var st = Math.max(AC.currentTime + .01, at - 1.1), s = AC.createBufferSource(), bp = AC.createBiquadFilter(), g = AC.createGain();
+      s.buffer = noiseB; s.loop = true; bp.type = "bandpass"; bp.Q.value = 2.5; bp.frequency.setValueAtTime(300, st); bp.frequency.exponentialRampToValueAtTime(5200, at);
+      g.gain.setValueAtTime(0, st); g.gain.linearRampToValueAtTime(.07, at - .02); g.gain.linearRampToValueAtTime(0, at + .03); s.connect(bp); bp.connect(g); g.connect(hall); g.connect(out); s.start(st); s.stop(at + .1);
+      var ch = PROG[i][0]; [ch[1], ch[2], ch[3]].forEach(function (m, j) { bell(hz(m + 24), at + j * .045, .06 - j * .012, (j - 1) * .5); });
+      noise(at, 1.6, "highpass", 5000, .5, .06, hall); } catch (e) {}
+  }
+  function holdSound(on, x) {   /* hold: noise and the pad open up and rise; release: impact + chord stab */
+    if (!AC || pref.sound !== "on" || AC.state !== "running") return;
+    try {
+      var at = AC.currentTime + .005;
+      if (on) { if (riser) return; var s = AC.createBufferSource(), bp = AC.createBiquadFilter(), g = AC.createGain(); s.buffer = noiseB; s.loop = true; bp.type = "bandpass"; bp.Q.value = 3;
+        bp.frequency.setValueAtTime(250, at); bp.frequency.exponentialRampToValueAtTime(4800, at + 2.6); g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(.08, at + 2.6);
+        s.connect(bp); bp.connect(g); g.connect(hall); g.connect(out); s.start(at); riser = { s: s, g: g }; padF.setTargetAtTime(3200, at, .9); return; }
+      if (riser) { riser.g.gain.cancelScheduledValues(at); riser.g.gain.setTargetAtTime(0, at, .05); riser.s.stop(at + .4); riser = null; }
+      padF.setTargetAtTime(1100, at + .1, .6);
+      if (x > .25) { kick(at, 1); noise(at, 2.2, "highpass", 3500, .4, .12 * x, hall); noise(at, .35, "lowpass", 900, .6, .25 * x);
+        chordNow().forEach(function (m, j) { pluck(hz(m + 12), at + j * .008, .9, .045 * x, (j - 1.5) * .35, j === 3); }); bell(hz(chordNow()[3] + 24), at, .05 * x, 0); }
+    } catch (e) {}
+  }
+  function mixSound(wts) {
+    if (!AC || pref.sound !== "on" || AC.state !== "running") return;
+    var best = 0; for (var k = 1; k < 5; k++) if ((wts[k] || 0) > (wts[best] || 0)) best = k;
+    wNow = (wts[best] || 0) > .2 ? best : (curApp >= 0 ? curApp : wNow);
+    energy += (Math.min(1, vel / 1.4) - energy) * .06;
+    var depth = Math.max(0, Math.min(1, W.scrollY / Math.max(1, D.documentElement.scrollHeight - W.innerHeight)));
+    verbF.setTargetAtTime(900 * Math.pow(9000 / 900, depth) * (1 + energy * .8), AC.currentTime, .3);
+    if (nextT < AC.currentTime - .5) { var miss = Math.ceil((AC.currentTime - nextT) / S16); step += miss; nextT += miss * S16; }   /* back from a hidden tab: skip, don't burst */
+    while (nextT < AC.currentTime + .12) { schedule(step, nextT); step++; nextT += S16; }
+  }
 
   /* ------------------------------------------------------------ the frame */
-  var last = now(), acc = 0, fpsN = 0, fpsT = now(), fpsShow = 0, slow = 0;
+  var last = now(), acc = 0, fpsN = 0, fpsT = now(), fpsShow = 0, slow = 0, fast = 0;
   function frame() {
     requestAnimationFrame(frame);
     if (D.hidden) return;
@@ -734,7 +935,11 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
     last = t; dt = Math.min(dt, .1);
     if (live()) frameT += dt;
     fpsN++; if (t - fpsT > 2) { var f = fpsN / (t - fpsT); fpsN = 0; fpsT = t; $("fps").textContent = Math.round(f) + " frames a second now, level " + level();
-      if (pref.level === "auto") { if (f < cap() * .55 && level() !== "low") { slow++; if (slow >= 2) { autoLevel = level() === "high" ? "mid" : "low"; slow = 0; sizeAll(); } } else slow = 0; } }
+      {
+        /* every level: resolution scale 0.5..1 against the cap (a throttled 60 on a 120 Hz screen is on time, not slow);
+           only Auto also steps the level down once the scale is at its floor */
+        if (f < cap() * .85) { fast = 0; if (rscale > .5) { rscale = Math.max(.5, rscale - .15); sizeAll(); } else if (pref.level === "auto" && f < cap() * .55 && level() !== "low") { slow++; if (slow >= 2) { autoLevel = level() === "high" ? "mid" : "low"; slow = 0; rscale = 1; sizeAll(); } } }
+        else { slow = 0; if (f >= cap() * .95 && rscale < 1 && ++fast >= 3) { fast = 0; rscale = Math.min(1, rscale + .1); sizeAll(); } } } }
 
     /* camera follows the scroll with a little weight */
     var target = W.scrollY / W.innerHeight;
@@ -806,6 +1011,7 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
         var vb = { x: mix(fa.x, fb.x, sstep(.25, 1, x)), y: mix(fa.y, fb.y, sstep(.25, 1, x)), R: mix(0, dg2 * 1.05, Math.pow(x, 1.7)), S: fb.S * mix(.3, 1, e2) };
         drawWorld(k2 + 1, vb, 1, 0, x, (1 - x) * 1.6, false);
         wts[k2 + 1] = x;
+        if (live()) { gl.blendFunc(gl.ONE, gl.ONE); space(Math.sin(Math.PI * x) * .5, true); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); }
         if (x > .5) curApp = k2 + 1;
       }
       eyes += (((curApp === 1 && l > .15 && l < 1.6) ? 1 : 0) - eyes) * Math.min(1, dt * 2);
@@ -834,6 +1040,17 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
       wts = [.35 * ia, .15 * ia, .15 * ia, .15 * ia, .15 + .5 * (1 - sh2)];
     }
     mixSound(wts);
+    var wc = curApp >= 0 ? WCOL[curApp] : (u < 2 ? WCOL[1] : WCOL[0]);
+    for (var ci = 0; ci < 3; ci++) col[ci] += (wc[ci] - col[ci]) * Math.min(1, dt * 1.6);
+    /* the kick: on 1 and 3, on every beat while the music runs four-on-the-floor; the light follows it */
+    var bc = beatClock() / SPB, bi = Math.floor(bc), isK = four || bi % 2 === 0;
+    beat = live() && isK ? Math.exp(-(bc - bi) * SPB * 9) : 0;
+    if (curApp >= 0 && curApp !== prevApp && prevApp !== -2) { var nb2 = Math.ceil(bc + .15); pendArr = curApp; pendAt = nb2 * SPB; if (AC && AC.state === "running" && pref.sound === "on") arriveAt(curApp, t0 + pendAt); }
+    if (curApp >= 0 || prevApp === -2) prevApp = curApp;
+    if (pendArr >= 0 && beatClock() >= pendAt) { flashA = reduce ? 0 : .6; flashC = WCOL[pendArr]; shock = [0, reduce ? 0 : 1.1, .5, .5]; pendArr = -1; }
+    flashA *= Math.exp(-dt * 2.4); shock[0] += dt * 1.1; shock[1] *= Math.exp(-dt * 1.7);
+    /* hold: the charge grows under the finger */
+    if (holding && t - holdT0 > .22) holdA = Math.min(1, holdA + dt * .55); else if (!holding) holdA *= Math.exp(-dt * 7);
 
     /* bloom and the final picture */
     if (fbo) {
@@ -851,12 +1068,46 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
       gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, fbo.a.t); gl.uniform1i(P.out.u.bloom, 1);
       gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, fbo.d.t); gl.uniform1i(P.out.u.bloom2, 2);
       gl.uniform1f(P.out.u.uBloom, lv2 > 1 ? 1 : .7); gl.uniform2f(P.out.u.uRes, Wd, Ht); gl.uniform1f(P.out.u.uTime, frameT);
+      gl.uniform1f(P.out.u.uVel, live() ? Math.min(1, vel / 2.2) : 0); gl.uniform4f(P.out.u.uFlash, flashC[0], flashC[1], flashC[2], flashA);
+      var fA = flashA + beat * .09; gl.uniform4f(P.out.u.uFlash, flashA > .02 ? flashC[0] : col[0], flashA > .02 ? flashC[1] : col[1], flashA > .02 ? flashC[2] : col[2], fA);
+      gl.uniform4f(P.out.u.uShock, shock[0], shock[1], shock[2], shock[3]); gl.uniform1f(P.out.u.uBeat, beat);
+      gl.uniform4f(P.out.u.uHold, holdP[0], holdP[1], reduce ? 0 : holdA, 0); gl.uniform3f(P.out.u.uTint, col[0], col[1], col[2]);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       gl.activeTexture(gl.TEXTURE0);
     }
   }
   requestAnimationFrame(frame);
   W.__meridian = { state: function () { return { u: us, app: curApp, level: level(), ready: Object.keys(ready).length }; } };
+})();
+</script>
+<script>
+/* page parts that work with or without WebGL: reveal on view, numbers counting up, the progress line, the tab icon */
+(function () {
+  var D = document, W = window, reduce = W.matchMedia && W.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  try { var l = D.createElement("link"); l.rel = "icon"; l.href = MERIDIAN.emblem; D.head.appendChild(l); } catch (e) {}
+  function count(el) { var to = +el.getAttribute("data-count"), t0 = performance.now(), dur = 1200;
+    if (reduce || !to) { el.textContent = to; return; }
+    (function f(t) { var k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(to * e); if (k < 1) requestAnimationFrame(f); })(t0); }
+  var rv = D.querySelectorAll(".rv");
+  if ("IntersectionObserver" in W) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (!e.isIntersecting) return; var el = e.target; io.unobserve(el);
+      var i = Array.prototype.indexOf.call(rv, el); el.style.transitionDelay = (reduce ? 0 : Math.min(i % 6, 5) * 70) + "ms"; el.classList.add("in");
+      Array.prototype.forEach.call(el.querySelectorAll("[data-count]"), count); }); }, { threshold: .2 });
+    Array.prototype.forEach.call(rv, function (el) { io.observe(el); });
+  } else Array.prototype.forEach.call(rv, function (el) { el.classList.add("in"); });
+
+  /* the reading light: the headline first, then each line of text, once per card */
+  try { var mp = JSON.parse(localStorage.getItem("meridian-site2") || "{}"); if (mp.motion === "off") D.documentElement.classList.add("still-text"); } catch (e) {}
+  var cards = D.querySelectorAll(".card");
+  Array.prototype.forEach.call(cards, function (c) { var k = 0;
+    Array.prototype.forEach.call(c.querySelectorAll("h1, h2, p:not(.num):not(.try):not(.mail), .facts li, .road b, .road p, .help div"), function (el) {
+      if (el.querySelector("svg, a, .btn")) return; var n = (el.textContent || "").length;
+      el.classList.add("sw"); el.style.setProperty("--w", (k * .18).toFixed(2) + "s"); el.style.setProperty("--d", Math.min(2.4, .7 + n / 120).toFixed(2) + "s"); k++; }); });
+  if ("IntersectionObserver" in W) { var lio = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("lit"); lio.unobserve(e.target); } }); }, { threshold: .35 });
+    Array.prototype.forEach.call(cards, function (c) { lio.observe(c); }); }
+  var bar = D.getElementById("progress"), busy = false;
+  function prog() { busy = false; var h = D.documentElement.scrollHeight - W.innerHeight; bar.style.transform = "scaleX(" + (h > 0 ? Math.min(1, W.scrollY / h) : 0) + ")"; }
+  W.addEventListener("scroll", function () { if (!busy) { busy = true; requestAnimationFrame(prog); } }, { passive: true }); prog();
 })();
 </script>
 </body>
