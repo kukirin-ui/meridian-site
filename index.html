@@ -234,7 +234,7 @@ footer b { color: var(--ink); font-weight: 600; }
     <small>High up to 120 frames a second, Mid up to 90, Low up to 60: the same levels as the apps. Auto starts high and steps down if the device cannot hold it.</small>
     <small class="fps" id="fps"></small></div>
   <div><h3>Sound</h3><div class="seg" id="seg-sound" role="group" aria-label="Sound"><button type="button" data-v="off">Off</button><button type="button" data-v="on">On</button></div>
-    <small>A live score: each world has its own chords, the notes run faster when you scroll faster, and the sound opens up the deeper you go.</small></div>
+    <small>The Meridian score: young voices, sliced and echoed, a different loop for every world. Tap to play a voice, hold to lift it.</small></div>
 </section>
 
 <nav class="rail" id="rail" aria-label="Chapters"></nav>
@@ -789,140 +789,79 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
     gl.uniform3f(S.uCol, col[0], col[1], col[2]); gl.uniform1f(S.uDepth, us); gl.uniform1f(S.uBeat, beat); gl.uniform1f(S.uAdd, add ? 1 : 0); gl.drawArrays(gl.TRIANGLES, 0, 3); }
   function logoRect() { var wide = Wd > Ht, w = wide ? Math.min(Wd * .5, Ht * .52 * 1.5) : Math.min(Wd * .96, Ht * .5 * 1.5), h = w / 1.5, cx = Wd / 2, cy = Ht * (wide ? .67 : .66); return [cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2]; }
 
-  /* ------------------------------------------------------------ sound: a live score, mixed like a track
-     drums: a synthesized kick (pitch drop + click) on 1 and 3, on every beat while you move; hats on the off-beats;
-            a soft clap on 2 and 4 once the beat is running
-     bass:  a sub and a mid layer, syncopated on the chord root (audible on a phone speaker too)
-     pad:   three detuned saws per note through a breathing filter and a chorus, pumping with the kick (sidechain)
-     plucks: an arpeggio with a filter envelope, 8ths, 16ths when you scroll fast
-     mix:   ping-pong echo, a stereo hall with pre-delay, tape saturation, EQ, a limiter at the end
-     each world: its own progression; arriving: a riser into a bell on the next beat; tap: a note in key;
-     hold: the music rises with you; release: an impact and a chord. */
-  var AC = null, out = null, music = null, duck = null, verbF = null, drums = null, echo = null, hall = null, chorus = null, noiseB = null;
-  var t0 = 0, nextT = 0, step = 0, wNow = 0, energy = 0, four = false, riser = null;
-  var BPM = 100, SPB = 60 / BPM, S16 = SPB / 4;
-  var PROG = [
-    [[48, 55, 64, 71], [45, 52, 60, 67], [41, 48, 57, 64], [43, 50, 59, 65]],   /* Core: Cmaj7 Am7 Fmaj7 G7 */
-    [[50, 57, 66, 73], [47, 54, 62, 69], [43, 50, 59, 66], [45, 52, 61, 66]],   /* Chat: Dmaj7 Bm7 Gmaj7 A6 */
-    [[40, 47, 55, 62], [36, 43, 52, 59], [43, 50, 55, 62], [38, 45, 54, 62]],   /* Gaming: Em7 Cmaj7 G D */
-    [[42, 49, 57, 64], [38, 45, 54, 61], [45, 52, 61, 64], [40, 47, 56, 63]],   /* Parallel: F#m7 Dmaj7 A E */
-    [[43, 50, 59, 66], [40, 47, 55, 62], [36, 43, 52, 59], [38, 45, 54, 62]]];  /* NullCloud: Gmaj7 Em7 Cmaj7 D */
-  function hz(m) { return 440 * Math.pow(2, (m - 69) / 12); }
-  function beatClock() { return AC && AC.state === "running" ? Math.max(0, AC.currentTime - t0) : frameT; }
-  function chordNow() { return PROG[wNow][Math.floor(Math.max(0, step - 1) / 32) % 4]; }
-  function hallIR(sec) {   /* a stereo hall: decorrelated noise, exponential decay, highs fade faster than lows */
-    var n = Math.floor(AC.sampleRate * sec), b = AC.createBuffer(2, n, AC.sampleRate);
-    for (var ch = 0; ch < 2; ch++) { var d = b.getChannelData(ch), lp = 0;
-      for (var i = 0; i < n; i++) { var k = i / n, a = .08 + .6 * k; lp += (Math.random() * 2 - 1 - lp) * (1 - a); d[i] = lp * Math.pow(1 - k, 3.2) * (i < AC.sampleRate * .004 ? i / (AC.sampleRate * .004) : 1); } }
-    return b;
-  }
+  /* ------------------------------------------------------------ sound: the Meridian score
+     Seven loops cut from our own tracks (no kick, no bass): a young voice a fifth up sliced by a sixteenth gate,
+     stutter chops with octave-up and reversed slices, a slow choir an octave and a tenth up, a whisper an octave down,
+     all in a deep dark hall. Each world has its own loop; scrolling crossfades between them. The light follows the
+     chopped voices through a map made from the same audio. Tap: a young chop from this world. Hold: the voice freezes
+     into a rising choir. Release: it plays backwards into a burst. */
+  var AC = null, out = null, verbF = null, room = null, SCORE = null, BUF = {}, SRC = {}, GN = {}, ST = {}, LOADING = {}, taps = null, tapsRev = null;
+  var wNow = "intro", pulseEnv = 0, riser = null, SPB = .43;
+  var WN = ["core", "chat", "gaming", "parallel", "nullcloud"];
+  function beatClock() { return AC && AC.state === "running" ? AC.currentTime : frameT; }
+  function impulse(sec) { var n = Math.floor(AC.sampleRate * sec), b = AC.createBuffer(2, n, AC.sampleRate);
+    for (var c = 0; c < 2; c++) { var d = b.getChannelData(c), lp = 0; for (var i = 0; i < n; i++) { lp += (Math.random() * 2 - 1 - lp) * .45; d[i] = lp * Math.pow(1 - i / n, 3); } } return b; }
+  function fetchBuf(url, cb) { fetch(url).then(function (r) { return r.arrayBuffer(); }).then(function (a) { return AC.decodeAudioData(a); }).then(cb).catch(function () {}); }
+  function reverseOf(b) { var r = AC.createBuffer(b.numberOfChannels, b.length, b.sampleRate); for (var c = 0; c < b.numberOfChannels; c++) { var s = b.getChannelData(c), d = r.getChannelData(c), n = s.length; for (var i = 0; i < n; i++) d[i] = s[n - 1 - i]; } return r; }
   function sound(on) {
     try {
       if (on && !AC) {
-        AC = new (W.AudioContext || W.webkitAudioContext)({ latencyHint: "interactive" });
-        var lim = AC.createDynamicsCompressor(); lim.threshold.value = -4; lim.knee.value = 2; lim.ratio.value = 20; lim.attack.value = .002; lim.release.value = .12; lim.connect(AC.destination);
-        var sat = AC.createWaveShaper(), cv2 = new Float32Array(2048); for (var i = 0; i < 2048; i++) { var x = i / 1023.5 - 1; cv2[i] = Math.tanh(x * 1.6) / Math.tanh(1.6); } sat.curve = cv2; sat.oversample = "2x"; sat.connect(lim);
-        var hs = AC.createBiquadFilter(); hs.type = "highshelf"; hs.frequency.value = 9000; hs.gain.value = 2.5; hs.connect(sat);
-        var ls = AC.createBiquadFilter(); ls.type = "lowshelf"; ls.frequency.value = 95; ls.gain.value = 2; ls.connect(hs);
-        out = AC.createGain(); out.gain.value = 0; out.connect(ls);
-        /* music bus: sidechain duck, then the depth filter */
-        var lp = AC.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 900; lp.Q.value = .9; lp.connect(out); verbF = lp.frequency;
-        duck = AC.createGain(); duck.connect(lp); music = AC.createGain(); music.gain.value = .9; music.connect(duck);
-        drums = AC.createGain(); drums.gain.value = .9; drums.connect(out);
-        /* hall with 28 ms pre-delay */
-        hall = AC.createGain(); var pre = AC.createDelay(.1); pre.delayTime.value = .028; var conv = AC.createConvolver(); conv.buffer = hallIR(3.6); var hr = AC.createGain(); hr.gain.value = .42;
-        hall.connect(pre); pre.connect(conv); conv.connect(hr); hr.connect(out);
-        /* ping-pong echo, dotted eighth, darker each repeat */
-        echo = AC.createGain(); var dl = AC.createDelay(2), dr = AC.createDelay(2), f1 = AC.createGain(), f2 = AC.createGain(), dp = AC.createBiquadFilter(), pl = AC.createStereoPanner(), pr = AC.createStereoPanner(), er = AC.createGain();
-        dl.delayTime.value = dr.delayTime.value = SPB * .75; f1.gain.value = f2.gain.value = .4; dp.type = "lowpass"; dp.frequency.value = 2600; pl.pan.value = -.8; pr.pan.value = .8; er.gain.value = .5;
-        echo.connect(dl); dl.connect(pl); pl.connect(er); dl.connect(f1); f1.connect(dp); dp.connect(dr); dr.connect(pr); pr.connect(er); dr.connect(f2); f2.connect(dl); er.connect(duck); er.connect(hall);
-        /* chorus for the pad: two modulated delays, left and right */
-        chorus = AC.createGain(); [[-1, .63], [1, .81]].forEach(function (cfg) { var d = AC.createDelay(.05), lfo = AC.createOscillator(), lg = AC.createGain(), pn = AC.createStereoPanner();
-          d.delayTime.value = .014; lfo.frequency.value = cfg[1]; lg.gain.value = .0035; lfo.connect(lg); lg.connect(d.delayTime); lfo.start(); pn.pan.value = cfg[0] * .9; chorus.connect(d); d.connect(pn); pn.connect(music); });
-        chorus.connect(music);
-        var nb = AC.createBuffer(1, AC.sampleRate, AC.sampleRate), nd = nb.getChannelData(0); for (var k = 0; k < nd.length; k++) nd[k] = Math.random() * 2 - 1; noiseB = nb;
-        buildPad();
-        t0 = nextT = AC.currentTime + .08; step = 0;
+        AC = new (W.AudioContext || W.webkitAudioContext)({ latencyHint: "playback" });
+        var lim = AC.createDynamicsCompressor(); lim.threshold.value = -6; lim.knee.value = 3; lim.ratio.value = 12; lim.attack.value = .003; lim.release.value = .2; lim.connect(AC.destination);
+        var lp = AC.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 2400; lp.Q.value = .5; lp.connect(lim); verbF = lp.frequency;
+        out = AC.createGain(); out.gain.value = 0; out.connect(lp);
+        room = AC.createConvolver(); room.buffer = impulse(4); var rg = AC.createGain(); rg.gain.value = .45; room.connect(rg); rg.connect(out);
+        fetch("audio/score.json").then(function (r) { return r.json(); }).then(function (j) { SCORE = j; ensure(wNow); }).catch(function () {});
+        fetchBuf("audio/taps.ogg", function (b) { taps = b; tapsRev = reverseOf(b); });
       }
-      if (AC) { if (on && AC.state === "suspended") AC.resume(); out.gain.setTargetAtTime(on ? .62 : 0, AC.currentTime, .4); }
+      if (AC) { if (on && AC.state === "suspended") AC.resume(); out.gain.setTargetAtTime(on ? 1 : 0, AC.currentTime, .6); }
     } catch (e) {}
   }
-  var pad = [], padF = null;
-  function buildPad() {
-    var pf = AC.createBiquadFilter(); pf.type = "lowpass"; pf.frequency.value = 1100; pf.Q.value = .7; padF = pf.frequency;
-    var lfo = AC.createOscillator(), lg = AC.createGain(); lfo.frequency.value = .09; lg.gain.value = 420; lfo.connect(lg); lg.connect(pf.frequency); lfo.start();
-    var pg = AC.createGain(); pg.gain.value = .5; pf.connect(pg); pg.connect(chorus); var ps = AC.createGain(); ps.gain.value = .35; pg.connect(ps); ps.connect(hall);
-    for (var v = 0; v < 4; v++) { var g = AC.createGain(), pn = AC.createStereoPanner(); g.gain.value = .045; pn.pan.value = [-.5, .3, -.2, .55][v]; g.connect(pn); pn.connect(pf); var vo = [];
-      [-11, 0, 11].forEach(function (c) { var o = AC.createOscillator(); o.type = "sawtooth"; o.detune.value = c + (Math.random() - .5) * 4; o.frequency.value = hz(PROG[0][0][v]); o.connect(g); o.start(); vo.push(o); }); pad.push(vo); }
+  function ensure(name) {   /* load a world's loop once, start it silent, in time with nothing else: each world keeps its own clock */
+    if (!AC || !SCORE || BUF[name] || LOADING[name]) return; LOADING[name] = true;
+    fetchBuf("audio/" + name + ".ogg", function (b) { BUF[name] = b; LOADING[name] = false; });
   }
-  function env(g, at, a, peak, dec) { g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(peak, at + a); g.gain.setTargetAtTime(0, at + a, dec); }
-  function noise(at, len, type, f, q, vol, dest, pan) { var s = AC.createBufferSource(), fl = AC.createBiquadFilter(), g = AC.createGain(), pn = AC.createStereoPanner();
-    s.buffer = noiseB; s.playbackRate.value = .9 + Math.random() * .2; fl.type = type; fl.frequency.value = f; fl.Q.value = q || .7; pn.pan.value = pan || 0;
-    env(g, at, .001, vol, len / 3); s.connect(fl); fl.connect(g); g.connect(pn); pn.connect(dest || drums); s.start(at, Math.random() * .5, len + .2); return g; }
-  function kick(at, vol) { var o = AC.createOscillator(), g = AC.createGain(); o.type = "sine"; o.frequency.setValueAtTime(155, at); o.frequency.exponentialRampToValueAtTime(46, at + .11);
-    g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(vol, at + .003); g.gain.setTargetAtTime(0, at + .02, .16); o.connect(g); g.connect(drums); o.start(at); o.stop(at + .9);
-    noise(at, .012, "highpass", 2200, .5, vol * .25);
-    duck.gain.cancelScheduledValues(at); duck.gain.setValueAtTime(duck.gain.value, at); duck.gain.linearRampToValueAtTime(.38, at + .012); duck.gain.setTargetAtTime(1, at + .03, .11); }
-  function clap(at, vol) { for (var i = 0; i < 3; i++) noise(at + i * .011, i === 2 ? .16 : .02, "bandpass", 1300, 1.1, vol * (i === 2 ? 1 : .7)); var r = noise(at, .25, "bandpass", 1500, .8, vol * .4, hall); }
-  function bass(m, at, len, vol) { var o = AC.createOscillator(), o2 = AC.createOscillator(), f = AC.createBiquadFilter(), g = AC.createGain(), g2 = AC.createGain();
-    o.type = "sine"; o.frequency.value = hz(m - 24); o2.type = "sawtooth"; o2.frequency.value = hz(m - 12); f.type = "lowpass"; f.Q.value = 3;
-    f.frequency.setValueAtTime(900, at); f.frequency.setTargetAtTime(160, at + .01, .09); env(g, at, .006, vol, len / 2.5); g2.gain.value = .32;
-    o.connect(g); o2.connect(f); f.connect(g2); g2.connect(g); g.connect(music); o.start(at); o2.start(at); o.stop(at + len + .5); o2.stop(at + len + .5); }
-  function pluck(f, at, len, vol, pan, sendE) { var o = AC.createOscillator(), o2 = AC.createOscillator(), fl = AC.createBiquadFilter(), g = AC.createGain(), pn = AC.createStereoPanner();
-    o.type = "sawtooth"; o2.type = "square"; o.frequency.value = f; o2.frequency.value = f * 1.002; fl.type = "lowpass"; fl.Q.value = 4;
-    fl.frequency.setValueAtTime(Math.min(9000, f * 9), at); fl.frequency.setTargetAtTime(f * 1.4, at + .005, .07); env(g, at, .003, vol, len / 3); pn.pan.value = pan || 0;
-    o.connect(fl); o2.connect(fl); fl.connect(g); g.connect(pn); pn.connect(music); var hs = AC.createGain(); hs.gain.value = .3; pn.connect(hs); hs.connect(hall); if (sendE) pn.connect(echo);
-    o.start(at); o2.start(at); o.stop(at + len + .3); o2.stop(at + len + .3); }
-  function bell(f, at, vol, pan) { var c = AC.createOscillator(), m = AC.createOscillator(), mg = AC.createGain(), g = AC.createGain(), pn = AC.createStereoPanner();
-    c.frequency.value = f; m.frequency.value = f * 3.5; mg.gain.setValueAtTime(f * 2.2, at); mg.gain.setTargetAtTime(0, at, .5); m.connect(mg); mg.connect(c.frequency);
-    env(g, at, .002, vol, .9); pn.pan.value = pan || 0; c.connect(g); g.connect(pn); pn.connect(music); pn.connect(hall); pn.connect(echo); c.start(at); m.start(at); c.stop(at + 4); m.stop(at + 4); }
-  function schedule(s, at) {
-    var ch = PROG[wNow][Math.floor(s / 32) % 4], inBar = s % 16, beatN = s % 4 === 0;
-    if (s % 32 === 0) pad.forEach(function (vo, v) { vo.forEach(function (o) { o.frequency.setTargetAtTime(hz(ch[v]), at, .25); }); });
-    if (s % 16 === 0) four = energy > .22;
-    if (beatN && (four || inBar === 0 || inBar === 8)) kick(at, inBar === 0 ? .95 : .8);
-    if (four && (inBar === 4 || inBar === 12)) clap(at, .3);
-    if (s % 4 === 2) noise(at, .05, "highpass", 7500, .8, .1 + energy * .06, drums, .25);
-    else if (four && s % 2 === 1) noise(at, .025, "highpass", 9000, .8, .035, drums, -.25);
-    if ([0, 3, 6, 8, 11, 14].indexOf(inBar) >= 0) bass(ch[0] + (inBar === 14 ? 7 : 0), at, inBar % 8 === 0 ? .32 : .16, inBar % 8 === 0 ? .55 : .38);
-    var dense = energy > .45, play = dense || s % 2 === 0;
-    if (play) { var pat = [0, 1, 2, 3, 2, 1, 3, 2], k = (dense ? s : s / 2) % 8, oct = (Math.floor(s / 8) % 2) * 12;
-      pluck(hz(ch[pat[k]] + 12 + oct), at, dense ? .16 : .26, (dense ? .05 : .055) * (k === 0 ? 1.35 : 1) * (.75 + energy * .5), k % 2 ? .5 : -.5, true); }
+  function startLoop(name) {
+    if (SRC[name] || !BUF[name]) return; var s = AC.createBufferSource(), g = AC.createGain(); s.buffer = BUF[name]; s.loop = true; s.loopStart = 0; s.loopEnd = SCORE.worlds[name].dur;
+    g.gain.value = 0; s.connect(g); g.connect(out); var at = AC.currentTime + .03; s.start(at); SRC[name] = s; GN[name] = g; ST[name] = at;
   }
-  function ping(i, s) {   /* a tap: a note of the chord that is playing, in key, with echo */
-    if (!AC || pref.sound !== "on" || AC.state !== "running") return;
-    try { var ch = chordNow(), at = AC.currentTime + .005, m = ch[1 + Math.floor(Math.random() * 3)] + 24; pluck(hz(m), at, .5, .09 * (s || 1), (Math.random() - .5) * .6, true); bell(hz(m + 12), at, .025 * (s || 1), 0); } catch (e) {}
+  function stopLoop(name) { try { SRC[name].stop(AC.currentTime + .1); } catch (e) {} delete SRC[name]; delete GN[name]; }
+  function pulseAt(name) {   /* how hard the chopped voices hit right now in this world, 0..1 */
+    if (!SCORE || !SRC[name]) return 0; var w = SCORE.worlds[name], pos = (AC.currentTime - ST[name]) % w.dur; if (pos < 0) return 0;
+    var i = Math.floor(pos * 50); return (w.pulse.charCodeAt(Math.min(i, w.pulse.length - 1)) - 48) / 9;
   }
-  function arriveAt(i, at) {   /* a world arrives: a riser into a bell chord, landing on the beat */
-    if (!AC || pref.sound !== "on" || AC.state !== "running") return;
-    try { var st = Math.max(AC.currentTime + .01, at - 1.1), s = AC.createBufferSource(), bp = AC.createBiquadFilter(), g = AC.createGain();
-      s.buffer = noiseB; s.loop = true; bp.type = "bandpass"; bp.Q.value = 2.5; bp.frequency.setValueAtTime(300, st); bp.frequency.exponentialRampToValueAtTime(5200, at);
-      g.gain.setValueAtTime(0, st); g.gain.linearRampToValueAtTime(.07, at - .02); g.gain.linearRampToValueAtTime(0, at + .03); s.connect(bp); bp.connect(g); g.connect(hall); g.connect(out); s.start(st); s.stop(at + .1);
-      var ch = PROG[i][0]; [ch[1], ch[2], ch[3]].forEach(function (m, j) { bell(hz(m + 24), at + j * .045, .06 - j * .012, (j - 1) * .5); });
-      noise(at, 1.6, "highpass", 5000, .5, .06, hall); } catch (e) {}
+  function oneShot(buf, at, off, len, vol, pan, rate) { var s = AC.createBufferSource(), g = AC.createGain(), p = AC.createStereoPanner(); s.buffer = buf; s.playbackRate.value = rate || 1; p.pan.value = pan || 0;
+    g.gain.value = vol; s.connect(g); g.connect(p); p.connect(out); var r = AC.createGain(); r.gain.value = .5; p.connect(r); r.connect(room); s.start(at, off, len); return { s: s, g: g }; }
+  function slot(name) { var k = SCORE ? SCORE.order.indexOf(name) : 0; return Math.max(0, k) * 6 + Math.floor(Math.random() * 6); }
+  function ping(i, s) {   /* tap: one young chop from this world, in its key */
+    if (!AC || !taps || pref.sound !== "on" || AC.state !== "running") return;
+    try { oneShot(taps, AC.currentTime + .005, slot(wNow), 1, .55 * (s || 1), (Math.random() - .5) * .7, 1); } catch (e) {}
   }
-  function holdSound(on, x) {   /* hold: noise and the pad open up and rise; release: impact + chord stab */
-    if (!AC || pref.sound !== "on" || AC.state !== "running") return;
+  function arriveAt(i) {   /* a world arrives: one of its chops backwards, a swell into it */
+    if (!AC || !tapsRev || pref.sound !== "on" || AC.state !== "running") return;
+    try { var k = SCORE.order.indexOf(WN[i]) * 6 + 2, total = tapsRev.duration; oneShot(tapsRev, AC.currentTime + .01, total - (k + 1), 1, .4, 0, 1); } catch (e) {}
+  }
+  function holdSound(on, x) {   /* hold: freeze the voice into a rising choir; release: backwards into a burst */
+    if (!AC || !taps || pref.sound !== "on" || AC.state !== "running") return;
     try {
       var at = AC.currentTime + .005;
-      if (on) { if (riser) return; var s = AC.createBufferSource(), bp = AC.createBiquadFilter(), g = AC.createGain(); s.buffer = noiseB; s.loop = true; bp.type = "bandpass"; bp.Q.value = 3;
-        bp.frequency.setValueAtTime(250, at); bp.frequency.exponentialRampToValueAtTime(4800, at + 2.6); g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(.08, at + 2.6);
-        s.connect(bp); bp.connect(g); g.connect(hall); g.connect(out); s.start(at); riser = { s: s, g: g }; padF.setTargetAtTime(3200, at, .9); return; }
-      if (riser) { riser.g.gain.cancelScheduledValues(at); riser.g.gain.setTargetAtTime(0, at, .05); riser.s.stop(at + .4); riser = null; }
-      padF.setTargetAtTime(1100, at + .1, .6);
-      if (x > .25) { kick(at, 1); noise(at, 2.2, "highpass", 3500, .4, .12 * x, hall); noise(at, .35, "lowpass", 900, .6, .25 * x);
-        chordNow().forEach(function (m, j) { pluck(hz(m + 12), at + j * .008, .9, .045 * x, (j - 1.5) * .35, j === 3); }); bell(hz(chordNow()[3] + 24), at, .05 * x, 0); }
+      if (on) { if (riser) return; var k = slot(wNow), a = oneShot(taps, at, k, 30, 0, -.3, 1), b2 = oneShot(taps, at + .07, k, 30, 0, .3, 2);
+        [a, b2].forEach(function (v, j) { v.s.loop = true; v.s.loopStart = k + .05; v.s.loopEnd = k + .3; v.g.gain.setTargetAtTime(j ? .22 : .35, at, .8); v.s.playbackRate.setTargetAtTime(j ? 2.38 : 1.19, at + .3, 1.6); });
+        riser = [a, b2]; verbF.setTargetAtTime(9000, at, 1.2); return; }
+      if (riser) { riser.forEach(function (v) { v.g.gain.cancelScheduledValues(at); v.g.gain.setTargetAtTime(0, at, .04); try { v.s.stop(at + .3); } catch (e) {} }); riser = null; }
+      if (x > .25 && tapsRev) { var k2 = slot(wNow), tot = tapsRev.duration; oneShot(tapsRev, at, tot - (k2 + 1), 1, .5 * x, 0, 1); oneShot(taps, at + .55, k2, 1, .7 * x, 0, 1); oneShot(taps, at + .55, k2, 1, .35 * x, .5, 2); }
     } catch (e) {}
   }
   function mixSound(wts) {
-    if (!AC || pref.sound !== "on" || AC.state !== "running") return;
+    if (!AC || pref.sound !== "on" || AC.state !== "running" || !SCORE) return;
     var best = 0; for (var k = 1; k < 5; k++) if ((wts[k] || 0) > (wts[best] || 0)) best = k;
-    wNow = (wts[best] || 0) > .2 ? best : (curApp >= 0 ? curApp : wNow);
-    energy += (Math.min(1, vel / 1.4) - energy) * .06;
+    var name = (wts[best] || 0) > .35 ? WN[best] : (curApp >= 0 ? WN[curApp] : (us < 2 ? "intro" : "finale"));
+    wNow = name; ensure(name);
+    var i = SCORE.order.indexOf(name); if (i > 0) ensure(SCORE.order[i - 1]); if (i < SCORE.order.length - 1) ensure(SCORE.order[i + 1]);
+    if (BUF[name] && !SRC[name]) startLoop(name);
+    for (var n in SRC) { var on = n === name; GN[n].gain.setTargetAtTime(on ? 1 : 0, AC.currentTime, on ? .9 : 1.2); if (!on && GN[n].gain.value < .01 && AC.currentTime - ST[n] > 4) stopLoop(n); }
     var depth = Math.max(0, Math.min(1, W.scrollY / Math.max(1, D.documentElement.scrollHeight - W.innerHeight)));
-    verbF.setTargetAtTime(900 * Math.pow(9000 / 900, depth) * (1 + energy * .8), AC.currentTime, .3);
-    if (nextT < AC.currentTime - .5) { var miss = Math.ceil((AC.currentTime - nextT) / S16); step += miss; nextT += miss * S16; }   /* back from a hidden tab: skip, don't burst */
-    while (nextT < AC.currentTime + .12) { schedule(step, nextT); step++; nextT += S16; }
+    if (!riser) verbF.setTargetAtTime(1600 * Math.pow(14000 / 1600, Math.min(1, depth * 1.4)) * (1 + Math.min(1, vel) * .5), AC.currentTime, .4);
   }
 
   /* ------------------------------------------------------------ the frame */
@@ -1042,10 +981,10 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
     mixSound(wts);
     var wc = curApp >= 0 ? WCOL[curApp] : (u < 2 ? WCOL[1] : WCOL[0]);
     for (var ci = 0; ci < 3; ci++) col[ci] += (wc[ci] - col[ci]) * Math.min(1, dt * 1.6);
-    /* the kick: on 1 and 3, on every beat while the music runs four-on-the-floor; the light follows it */
-    var bc = beatClock() / SPB, bi = Math.floor(bc), isK = four || bi % 2 === 0;
-    beat = live() && isK ? Math.exp(-(bc - bi) * SPB * 9) : 0;
-    if (curApp >= 0 && curApp !== prevApp && prevApp !== -2) { var nb2 = Math.ceil(bc + .15); pendArr = curApp; pendAt = nb2 * SPB; if (AC && AC.state === "running" && pref.sound === "on") arriveAt(curApp, t0 + pendAt); }
+    /* the light follows the chopped voices of the world that is playing; with sound off, a slow breath */
+    var pv = AC && AC.state === "running" && pref.sound === "on" ? pulseAt(wNow) : (Math.sin(frameT * 2.2) > .96 ? .5 : 0);
+    pulseEnv = Math.max(pulseEnv * Math.exp(-dt * 7), pv); beat = live() ? pulseEnv : 0;
+    if (curApp >= 0 && curApp !== prevApp && prevApp !== -2) { pendArr = curApp; pendAt = beatClock() + .5; arriveAt(curApp); }
     if (curApp >= 0 || prevApp === -2) prevApp = curApp;
     if (pendArr >= 0 && beatClock() >= pendAt) { flashA = reduce ? 0 : .6; flashC = WCOL[pendArr]; shock = [0, reduce ? 0 : 1.1, .5, .5]; pendArr = -1; }
     flashA *= Math.exp(-dt * 2.4); shock[0] += dt * 1.1; shock[1] *= Math.exp(-dt * 1.7);
