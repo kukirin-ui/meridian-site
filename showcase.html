@@ -158,6 +158,9 @@ html:not(.mfx-gl) .nogl.show { display: grid; }
     rings = rings.filter(function (r) { r.r += r.v * dt; r.a *= Math.exp(-dt * 2.4); if (r.a < .02) return false;
       cx.strokeStyle = col; cx.globalAlpha = r.a; cx.lineWidth = r.w; cx.shadowColor = col; cx.shadowBlur = 24; cx.beginPath(); cx.arc(r.x, r.y, r.r, 0, 7); cx.stroke(); return true; });
     cx.restore(); })(last);
+  /* the theme starts with the page where the browser allows it; otherwise with the first touch */
+  if (prefs().showSound !== "off") setTimeout(function () { try { snd(true); } catch (e) {} }, 0);
+  ["touchend", "pointerup", "click", "keydown"].forEach(function (ev) { W.addEventListener(ev, function () { if (prefs().showSound !== "off") { if (!AC) snd(true); else if (AC.state !== "running") { AC.resume(); outG.gain.setTargetAtTime(1, AC.currentTime, .6); } } }, { passive: true }); });
   W.addEventListener("pageshow", function () { D.getElementById("veil").classList.add("off"); leaving = false; });
 })();
 </script>

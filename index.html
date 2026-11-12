@@ -165,6 +165,11 @@ footer nav a:hover { color: var(--ink); }
 
 .sec .card { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
 .sec .card .links, .sec .card .mail { -webkit-user-select: text; user-select: text; }
+.sndhint { position: fixed; z-index: 6; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translateX(-50%); padding: 8px 14px; border-radius: 999px;
+  font: 600 12px/1 var(--display); letter-spacing: .24em; text-transform: uppercase; color: var(--ink); background: rgba(10, 8, 26, .55); border: 1px solid var(--line);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); pointer-events: none; transition: opacity .8s ease; animation: hintpulse 2.6s ease-in-out infinite; }
+.sndhint.off { opacity: 0; animation: none; }
+@keyframes hintpulse { 50% { opacity: .55; } }
 .toplinks { display: flex; gap: 14px; margin-left: auto; }
 .toplinks a { font: 600 12px/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--ink); text-decoration: none; opacity: .85; padding: 8px 2px; }
 .toplinks a:hover { opacity: 1; color: var(--cyan); }
@@ -341,6 +346,7 @@ footer b { color: var(--ink); font-weight: 600; }
 </main>
 <footer><nav aria-label="Footer"><a href="#top">Back to the top</a><a href="#s-about">About</a><a href="#s-maker">Contact</a><a href="showcase.html">Showcase</a><a href="docs.html">Docs</a></nav><b>Meridian Family</b> · © 2026 Alen Požun · Built on a phone</footer>
 <div class="progress" id="progress" aria-hidden="true"></div>
+<div class="sndhint" id="sndhint" aria-hidden="true">♪ touch for sound</div>
 <p class="loading" id="loading" role="status">Loading the worlds…</p>
 
 <script>
@@ -359,8 +365,8 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
   /* ------------------------------------------------------------ preferences (this viewer only) */
   /* the full show by default: Motion On, Level High, Sound On (the browser lets sound start only at the first tap) */
   var pref = { motion: "on", level: "high", sound: "on" };
-  try { var sp = JSON.parse(localStorage.getItem("meridian-site2") || "{}"); ["motion", "level", "sound"].forEach(function (k) { if (sp[k]) pref[k] = sp[k]; }); } catch (e) {}
-  function savePref() { try { localStorage.setItem("meridian-site2", JSON.stringify({ motion: pref.motion, level: pref.level, sound: pref.sound })); } catch (e) {} }
+  try { var sp = JSON.parse(localStorage.getItem("meridian-site3") || "{}"); ["motion", "level", "sound"].forEach(function (k) { if (sp[k]) pref[k] = sp[k]; }); } catch (e) {}
+  function savePref() { try { localStorage.setItem("meridian-site3", JSON.stringify({ motion: pref.motion, level: pref.level, sound: pref.sound })); } catch (e) {} }
   var reduce = W.matchMedia && W.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ------------------------------------------------------------ chapters */
@@ -629,8 +635,13 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
     ptr[0] = e.clientX * dpr; ptr[1] = (W.innerHeight - e.clientY) * dpr; ptrAt = now();
     if (!gyroLive && e.pointerType === "mouse") { tiltT[0] = (e.clientX / W.innerWidth - .5) * 1.6; tiltT[1] = (e.clientY / W.innerHeight - .5) * -1.2; }
   }, { passive: true });
-  function firstGesture() { if (pref.sound === "on" && !AC) sound(true); }
+  /* the theme starts with the page where the browser allows it; otherwise with the first touch anywhere */
+  function firstGesture() { if (pref.sound !== "on") return; if (!AC) sound(true); else if (AC.state !== "running") { AC.resume(); out.gain.setTargetAtTime(1, AC.currentTime, .6); } }
   W.addEventListener("keydown", firstGesture);
+  ["touchend", "pointerup", "click"].forEach(function (ev) { W.addEventListener(ev, firstGesture, { passive: true }); });
+  if (pref.sound === "on") setTimeout(function () { try { sound(true); } catch (e) {} }, 0);   /* after the whole script ran, so the sound engine exists */
+  var sndHint = D.getElementById("sndhint");
+  setInterval(function () { var playing = AC && AC.state === "running" && pref.sound === "on"; if (sndHint) sndHint.classList.toggle("off", !!playing || pref.sound !== "on"); }, 400);
   W.addEventListener("pointerdown", function (e) {
     firstGesture();
     if (e.button > 0) return;
@@ -1042,7 +1053,7 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
   } else Array.prototype.forEach.call(rv, function (el) { el.classList.add("in"); });
 
   /* the reading light: the headline first, then each line of text, once per card */
-  try { var mp = JSON.parse(localStorage.getItem("meridian-site2") || "{}"); if (mp.motion === "off") D.documentElement.classList.add("still-text"); } catch (e) {}
+  try { var mp = JSON.parse(localStorage.getItem("meridian-site3") || "{}"); if (mp.motion === "off") D.documentElement.classList.add("still-text"); } catch (e) {}
   var cards = D.querySelectorAll(".card");
   Array.prototype.forEach.call(cards, function (c) { var k = 0;
     Array.prototype.forEach.call(c.querySelectorAll("h1, h2, p:not(.num):not(.try):not(.mail), .facts li, .road b, .road p, .help div"), function (el) {
