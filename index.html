@@ -163,6 +163,8 @@ footer nav a:hover { color: var(--ink); }
 @media (max-width: 520px) { .stats { grid-template-columns: repeat(2, 1fr); } .help { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } .cta .open::before { animation: none; } }
 
+.sec .card { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.sec .card .links, .sec .card .mail { -webkit-user-select: text; user-select: text; }
 .toplinks { display: flex; gap: 14px; margin-left: auto; }
 .toplinks a { font: 600 12px/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--ink); text-decoration: none; opacity: .85; padding: 8px 2px; }
 .toplinks a:hover { opacity: 1; color: var(--cyan); }
@@ -234,7 +236,7 @@ footer b { color: var(--ink); font-weight: 600; }
     <small>High up to 120 frames a second, Mid up to 90, Low up to 60: the same levels as the apps. Auto starts high and steps down if the device cannot hold it.</small>
     <small class="fps" id="fps"></small></div>
   <div><h3>Sound</h3><div class="seg" id="seg-sound" role="group" aria-label="Sound"><button type="button" data-v="off">Off</button><button type="button" data-v="on">On</button></div>
-    <small>The Meridian score: young voices, sliced and echoed, a different loop for every world. Tap to play a voice, hold to lift it.</small></div>
+    <small>The Meridian theme. Tap to play a voice, hold to lift it.</small></div>
 </section>
 
 <nav class="rail" id="rail" aria-label="Chapters"></nav>
@@ -632,23 +634,27 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
   W.addEventListener("pointerdown", function (e) {
     firstGesture();
     if (e.button > 0) return;
-    if (e.target.closest("button, a, .card, .panel-set, .bar")) return;
+    if (e.target.closest("button, a, input, select, .panel-set, .bar")) return;
+    holding = true; holdT0 = now(); holdX0 = e.clientX; holdY0 = e.clientY; holdP = [e.clientX / W.innerWidth, 1 - e.clientY / W.innerHeight];
+    if (e.target.closest(".card")) return;   /* on a card: hold works, the tap sound and the disc jump do not */
     ptr[0] = e.clientX * dpr; ptr[1] = (W.innerHeight - e.clientY) * dpr; ptrAt = now();
     tap = [ptr[0], ptr[1], 0, 1]; tapAt = now();
-    holding = true; holdT0 = now(); holdP = [e.clientX / W.innerWidth, 1 - e.clientY / W.innerHeight]; shock = [0, reduce ? 0 : .45, holdP[0], holdP[1]];
+    shock = [0, reduce ? 0 : .45, holdP[0], holdP[1]];
     var hit = hitDisc(ptr[0], ptr[1]); if (hit >= 0) { goU(2 + hit * 2 + .55); ping(hit, 1.6); return; }
     ping(curApp, 1); if (curApp === 2) breakAt = now();
     if (pref.motion === "on") askGyro();
   });
   var tapAt = -9, breakAt = -9, holdSnd = false;
-  W.addEventListener("pointermove", function (e) { if (holding) holdP = [e.clientX / W.innerWidth, 1 - e.clientY / W.innerHeight]; }, { passive: true });
+  var holdX0 = 0, holdY0 = 0;
+  W.addEventListener("pointermove", function (e) { if (!holding) return; holdP = [e.clientX / W.innerWidth, 1 - e.clientY / W.innerHeight];
+    if (now() - holdT0 < .3 && Math.abs(e.clientY - holdY0) > 18) { release(false); holdA = 0; } }, { passive: true });
   function release(burst) { if (!holding) return; holding = false;
     if (burst && holdA > .25) { shock = [0, reduce ? 0 : 1.5 * holdA + .3, holdP[0], holdP[1]]; flashA = reduce ? 0 : .35 + .4 * holdA; flashC = col.slice(); }
     if (holdSnd) { holdSound(false, burst ? holdA : 0); holdSnd = false; } }
   W.addEventListener("pointerup", function () { release(true); });
   D.addEventListener("contextmenu", function (e) { if (!e.target.closest(".card, a, button, .panel-set")) e.preventDefault(); });
-  W.addEventListener("pointercancel", function () { release(false); holdA = 0; });
-  W.addEventListener("scroll", function () { if (holding && now() - holdT0 < .25) { release(false); holdA = 0; } }, { passive: true });
+  W.addEventListener("pointercancel", function () { if (holding && now() - holdT0 > .4) release(true); else { release(false); holdA = 0; } });
+  W.addEventListener("scroll", function () { if (holding && now() - holdT0 < .3) { release(false); holdA = 0; } }, { passive: true });
   setInterval(function () { if (holding && !holdSnd && now() - holdT0 > .25) { holdSnd = true; holdSound(true); } }, 60);
   function askGyro() {
     if (gyroAsked) return; gyroAsked = true;
@@ -796,7 +802,7 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
      chopped voices through a map made from the same audio. Tap: a young chop from this world. Hold: the voice freezes
      into a rising choir. Release: it plays backwards into a burst. */
   var AC = null, out = null, verbF = null, room = null, SCORE = null, BUF = {}, SRC = {}, GN = {}, ST = {}, LOADING = {}, taps = null, tapsRev = null;
-  var wNow = "intro", pulseEnv = 0, riser = null, SPB = .43;
+  var wNow = "theme", pulseEnv = 0, riser = null, SPB = .43;
   var WN = ["core", "chat", "gaming", "parallel", "nullcloud"];
   function beatClock() { return AC && AC.state === "running" ? AC.currentTime : frameT; }
   function impulse(sec) { var n = Math.floor(AC.sampleRate * sec), b = AC.createBuffer(2, n, AC.sampleRate);
@@ -839,7 +845,7 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
   }
   function arriveAt(i) {   /* a world arrives: one of its chops backwards, a swell into it */
     if (!AC || !tapsRev || pref.sound !== "on" || AC.state !== "running") return;
-    try { var k = SCORE.order.indexOf(WN[i]) * 6 + 2, total = tapsRev.duration; oneShot(tapsRev, AC.currentTime + .01, total - (k + 1), 1, .4, 0, 1); } catch (e) {}
+    try { var k = 2, total = tapsRev.duration; oneShot(tapsRev, AC.currentTime + .01, total - (k + 1), 1, .3, 0, 1); } catch (e) {}
   }
   function holdSound(on, x) {   /* hold: freeze the voice into a rising choir; release: backwards into a burst */
     if (!AC || !taps || pref.sound !== "on" || AC.state !== "running") return;
@@ -855,7 +861,7 @@ window.MERIDIAN = {"emblem":"data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQ
   function mixSound(wts) {
     if (!AC || pref.sound !== "on" || AC.state !== "running" || !SCORE) return;
     var best = 0; for (var k = 1; k < 5; k++) if ((wts[k] || 0) > (wts[best] || 0)) best = k;
-    var name = (wts[best] || 0) > .35 ? WN[best] : (curApp >= 0 ? WN[curApp] : (us < 2 ? "intro" : "finale"));
+    var name = "theme";   /* one theme for the whole page */
     wNow = name; ensure(name);
     var i = SCORE.order.indexOf(name); if (i > 0) ensure(SCORE.order[i - 1]); if (i < SCORE.order.length - 1) ensure(SCORE.order[i + 1]);
     if (BUF[name] && !SRC[name]) startLoop(name);

@@ -98,7 +98,7 @@ html:not(.mfx-gl) .nogl.show { display: grid; }
 
   /* going to another world: fade to the void, then load it (each world is the app's own engine and picture) */
   var leaving = false;
-  function go(k) { if (leaving) return; k = (k + A.length) % A.length; if (k === i) return; leaving = true; snd(false, true);
+  function go(k) { if (leaving) return; k = (k + A.length) % A.length; if (k === i) return; leaving = true; if (AC) snd(false, true);
     D.getElementById("veil").classList.remove("off"); setTimeout(function () { location.replace("?app=" + A[k]); }, reduce ? 0 : 420); }
   D.getElementById("prev").onclick = function () { go(i - 1); }; D.getElementById("next").onclick = function () { go(i + 1); };
   W.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") go(i + 1); else if (e.key === "ArrowLeft") go(i - 1); else if (e.key === "Escape") location.href = "index.html"; });
@@ -107,40 +107,34 @@ html:not(.mfx-gl) .nogl.show { display: grid; }
   function prefs() { try { return JSON.parse(localStorage.getItem("m-prefs") || "{}") || {}; } catch (e) { return {}; } }
   function setPref(k, v) { var p = prefs(); p[k] = v; try { localStorage.setItem("m-prefs", JSON.stringify(p)); } catch (e) {} paint(); }
   var bM = D.getElementById("b-motion"), bS = D.getElementById("b-sound");
-  function paint() { var p = prefs(); bM.setAttribute("aria-pressed", p.motion === "off" ? "false" : "true"); bS.setAttribute("aria-pressed", p.showSound === "on" ? "true" : "false"); }
+  function paint() { var p = prefs(); bM.setAttribute("aria-pressed", p.motion === "off" ? "false" : "true"); bS.setAttribute("aria-pressed", p.showSound === "off" ? "false" : "true"); }
   paint();
   bM.onclick = function () { setPref("motion", prefs().motion === "off" ? "on" : "off"); try { W.dispatchEvent(new StorageEvent("storage", { key: "m-prefs" })); } catch (e) {} if (W.MfxGL && W.MfxGL.schedule) W.MfxGL.schedule(); };
-  bS.onclick = function () { var on = prefs().showSound !== "on"; setPref("showSound", on ? "on" : "off"); snd(on); };
+  bS.onclick = function () { var on = prefs().showSound === "off"; setPref("showSound", on ? "on" : "off"); snd(on); };
 
-  /* sound: a slow pad in the world's own chord, a heartbeat kick, a hall; a tap plays a note in key */
-  var CH = { core: [48, 55, 64, 71], chat: [50, 57, 66, 73], gaming: [40, 47, 55, 62], parallel: [42, 49, 57, 64], nullcloud: [43, 50, 59, 66] }, AC = null, outG = null, hallG = null, beatT = null;
-  function hz(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+  /* sound: the Meridian theme, looping; a tap plays one young voice from it */
+  var AC = null, outG = null, theme = null, taps = null, src = null;
+  function load(u, cb) { fetch(u).then(function (r) { return r.arrayBuffer(); }).then(function (b) { return AC.decodeAudioData(b); }).then(cb).catch(function () {}); }
   function snd(on, fast) {
     try {
-      if (on && !AC) {
-        AC = new (W.AudioContext || W.webkitAudioContext)(); var lim = AC.createDynamicsCompressor(); lim.threshold.value = -6; lim.ratio.value = 12; lim.connect(AC.destination);
-        outG = AC.createGain(); outG.gain.value = 0; outG.connect(lim);
-        var n = AC.sampleRate * 3, ir = AC.createBuffer(2, n, AC.sampleRate); for (var c = 0; c < 2; c++) { var d = ir.getChannelData(c), lp = 0; for (var k = 0; k < n; k++) { lp += (Math.random() * 2 - 1 - lp) * .5; d[k] = lp * Math.pow(1 - k / n, 3); } }
-        var cv = AC.createConvolver(); cv.buffer = ir; hallG = AC.createGain(); var hr = AC.createGain(); hr.gain.value = .5; hallG.connect(cv); cv.connect(hr); hr.connect(outG);
-        var f = AC.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = 1000; var lfo = AC.createOscillator(), lg = AC.createGain(); lfo.frequency.value = .07; lg.gain.value = 500; lfo.connect(lg); lg.connect(f.frequency); lfo.start();
-        f.connect(outG); f.connect(hallG);
-        CH[app].forEach(function (m, v) { [-10, 0, 10].forEach(function (ct) { var o = AC.createOscillator(), g = AC.createGain(), pn = AC.createStereoPanner(); o.type = "sawtooth"; o.frequency.value = hz(m); o.detune.value = ct; g.gain.value = .022; pn.pan.value = (v - 1.5) * .35; o.connect(g); g.connect(pn); pn.connect(f); o.start(); }); });
-        var spb = .6, next = AC.currentTime + .1;
-        beatT = setInterval(function () { while (next < AC.currentTime + .2) { var o = AC.createOscillator(), g = AC.createGain(); o.frequency.setValueAtTime(140, next); o.frequency.exponentialRampToValueAtTime(45, next + .1);
-          g.gain.setValueAtTime(0, next); g.gain.linearRampToValueAtTime(.5, next + .004); g.gain.setTargetAtTime(0, next + .02, .14); o.connect(g); g.connect(outG); o.start(next); o.stop(next + .8); next += spb * 2; } }, 80);
-      }
-      if (AC) { if (on && AC.state === "suspended") AC.resume(); outG.gain.setTargetAtTime(on ? .55 : 0, AC.currentTime, fast ? .08 : .6); }
+      if (on && !AC) { AC = new (W.AudioContext || W.webkitAudioContext)(); outG = AC.createGain(); outG.gain.value = 0; outG.connect(AC.destination);
+        load("audio/theme.ogg", function (b) { theme = b; src = AC.createBufferSource(); src.buffer = b; src.loop = true; src.connect(outG); src.start(); });
+        load("audio/taps.ogg", function (b) { taps = b; }); }
+      if (AC) { if (on && AC.state === "suspended") AC.resume(); outG.gain.setTargetAtTime(on ? 1 : 0, AC.currentTime, fast ? .08 : .8); }
     } catch (e) {}
   }
-  function note(strong) { if (!AC || prefs().showSound !== "on") return; try { var at = AC.currentTime + .005, m = CH[app][1 + Math.floor(Math.random() * 3)] + (strong ? 12 : 24), o = AC.createOscillator(), g = AC.createGain();
-    o.type = "triangle"; o.frequency.value = hz(m); g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(strong ? .2 : .1, at + .004); g.gain.setTargetAtTime(0, at + .01, strong ? .5 : .25); o.connect(g); g.connect(outG); g.connect(hallG); o.start(at); o.stop(at + 2.5); } catch (e) {} }
-
+  function note(strong) { if (!AC || !taps || prefs().showSound === "off") return; try { var s = AC.createBufferSource(), g = AC.createGain(); s.buffer = taps; g.gain.value = strong ? .8 : .5; s.connect(g); g.connect(outG); s.start(AC.currentTime + .005, Math.floor(Math.random() * 6), 1); } catch (e) {} }
+  var gyroAsked = false;
+  function askGyro() { if (gyroAsked) return; gyroAsked = true;
+    var p = prefs(); if (p.motion !== "off" && p.motion !== "on") setPref("motion", "on");
+    try { if (W.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === "function") DeviceOrientationEvent.requestPermission().then(function () { if (W.MfxMotion) MfxMotion.refresh(); }).catch(function () {}); } catch (e) {}
+    if (W.MfxMotion) MfxMotion.refresh(); if (W.MfxGL && W.MfxGL.schedule) W.MfxGL.schedule(); }
   /* touch: tap shows the controls, swipe changes the world, hold charges a ring of light, release bursts */
   var fx = D.getElementById("fx"), cx = fx.getContext("2d"), dpr = Math.min(2, W.devicePixelRatio || 1), col = INFO[app][1];
   function size() { fx.width = W.innerWidth * dpr; fx.height = W.innerHeight * dpr; } size(); W.addEventListener("resize", size);
   var down = null, holdA = 0, rings = [], ctlT = null;
   function showCtl() { D.body.classList.add("ctl"); clearTimeout(ctlT); ctlT = setTimeout(function () { D.body.classList.remove("ctl"); }, 3500); D.getElementById("name").classList.remove("hide"); clearTimeout(nameT); nameT = setTimeout(function () { D.getElementById("name").classList.add("hide"); }, 3500); }
-  W.addEventListener("pointerdown", function (e) { if (e.target.closest("a, button")) return; if (prefs().showSound === "on" && !AC) snd(true);
+  W.addEventListener("pointerdown", function (e) { askGyro(); if (e.target.closest("a, button")) return; if (prefs().showSound !== "off" && !AC) snd(true);
     down = { x: e.clientX, y: e.clientY, t: performance.now(), moved: false }; }, { passive: true });
   W.addEventListener("pointermove", function (e) { if (!down) return; down.cx = e.clientX; down.cy = e.clientY; if (Math.abs(e.clientX - down.x) > 12 || Math.abs(e.clientY - down.y) > 12) down.moved = true; }, { passive: true });
   W.addEventListener("pointerup", function (e) { if (!down) return; var dx = e.clientX - down.x, dy = e.clientY - down.y, dt = performance.now() - down.t, held = holdA;
