@@ -262,13 +262,13 @@ footer b { color: var(--ink); font-weight: 600; }
 
 <section class="panel-set" id="settings" hidden aria-label="Options">
   <div><h3>Motion</h3><div class="seg" id="seg-motion" role="group" aria-label="Motion"><button type="button" data-v="off">Off</button><button type="button" data-v="system">System</button><button type="button" data-v="on">On</button></div>
-    <small>Off: the pictures stand still. System: they live, no gyroscope. On: the gyroscope in every direction, twist included (phones; on a computer the pointer tilts the scene).</small>
+    <small>Off still. System lives. On follows the phone.</small>
     <small class="fps" id="gyro-st"></small></div>
   <div><h3>Level</h3><div class="seg" id="seg-level" role="group" aria-label="Level"><button type="button" data-v="auto">Auto</button><button type="button" data-v="high">High</button><button type="button" data-v="mid">Mid</button><button type="button" data-v="low">Low</button></div>
-    <small>High up to 120 frames a second, Mid up to 90, Low up to 60: the same levels as the apps. Auto starts high and steps down if the device cannot hold it.</small>
+    <small>High 120 · Mid 90 · Low 60. Auto steps down.</small>
     <small class="fps" id="fps"></small></div>
   <div><h3>Colour</h3><div class="swatches" id="sw-color" role="group" aria-label="Colour"></div>
-    <small>Meridian blue-purple first, then the apps' colours. The pictures keep their own colours; the light, the particles and the page follow this one.</small></div>
+    <small>Blue-purple first. Colours the theme and the pictures.</small></div>
 </section>
 
 <nav class="rail" id="rail" aria-label="Chapters"></nav>
@@ -278,7 +278,7 @@ footer b { color: var(--ink); font-weight: 600; }
     <p class="eyebrow">Meridian Family · five Android apps</p>
     <h1>Five apps.<br>One living phone.</h1>
     <p>Meridian turns an Android phone into an AI workstation: models on the phone, Termux, performance controls and a knowledge cloud, connected through one hub. No root needed.</p>
-    <span class="cue">Scroll to fly in · hold the screen</span>
+    
   </section>
 
   <section class="sec family" id="s-family" data-u="1.2">
@@ -290,35 +290,35 @@ footer b { color: var(--ink); font-weight: 600; }
     <div class="card" id="c-core"><p class="num">01 · Meridian Core</p><h2>The hub that holds it together.</h2>
       <p>Core starts the family and keeps what the apps share: plans, results, learned cards, readings. Its helper has ADB shell rights over Wireless debugging, which is how the other apps change system settings without root.</p>
       <ul class="facts"><li>Hub for four apps</li><li>ADB helper, no root</li><li>An activity log of every action</li></ul>
-      <p class="try">Move your finger or pointer around the sphere.</p></div>
+      </div>
   </section>
 
   <section class="sec app right" id="s-chat" data-u="4" data-app="1">
     <div class="card" id="c-chat"><p class="num">02 · Meridian Chat</p><h2>AI that lives on the phone.</h2>
       <p>Run models on the phone with llama.cpp in Termux, or a provider you pick. Chat reads Meridian's recipe library, saves what worked as learned cards, and answers a phone problem with a plan Parallel can run.</p>
       <ul class="facts"><li>Local models through llama.cpp</li><li>Learned cards in ICM layout</li><li>Run in Parallel, one tap</li></ul>
-      <p class="try">The eyes light up while you read.</p></div>
+      </div>
   </section>
 
   <section class="sec app" id="s-gaming" data-u="6" data-app="2">
     <div class="card" id="c-gaming"><p class="num">03 · Meridian Gaming</p><h2>Performance, measured.</h2>
       <p>Live clocks for every CPU cluster and the GPU, Clock profiles from Normal to Cool, heat guard, Release RAM, Game Optimizing Service off. It all runs through Core without root, and every value is read back, so you see what the phone really did.</p>
       <ul class="facts"><li>Clusters and GPU, live</li><li>Five Clock profiles</li><li>Every value read back</li></ul>
-      <p class="try">Tap the dragon: its crystal rings break apart.</p></div>
+      </div>
   </section>
 
   <section class="sec app right" id="s-parallel" data-u="8" data-app="3">
     <div class="card" id="c-parallel"><p class="num">04 · Meridian Parallel</p><h2>Termux, with a co-pilot.</h2>
       <p>One-tap plans, a console that fixes known errors, phone controls, and Meridian Doctor: it reads the phone first, offers one fix at a time, runs it only after you approve, then checks again.</p>
       <ul class="facts"><li>Autofix for 66 known errors</li><li>Meridian Doctor across 10 areas</li><li>Every fix verified</li></ul>
-      <p class="try">Scroll faster: the braid runs faster.</p></div>
+      </div>
   </section>
 
   <section class="sec app" id="s-nullcloud" data-u="10" data-app="4">
     <div class="card" id="c-nullcloud"><p class="num">05 · Meridian NullCloud</p><h2>Links in. Knowledge out.</h2>
       <p>Share a link or paste text. NullCloud returns a summary, the steps, or answers to your question, with a model on the phone or your provider, and keeps what it learns for the rest of the family.</p>
       <ul class="facts"><li>Summary, steps, answers</li><li>Works with models on the phone</li><li>Learns into the shared library</li></ul>
-      <p class="try">Your scroll speed drives the stream into the cloud.</p></div>
+      </div>
   </section>
 
   <section class="sec system" id="s-system" data-u="12">
