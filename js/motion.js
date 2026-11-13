@@ -8,7 +8,7 @@
 (function () {
   'use strict';
   if (window.MfxMotion) return;
-  var D2R = Math.PI / 180, RANGE = 25 * D2R;
+  var D2R = Math.PI / 180, RANGE = 15 * D2R;   /* full effect at 15 degrees */
   var q0 = null, q = null, raw = { x: 0, y: 0, z: 0 }, out = { x: 0, y: 0, z: 0 }, lastT = 0, steadyAt = 0, last = { x: 0, y: 0 }, settling = false, on = true;
   function quat(a, b, g) {   /* W3C device orientation, Z-X'-Y'' */
     var x = (b || 0) * D2R / 2, y = (g || 0) * D2R / 2, z = (a || 0) * D2R / 2;
@@ -38,16 +38,16 @@
     var now = performance.now(), dt = lastT ? Math.min(.2, (now - lastT) / 1000) : .016; lastT = now;
     if (!q0) { q0 = q; out.x = out.y = out.z = raw.x = raw.y = raw.z = 0; steadyAt = now; return; }
     var dl = delta();
-    var dz = function (v) { var a2 = Math.abs(v), z = .05; return a2 <= z ? 0 : (v < 0 ? -1 : 1) * (a2 - z) / (1 - z); };   /* about 1.2 degrees of rest */
+    var dz = function (v) { var a2 = Math.abs(v), z = .025; return a2 <= z ? 0 : (v < 0 ? -1 : 1) * (a2 - z) / (1 - z); };   /* about 1.2 degrees of rest */
     var nx = dz(clamp(dl.ry / RANGE)), ny = dz(clamp(dl.rx / RANGE)), nz = dz(clamp(dl.rz / RANGE));   /* z: the twist around the screen's axis */
     /* jerk limit: at most 0.3 of the range per reading */
-    raw.x += Math.max(-.3, Math.min(.3, nx - raw.x)); raw.y += Math.max(-.3, Math.min(.3, ny - raw.y)); raw.z += Math.max(-.3, Math.min(.3, nz - raw.z));
+    raw.x += Math.max(-.6, Math.min(.6, nx - raw.x)); raw.y += Math.max(-.6, Math.min(.6, ny - raw.y)); raw.z += Math.max(-.6, Math.min(.6, nz - raw.z));
     /* low-pass: about 120 ms time constant */
-    var a = 1 - Math.exp(-dt / .12);
+    var a = 1 - Math.exp(-dt / .07);
     out.x += (raw.x - out.x) * a; out.y += (raw.y - out.y) * a; out.z += (raw.z - out.z) * a;
     /* new posture held for 2 s: the zero follows it slowly */
     if (Math.abs(raw.x - last.x) > .04 || Math.abs(raw.y - last.y) > .04) { steadyAt = now; last.x = raw.x; last.y = raw.y; }
-    if (!settling && now - steadyAt > 2000 && dl.ang > 10 * D2R) settling = true;
+    if (!settling && now - steadyAt > 4000 && dl.ang > 10 * D2R) settling = true;
     if (settling) { q0 = slerp(q0, q, Math.min(1, dt * 1.6)); if (dl.ang < 1.5 * D2R) settling = false; }
   }
   function recenter() { q0 = q; raw.x = raw.y = raw.z = 0; settling = false; steadyAt = performance.now(); }

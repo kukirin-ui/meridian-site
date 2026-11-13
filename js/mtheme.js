@@ -4,10 +4,10 @@
   "use strict";
   var KEY = "meridian-site3";
   var PAL = {
-    meridian: ["#48d8ff", "#b45cff"], cyan: ["#00D4FF", "#7AEEFF"], mint: ["#34d399", "#a7f3d0"], amber: ["#c4a46a", "#e4d2ae"],
-    violet: ["#a78bfa", "#ddd6fe"], rose: ["#fb7185", "#fecdd3"], copper: ["#E07A3D", "#F6C7A1"], blue: ["#3B9EFF", "#BAE0FF"], teal: ["#22D3A6", "#9EF5DD"]
+    meridian: ["#48d8ff", "#b45cff"], mint: ["#34d399", "#a7f3d0"], amber: ["#c4a46a", "#e4d2ae"], violet: ["#a78bfa", "#ddd6fe"],
+    rose: ["#fb7185", "#fecdd3"], copper: ["#E07A3D", "#F6C7A1"], blue: ["#3B9EFF", "#BAE0FF"], bronze: ["#8C5B2E", "#B9864F"]   /* bronze: the one dark colour */
   };
-  var ORDER = ["meridian", "cyan", "mint", "amber", "violet", "rose", "copper", "blue", "teal"];
+  var ORDER = ["meridian", "mint", "amber", "violet", "rose", "copper", "blue", "bronze"];
   function rgb(h) { var n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
   function read() { try { return JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { return {}; } }
   function current() { var c = read().color; return PAL[c] ? c : "meridian"; }

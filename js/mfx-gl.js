@@ -43,8 +43,8 @@
   var FS_PHOTO = '#version 300 es\nprecision highp float;\nin vec2 uv;out vec4 o;\n' +
     'uniform sampler2D col;uniform sampler2D map;uniform vec2 cover;uniform float focus;uniform float veil;uniform float live;uniform float lvl;uniform float sty;\n' +
     'uniform float time;uniform vec3 tilt;uniform float busy;uniform float boost;uniform float load;uniform float intro;uniform vec4 motif;uniform vec4 lake;uniform vec2 res;\n' + LIB +
-    'vec2 par(vec2 u,float d){vec2 m=vec2(motif.x,1.-motif.y);float e=(d-focus);vec2 q=u-m;float r=tilt.z*.09*e;q=mat2(cos(r),sin(r),-sin(r),cos(r))*q;\n' +
-    ' vec2 drift=vec2(sin(time*.13),sin(time*.091+1.3))*.3*live;return m+q+e*(vec2(-tilt.x,tilt.y)*vec2(.045,.034)+drift*vec2(.03,.022));}\n' +
+    'vec2 par(vec2 u,float d){vec2 m=vec2(motif.x,1.-motif.y);float e=(d-focus);vec2 q=u-m;float r=tilt.z*.15*e;q=mat2(cos(r),sin(r),-sin(r),cos(r))*q;\n' +
+    ' vec2 drift=vec2(sin(time*.13),sin(time*.091+1.3))*.3*live;return m+q+e*(vec2(-tilt.x,tilt.y)*vec2(.08,.06)+drift*vec2(.03,.022));}\n' +
     'void main(){\n' +
     ' vec2 u=(uv-.5)*cover+.5;\n' +
     ' float d=texture(map,u).r; vec2 u1=par(u,d); d=texture(map,u1).r; u1=clamp(par(u,d),vec2(.001),vec2(.999));\n' +
@@ -75,8 +75,8 @@
     'void main(){\n' +
     ' float sd=b.x; vec2 u=a.xy, m=vec2(motif.x,1.-motif.y);\n' +
     ' float w=sin(time*.9+sd*50.+a.z*40.)*.0011+sin(time*1.7+sd*23.-a.z*25.)*.0007; u+=vec2(w,-w*.7)*(b.z-2.)*1.6;\n' +
-    ' float e=a.w-focus; vec2 q=u-m; float r=-tilt.z*.09*e; q=mat2(cos(r),sin(r),-sin(r),cos(r))*q;\n' +
-    ' vec2 drift=vec2(sin(time*.13),sin(time*.091+1.3))*.3; u=m+q-e*(vec2(-tilt.x,tilt.y)*vec2(.045,.034)+drift*vec2(.03,.022));\n' +
+    ' float e=a.w-focus; vec2 q=u-m; float r=-tilt.z*.15*e; q=mat2(cos(r),sin(r),-sin(r),cos(r))*q;\n' +
+    ' vec2 drift=vec2(sin(time*.13),sin(time*.091+1.3))*.3; u=m+q-e*(vec2(-tilt.x,tilt.y)*vec2(.08,.06)+drift*vec2(.03,.022));\n' +
     ' vU=u;\n' +
     ' float f=fract(a.z*9.-time*speed*.85+sd*7.), fl=pow(f,8.)*smoothstep(1.,.97,f);\n' +
     ' vF=fl*smoothstep(0.,.2,intro); vE=smoothstep(0.,.12,b.y)*smoothstep(1.,.88,b.y);\n' +
@@ -101,7 +101,7 @@
     ' if(shape>.5){float s=sin(th),c=cos(th),dn=1.+s*s;p=vec3(c/dn*(1.+off),s*c/dn*(1.+off)+.07*sin(th*2.+tt.w*3.)*.9,.22*sin(th*2.+tt.w));}\n' +   /* braid: three streams on an infinity, woven in depth */
     ' else{p=vec3(cos(th),sin(th),0.)*(r.x+off);}\n' +
     ' p=rz(time*tt.z*pace)*rx(tt.x)*ry(tt.y)*p;\n' +
-    ' p=rz(tilt.z*.5)*rx(-tilt.y*.45)*ry(tilt.x*.55)*p;\n' +   /* the phone turns the orbits */
+    ' p=rz(tilt.z*.75)*rx(-tilt.y*.7)*ry(tilt.x*.85)*p;\n' +   /* the phone turns the orbits */
     ' p*=mix(.35,1.,form);\n' +
     ' float persp=1./(1.-p.z*.42);\n' +
     ' float f=fract(a.x*(r.z>0.?r.z:3.)*.5-time*.35*pace+sd*3.),fl=pow(f,6.);\n' +
@@ -122,7 +122,7 @@
     ' vec2 a=vec2(lake.x,1.-lake.y)+vec2((s3-.5)*lake.z*2.,(s2-.5)*lake.w*.6);\n' +
     ' vec2 b=vec2(motif.x,1.-motif.y)+vec2((s3-.5)*motif.z*.9,-motif.w*.4);\n' +
     ' vec2 u=mix(a,b,life*life*(3.-2.*life))+vec2(sin(life*9.+s*30.)*.012,0.);\n' +
-    ' u+=vec2(-tilt.x,tilt.y)*.05*(1.-life*.5);\n' +
+    ' u+=vec2(-tilt.x,tilt.y)*.085*(1.-life*.5);\n' +
     ' vA=sin(life*3.1416)*(.5+.5*s)*smoothstep(.15,.45,intro); vC=mix(vec3(.5,.75,1.),vec3(1.,.8,1.),s2);\n' +
     ' gl_Position=vec4(((u-.5)/cover+.5)*2.-1.,0.,1.); gl_PointSize=(1.2+2.8*s*s)*px;}';
   var FS_PT = '#version 300 es\nprecision highp float;\nin vec3 vC;in float vA;out vec4 o;\n' +
@@ -134,13 +134,14 @@
     ' float m=max(c.r,max(c.g,c.b));o=vec4(c*max(m-thr,0.)/max(m,1e-4),1.);}';
   var FS_BLUR = '#version 300 es\nprecision highp float;\nin vec2 uv;uniform sampler2D tx;uniform vec2 dir;out vec4 o;\n' +
     'void main(){float w[5]=float[](.227027,.1945946,.1216216,.054054,.016216);vec3 c=texture(tx,uv).rgb*w[0];for(int i=1;i<5;i++){c+=texture(tx,uv+dir*float(i)*1.5).rgb*w[i];c+=texture(tx,uv-dir*float(i)*1.5).rgb*w[i];}o=vec4(c,1.);}';
-  var FS_COMP = '#version 300 es\nprecision highp float;\nin vec2 uv;uniform sampler2D sc;uniform sampler2D b1;uniform sampler2D b2;uniform float light;uniform float time;uniform vec3 acc;uniform float bloom;out vec4 o;\n' +
-    'void main(){vec3 c=texture(sc,uv).rgb+(texture(b1,uv).rgb*.26+texture(b2,uv).rgb*.38)*bloom;\n' +
+  var LENS = W.MeridianLens ? W.MeridianLens.GLSL : 'vec2 lensUV(vec2 u){return u;}vec3 lensLight(vec2 u){return vec3(0.);}\n';   /* the website's touch lens (Showcase) */
+  var FS_COMP = '#version 300 es\nprecision highp float;\nin vec2 uv;uniform sampler2D sc;uniform sampler2D b1;uniform sampler2D b2;uniform float light;uniform float time;uniform vec3 acc;uniform float bloom;out vec4 o;\n' + LENS +
+    'void main(){vec2 lu=lensUV(uv),dl=lu-uv;vec3 c=vec3(texture(sc,lu+dl*.22).r,texture(sc,lu).g,texture(sc,lu-dl*.22).b)+(texture(b1,lu).rgb*.26+texture(b2,lu).rgb*.38)*bloom;\n' +
     ' float m=max(c.r,max(c.g,c.b)); if(m>.86) c*=(.86+.14*(1.-exp(-(m-.86)/.14)))/m;\n' +
     ' vec2 q=uv-.5; c*=1.-dot(q,q)*.5;\n' +
     ' c+=(fract(sin(dot(gl_FragCoord.xy+time,vec2(12.9898,78.233)))*43758.5453)-.5)*.012;\n' +
     ' if(light>.5){float l=dot(c,vec3(.3,.59,.11));c=vec3(.955,.957,.97)*(1.-l*.55)+acc*l*.18;}\n' +
-    ' o=vec4(c,1.);}';
+    ' c+=lensLight(uv);o=vec4(c,1.);}';
 
   function sh(type, src) {
     var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
@@ -298,9 +299,11 @@
   function frame(dt) {
     if (!rs) size();
     var P = prefsNow(), live = run ? 1 : 0, lvl = LVL[P.l], gyro = run && P.v === 'on';
-    var mv = gyro && W.MfxMotion ? W.MfxMotion.get() : { x: 0, y: 0, z: 0 }, k = dt ? Math.min(1, dt * 6) : 1;
+    var mv = gyro && W.MfxMotion ? W.MfxMotion.get() : { x: 0, y: 0, z: 0 }, k = dt ? Math.min(1, dt * 10) : 1;
     tx += (mv.x - tx) * k; ty += (mv.y - ty) * k; tz += ((mv.z || 0) - tz) * k;
     t += dt * api.speed;
+    var ci = run ? (api.cine || 0) : 0, cs = performance.now() / 1000;
+    var TX = tx + ci * (.55 * Math.sin(cs * .23) + .2 * Math.sin(cs * .61 + 1)), TY = ty + ci * (.4 * Math.sin(cs * .17 + 2) + .15 * Math.sin(cs * .53)), TZ = tz + ci * .3 * Math.sin(cs * .13 + 4);
     if (dt && api.boost > 0) api.boost = Math.max(0, api.boost - dt * 1.2);
     var bz = busyNow(); api.busy += (bz - api.busy) * Math.min(1, (dt || 1) * 2);
     if (performance.now() - accAt > 2000) { ACC = accent(); accAt = performance.now(); }
@@ -311,7 +314,7 @@
     use(rs); gl.useProgram(pPhoto); var u = pPhoto.u;
     tex(3, PH.col, u.col); tex(4, PH.map, u.map);
     gl.uniform2f(u.cover, cvr[0], cvr[1]); gl.uniform1f(u.focus, C.focus); gl.uniform1f(u.veil, PH.ready ? C.veil : 0);
-    gl.uniform1f(u.live, live); gl.uniform1f(u.lvl, lvl); gl.uniform1f(u.sty, sty); gl.uniform1f(u.time, tm); gl.uniform3f(u.tilt, tx, ty, tz);
+    gl.uniform1f(u.live, live); gl.uniform1f(u.lvl, lvl); gl.uniform1f(u.sty, sty); gl.uniform1f(u.time, tm); gl.uniform3f(u.tilt, TX, TY, TZ);
     gl.uniform1f(u.busy, api.busy); gl.uniform1f(u.boost, api.boost); gl.uniform1f(u.load, api.load); gl.uniform1f(u.intro, intro);
     gl.uniform4fv(u.motif, C.motif); gl.uniform4fv(u.lake, C.lake); gl.uniform2f(u.res, rs.w, rs.h);
     quad();
@@ -320,7 +323,7 @@
       var px = rs.w / 1080 * 1.6, mxc = ((C.motif[0] - .5) / cvr[0]) * 2, myc = ((.5 - C.motif[1]) / cvr[1]) * 2, rad = Math.max(C.motif[2], C.motif[3] * PH.aspect);
       if (STR) {   /* the strands */
         u = pStr.u; gl.useProgram(pStr); tex(3, PH.col, u.col);
-        gl.uniform1f(u.time, tm); gl.uniform3f(u.tilt, tx, ty, tz); gl.uniform1f(u.focus, C.focus); gl.uniform2f(u.cover, cvr[0], cvr[1]); gl.uniform4fv(u.motif, C.motif);
+        gl.uniform1f(u.time, tm); gl.uniform3f(u.tilt, TX, TY, TZ); gl.uniform1f(u.focus, C.focus); gl.uniform2f(u.cover, cvr[0], cvr[1]); gl.uniform4fv(u.motif, C.motif);
         gl.uniform1f(u.speed, api.speed * (1 + api.busy * .9 + api.boost * .5)); gl.uniform1f(u.gain, C.veil * (1 + api.busy * .6)); gl.uniform1f(u.px, px);
         gl.uniform1f(u.intro, intro);
         var ns = lvl > 1 ? STR.n : Math.round(STR.n * 3 / 5 / 2) * 2;
@@ -332,14 +335,14 @@
         var Rv = [], Tv = [], Cv = [];
         for (var i = 0; i < 4; i++) { var r = rings[Math.min(i, rings.length - 1)]; Rv.push.apply(Rv, r[0]); Tv.push.apply(Tv, r[1]); Cv.push.apply(Cv, r[2]); }
         gl.uniform4fv(u.R, Rv); gl.uniform4fv(u.T, Tv); gl.uniform3fv(u.C, Cv);
-        gl.uniform1f(u.time, tm); gl.uniform3f(u.tilt, tx, ty, tz); gl.uniform2f(u.ctr, mxc, myc); gl.uniform2f(u.scl, rad / cvr[0] * 2, rad / cvr[0] * 2 * rs.w / rs.h);
+        gl.uniform1f(u.time, tm); gl.uniform3f(u.tilt, TX, TY, TZ); gl.uniform2f(u.ctr, mxc, myc); gl.uniform2f(u.scl, rad / cvr[0] * 2, rad / cvr[0] * 2 * rs.w / rs.h);
         gl.uniform1f(u.px, px); gl.uniform1f(u.shape, C.style === 'braid' ? 1 : 0); gl.uniform1f(u.form, form);
         gl.uniform1f(u.pace, 1 + api.busy * .8 + (NAME === 'gaming' ? api.load * 1.2 + api.boost : api.boost * .5)); gl.uniform1f(u.gain, .55 * (1 + api.busy * .5));
         var no = lvl > 1 ? ORB.n : ORB.n / 3;
         gl.bindVertexArray(ORB.vao); gl.uniform1f(u.pt, 0); gl.drawArrays(gl.LINES, 0, no); gl.uniform1f(u.pt, 1); gl.drawArrays(gl.POINTS, 0, no);
       }
       u = pPt.u; gl.useProgram(pPt);   /* the particles rising into the portal */
-      gl.uniform1f(u.time, tm); gl.uniform3f(u.tilt, tx, ty, tz); gl.uniform4fv(u.motif, C.motif); gl.uniform4fv(u.lake, C.lake); gl.uniform2f(u.cover, cvr[0], cvr[1]);
+      gl.uniform1f(u.time, tm); gl.uniform3f(u.tilt, TX, TY, TZ); gl.uniform4fv(u.motif, C.motif); gl.uniform4fv(u.lake, C.lake); gl.uniform2f(u.cover, cvr[0], cvr[1]);
       gl.uniform1f(u.px, px); gl.uniform1f(u.boost, api.boost + api.busy); gl.uniform1f(u.intro, intro);
       gl.bindVertexArray(vaoNone); gl.drawArrays(gl.POINTS, 0, lvl > 1 ? 1400 : 600);
       gl.disable(gl.BLEND);
@@ -356,6 +359,9 @@
     use(null); gl.useProgram(pComp);
     tex(0, rs, pComp.u.sc); tex(1, b1, pComp.u.b1); tex(2, b3, pComp.u.b2);
     gl.uniform1f(pComp.u.light, isLight() ? 1 : 0); gl.uniform1f(pComp.u.time, t); gl.uniform3f(pComp.u.acc, ACC[0], ACC[1], ACC[2]); gl.uniform1f(pComp.u.bloom, bloom);
+    if (api.lens) { var LF = api.lens.frame(), U2 = pComp.u, ta = api.lensTint ? api.lensTint[0] : ACC, tb = api.lensTint ? api.lensTint[1] : ACC;
+      gl.uniform2f(U2.lRes, cv.width, cv.height); gl.uniform4fv(U2.lTch, LF.tch); gl.uniform4fv(U2.lW0, LF.w0); gl.uniform4fv(U2.lW1, LF.w1);
+      gl.uniform3f(U2.lTa, ta[0], ta[1], ta[2]); gl.uniform3f(U2.lTb, tb[0], tb[1], tb[2]); gl.uniform1f(U2.lBeat, LF.beat); gl.uniform1f(U2.lTime, LF.time); }
     quad();
   }
   function loop(now) {
