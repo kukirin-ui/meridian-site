@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Meridian world</title>
+<script>
+/* One world's living picture and nothing else: explore.html puts this page behind a world's steps.
+   ?app=core|chat|gaming|parallel|nullcloud. It is the apps' own engine (js/mfx-gl.js) with the app's own picture.
+   It tells the page that holds it when the picture is on screen ("ready") or cannot be drawn ("nogl"), and it takes
+   one message back: "kick", a pulse of light when the visitor moves to the next step. Motion and Level come from the
+   same settings as everywhere else (m-prefs). */
+(function () {
+  var A = ["core", "chat", "gaming", "parallel", "nullcloud"], m = /[?&]app=(\w+)/.exec(location.search);
+  window.MERIDIAN_APP = m && A.indexOf(m[1]) >= 0 ? m[1] : "core";
+})();
+</script>
+<style>
+html { background: #05030c; }
+html, body { margin: 0; height: 100%; overflow: hidden; }
+body { background: transparent; pointer-events: none; }
+</style>
+</head>
+<body>
+<script src="js/motion.js"></script>
+<script src="js/mfx-gl.js"></script>
+<script>
+(function () {
+  "use strict";
+  var W = window, D = document, up = W.parent !== W ? W.parent : null, told = "";
+  function tell(what) { if (told === what) return; told = what; try { if (up) up.postMessage({ meridianWorld: what, app: W.MERIDIAN_APP }, "*"); } catch (e) {} }
+  if (W.MfxGL && W.MERIDIAN_APP === "core" && W.MfxGL.mount) { W.MfxGL.mount(); W.MfxGL.show(true); }
+  var n = 0, t = setInterval(function () {
+    n++;
+    if (W.MfxGL && W.MfxGL.active && W.MfxGL.photo) { tell("ready"); clearInterval(t); }
+    else if (n > 12 && (!W.MfxGL || !W.MfxGL.active)) { tell("nogl"); clearInterval(t); }
+    else if (n > 80) { tell("nogl"); clearInterval(t); }   /* the picture never arrived */
+  }, 125);
+  W.addEventListener("message", function (e) {
+    var d = e.data; if (!d || e.source !== up) return;
+    if (d.meridianWorld === "kick" && W.MfxGL && W.MfxGL.kick) W.MfxGL.kick(Math.max(0, Math.min(1, +d.v || .5)));
+  });
+})();
+</script>
+</body>
+</html>

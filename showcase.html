@@ -46,6 +46,8 @@ body { font: 400 15px/1.5 var(--body); -webkit-font-smoothing: antialiased; touc
 .ui { position: fixed; z-index: 6; left: 0; right: 0; top: 0; display: flex; align-items: center; gap: 10px; padding: max(12px, env(safe-area-inset-top)) 14px 12px;
   background: linear-gradient(rgba(5, 3, 12, .75), rgba(5, 3, 12, 0)); transition: opacity .35s, transform .35s; }
 @media (max-width: 420px) { .ui { gap: 7px; padding-left: 10px; padding-right: 10px; } .ui a, .ui button { padding: 0 11px; letter-spacing: .13em; } }
+/* phones: the controls take a second row instead of running off the screen */
+@media (max-width: 560px) { .ui { flex-wrap: wrap; row-gap: 8px; } .ui .sp { flex: 1 0 8px; } }
 body:not(.ctl) .ui { opacity: 0; transform: translateY(-8px); pointer-events: none; }
 body:not(.ctl) .dots { opacity: .55; }
 .ui a, .ui button { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: rgba(10, 8, 26, .6);

@@ -97,6 +97,12 @@ footer a { color: var(--mute); text-decoration: none; }
   html { scroll-padding-top: 120px; }
 }
 @media (max-width: 480px) { .bar .brand b { display: none; } .bar nav { gap: 11px; } .bar nav a { font-size: 11px; letter-spacing: .13em; } }
+/* phones: five links have to fit in 360 px; on anything narrower the row slides sideways inside the bar instead of running off the screen */
+.bar nav { min-width: 0; overflow-x: auto; scrollbar-width: none; white-space: nowrap; overscroll-behavior-x: contain; }
+.bar nav::-webkit-scrollbar { display: none; }
+.bar nav a { flex: none; }
+@media (max-width: 340px) { .bar nav a[href="index.html"] { display: none; } }   /* the emblem is the way home */
+@media (max-width: 400px) { .bar { gap: 10px; } .bar nav { gap: 9px; } .bar nav a { font-size: 10.5px; letter-spacing: .05em; padding: 8px 1px; } }
 .lsn { display: flex; gap: 6px; margin-top: 16px; }
 .lsn button { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(var(--c1rgb), .4); background: rgba(10, 8, 26, .6); color: var(--ink); cursor: pointer;
   font: 700 13px/1 var(--display); letter-spacing: .18em; text-transform: uppercase; }
