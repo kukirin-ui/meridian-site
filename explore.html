@@ -57,6 +57,11 @@ body.gal-open .bar,body.gal-open .hint{opacity:0;pointer-events:none}
 .rail b{position:absolute;top:0;bottom:0;width:28%;left:-30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);opacity:0}
 .rail b.go-r{animation:runR .75s cubic-bezier(.4,0,.2,1)}
 .rail b.go-l{animation:runL .75s cubic-bezier(.4,0,.2,1)}
+/* until the first swipe: every few seconds the light runs to the right and an arrow pulses at the edge */
+.nudge{position:fixed;z-index:31;right:max(8px,env(safe-area-inset-right));top:50%;width:40px;height:40px;margin-top:-20px;display:grid;place-items:center;
+ border-radius:50%;color:#fff;font-size:26px;line-height:1;pointer-events:none;opacity:0;background:radial-gradient(rgba(72,216,255,.35),transparent 70%)}
+.nudge.go{animation:nudge 1.4s ease-in-out}
+@keyframes nudge{0%{opacity:0;transform:translateX(-10px)}35%{opacity:1;transform:translateX(4px)}70%{opacity:.9;transform:translateX(-2px)}100%{opacity:0;transform:translateX(8px)}}
 @keyframes runR{0%{left:-30%;opacity:1}100%{left:102%;opacity:1}}
 @keyframes runL{0%{left:102%;opacity:1}100%{left:-30%;opacity:1}}
 .prog{display:flex;gap:6px;margin:10px max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left))}
@@ -67,13 +72,19 @@ body.gal-open .bar,body.gal-open .hint{opacity:0;pointer-events:none}
 .slide{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;overflow-y:auto;overscroll-behavior-y:contain;
  display:grid;grid-template-columns:1fr;gap:18px;align-content:start;padding:18px max(18px,env(safe-area-inset-right)) calc(env(safe-area-inset-bottom,0px) + 28px) max(18px,env(safe-area-inset-left));box-sizing:border-box}
 .slide .txt{order:-1}   /* phone: read the step, then see it */
+@media (max-width:859px){   /* the picture takes the room the text leaves, so nothing scrolls down */
+ .slide{display:flex;flex-direction:column;gap:14px}
+ .slide .shots{flex:1 1 0;min-height:160px;display:flex;justify-content:center}
+ .slide .shots figure{height:100%;display:flex;flex-direction:column;align-items:center}
+ .slide .shots img{flex:1 1 0;min-height:0;max-height:none;object-fit:contain}
+}
 .txt .k{font:700 12px/1 var(--display);letter-spacing:.22em;text-transform:uppercase;color:var(--cyan)}
 .txt h2{margin:8px 0 10px;font:700 clamp(26px,6.4vw,40px)/1.05 var(--display);letter-spacing:.01em}
 .txt p{margin:0 0 10px;font-size:15px;line-height:1.6;color:rgba(238,243,255,.86)}
 .txt ol{margin:0 0 10px;padding-left:20px;font-size:15px;line-height:1.6;color:rgba(238,243,255,.86)}
 .shots{display:grid;grid-template-columns:1fr;gap:14px;justify-items:center}
-.shots figure{margin:0;width:min(100%,340px)}
-.shots img{display:block;width:100%;height:auto;border-radius:22px;border:1px solid rgba(160,190,255,.22);box-shadow:0 12px 40px rgba(0,0,0,.6),0 0 0 1px rgba(0,0,0,.4)}
+.shots figure{margin:0;max-width:100%}
+.shots img{display:block;height:auto;width:auto;max-width:100%;max-height:calc(100svh - 300px);margin:0 auto;border-radius:22px;border:1px solid rgba(160,190,255,.22);box-shadow:0 12px 40px rgba(0,0,0,.6),0 0 0 1px rgba(0,0,0,.4)}
 .shots figcaption{margin-top:8px;text-align:center;font:600 11px/1.3 var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--cyan)}
 @media (min-width:860px){
  .slide{grid-template-columns:1.25fr minmax(300px,.75fr);align-content:center;align-items:center;gap:40px;padding-left:max(48px,6vw);padding-right:max(48px,6vw)}
@@ -97,7 +108,7 @@ body.gal-open .bar,body.gal-open .hint{opacity:0;pointer-events:none}
 .dlmeta code{font-size:11.5px;color:rgba(238,243,255,.8)}
 .beta{display:inline-block;margin-left:8px;padding:3px 8px;border-radius:10px;border:1px solid rgba(72,216,255,.5);font:700 10px/1 var(--display);letter-spacing:.18em;color:var(--cyan);vertical-align:middle}
 @media (prefers-reduced-motion:reduce){.rail i{transition:none}.rail b{animation:none!important}}
-html.still .rail i{transition:none}html.still .rail b{animation:none!important}html.still #gal{transition:none}
+html.still .rail i{transition:none}html.still .nudge{display:none}html.still .rail b{animation:none!important}html.still #gal{transition:none}
 </style>
 </head>
 <body>
@@ -121,6 +132,7 @@ html.still .rail i{transition:none}html.still .rail b{animation:none!important}h
   <div class="track" id="track" tabindex="0"></div>
   <button class="arrow l" id="prev" type="button" aria-label="Previous step">‹</button>
   <button class="arrow r" id="next" type="button" aria-label="Next step">›</button>
+  <span class="nudge" id="nudge" aria-hidden="true">›</span>
 </section>
 
 <script>
@@ -186,6 +198,16 @@ html.still .rail i{transition:none}html.still .rail b{animation:none!important}h
   var gal = $("gal"), track = $("track"), prog = $("prog"), run = $("run"), cur = null, idx = 0, pushed = false, rel = null, relTried = false;
   var still = function () { return D.documentElement.classList.contains("still"); };
 
+  var narrow = function () { return !matchMedia("(min-width:860px)").matches; };
+  function screens(g) {   /* the steps as screens: on a phone a step with two pictures becomes two screens, each with its own paragraph */
+    if (!narrow()) return g.steps;
+    var out = [];
+    g.steps.forEach(function (s) {
+      if (s.shots.length < 2) { out.push(s); return; }
+      s.shots.forEach(function (x, i) { out.push({ k: s.k, h: s.h, shots: [x], p: s.p.length === s.shots.length ? [s.p[i]] : (i ? [] : s.p) }); });
+    });
+    return out;
+  }
   function slideHtml(s) {
     return '<article class="slide"><div class="shots">' + s.shots.map(function (x) {
       return '<figure><img src="img/explore/' + x[0] + '.webp" alt="' + esc(x[1]) + '" loading="lazy" decoding="async"><figcaption>' + esc(x[1]) + '</figcaption></figure>'; }).join("") +
@@ -219,18 +241,26 @@ html.still .rail i{transition:none}html.still .rail b{animation:none!important}h
     var g = GAL[id]; if (!g) return;
     cur = id; idx = 0;
     $("gtitle").textContent = g.name; $("gtitle").id = "gtitle";
-    track.innerHTML = g.steps.map(slideHtml).join("") + dlHtml(g);
-    var n = g.steps.length + 1;
+    var sc = screens(g); track.innerHTML = sc.map(slideHtml).join("") + dlHtml(g);
+    var n = sc.length + 1; track.setAttribute("data-narrow", narrow() ? "1" : "0");
     prog.innerHTML = Array.apply(null, Array(n)).map(function (_, i) { return '<button type="button" aria-label="Step ' + (i + 1) + '" data-i="' + i + '"></button>'; }).join("");
     track.scrollLeft = 0; paint(0);
     D.body.classList.add("gal-open"); gal.setAttribute("aria-hidden", "false");
     gal.classList.remove("on"); void gal.offsetWidth; gal.classList.add("on");
     if (location.hash !== "#" + id) { history.pushState({ gal: id }, "", "#" + id); pushed = true; }
     fillDl(); setTimeout(function () { $("gback").focus({ preventScroll: true }); }, 50);
+    nudging(true);
+  }
+  var nudgeT = 0;
+  function nudging(on) {
+    clearInterval(nudgeT); nudgeT = 0;
+    if (!on || still()) return;
+    var once = function () { if (!cur || idx !== 0) return nudging(false); sweep(1); var e = $("nudge"); e.classList.remove("go"); void e.offsetWidth; e.classList.add("go"); };
+    setTimeout(once, 1400); nudgeT = setInterval(once, 4200);
   }
   function closeGal(fromHistory) {
     if (!cur) return;
-    cur = null; gal.classList.remove("on"); gal.setAttribute("aria-hidden", "true"); D.body.classList.remove("gal-open");
+    cur = null; nudging(false); gal.classList.remove("on"); gal.setAttribute("aria-hidden", "true"); D.body.classList.remove("gal-open");
     if (!fromHistory && pushed) { pushed = false; history.back(); }
     else if (!fromHistory && location.hash) history.replaceState(null, "", location.pathname);
     pushed = false;
@@ -247,7 +277,7 @@ html.still .rail i{transition:none}html.still .rail b{animation:none!important}h
   var st = 0;
   track.addEventListener("scroll", function () {
     clearTimeout(st);
-    st = setTimeout(function () { var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); if (i !== idx) { sweep(i - idx); idx = i; paint(i); } }, 70);
+    st = setTimeout(function () { var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); if (i !== idx) { sweep(i - idx); idx = i; paint(i); nudging(false); } }, 70);
   }, { passive: true });
   prog.addEventListener("click", function (e) { var b = e.target.closest("button[data-i]"); if (b) go(+b.getAttribute("data-i")); });
   $("prev").addEventListener("click", function () { go(idx - 1); });
@@ -258,7 +288,11 @@ html.still .rail i{transition:none}html.still .rail b{animation:none!important}h
     if (e.key === "Escape") closeGal(false); else if (e.key === "ArrowRight") go(idx + 1); else if (e.key === "ArrowLeft") go(idx - 1);
   });
   window.addEventListener("popstate", function () { if (cur && location.hash !== "#" + cur) closeGal(true); });
-  window.addEventListener("resize", function () { if (cur) track.scrollLeft = idx * track.clientWidth; });
+  window.addEventListener("resize", function () {
+    if (!cur) return;
+    if (track.getAttribute("data-narrow") !== (narrow() ? "1" : "0")) { var c = cur; cur = null; pushed = false; openGal(c); return; }   /* turned the phone: rebuild the screens */
+    track.scrollLeft = idx * track.clientWidth;
+  });
 
   /* The menu calls these when a portal (or the centre) finishes its dive, exactly as it opens an app inside Core. */
   window.MeridianCorePage = { open: function () { openGal("core"); } };
