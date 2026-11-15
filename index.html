@@ -57,6 +57,10 @@ button { font: inherit; color: inherit; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
 .brand img { width: 42px; height: 24px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(var(--c1rgb), .55)); }
 .brand b { font: 700 18px/1 var(--display); letter-spacing: .32em; }
+.explore { margin-right: auto; height: 30px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 15px; border: 1px solid rgba(var(--c1rgb), .45);
+  font: 700 12px/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--cyan); text-decoration: none; background: rgba(10, 8, 26, .5); }
+.explore:hover { border-color: var(--cyan); }
+@media (max-width: 460px) { .explore { padding: 0 9px; font-size: 11px; letter-spacing: .14em; } .toplinks a[href="about.html"] { display: none; } }
 .chapter { font: 600 13px/1 var(--display); letter-spacing: .24em; text-transform: uppercase; color: var(--mute); white-space: nowrap; }
 .chapter i { font-style: normal; color: var(--cyan); }
 .setbtn { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid var(--line); background: rgba(10, 8, 26, .6);
@@ -255,6 +259,7 @@ footer b { color: var(--ink); font-weight: 600; }
 
 <header class="bar">
   <a class="brand" href="#top" aria-label="Meridian, back to the top"><img id="emblem" alt=""><b>MERIDIAN</b></a>
+  <a class="explore" href="explore.html">Explore</a>
   <span class="chapter" id="chapter"><i>00</i> · Meridian</span>
   <nav class="toplinks" aria-label="Pages"><a href="showcase.html">Showcase</a><a href="docs.html">Docs</a><a href="about.html">About</a></nav>
   <button class="setbtn" id="setbtn" type="button" aria-expanded="false" aria-controls="settings">Options</button>
@@ -309,8 +314,8 @@ footer b { color: var(--ink); font-weight: 600; }
 
   <section class="sec app right" id="s-parallel" data-u="8" data-app="3">
     <div class="card" id="c-parallel"><p class="num">04 · Meridian Parallel</p><h2>Termux, with a co-pilot.</h2>
-      <p>One-tap plans, a console that fixes known errors, phone controls, and Meridian Doctor: it reads the phone first, offers one fix at a time, runs it only after you approve, then checks again.</p>
-      <ul class="facts"><li>Autofix for 66 known errors</li><li>Meridian Doctor across 10 areas</li><li>Every fix verified</li></ul>
+      <p>Diagnose finds the cause of an error by method, shows the evidence and offers one fix at a time. A fix runs only after you approve it, then the result is checked again. A console with sessions side by side, and plans that check the phone first.</p>
+      <ul class="facts"><li>17 kinds of problems, by method</li><li>Tested on 240 real errors</li><li>Every fix verified</li></ul>
       </div>
   </section>
 

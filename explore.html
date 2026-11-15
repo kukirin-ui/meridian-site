@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Explore Meridian</title>
+<meta name="description" content="Explore Meridian: the living Core menu from the app. Tap a world to see how each Meridian app works, step by step, and download it.">
+<meta property="og:title" content="Explore Meridian">
+<meta property="og:image" content="https://kukirin-ui.github.io/meridian-site/assets/meridian-card-1200x630.jpg">
+<link rel="icon" href="img/emblem.webp">
+<style>
+/* The menu: the same WebGL code and styles as Meridian Core (js/core/hub.js, copied unchanged from the app). */
+html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+ font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#eef3ff}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block}
+#nogl{display:none;position:fixed;inset:0;align-items:center;justify-content:center;text-align:center;padding:24px}
+#labels{position:fixed;inset:0;pointer-events:none;transition:opacity .35s}
+.plabel{position:absolute;transform:translateX(-50%);font-size:10.5px;font-weight:600;letter-spacing:.26em;text-indent:.26em;color:#fff;opacity:.95;text-shadow:0 0 1px #000,0 0 3px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.9),0 0 18px rgba(0,0,0,.75);white-space:nowrap}
+#labels .core{font-size:12px;font-weight:700;opacity:1;letter-spacing:.45em;text-indent:.45em;color:#2a1604;text-shadow:0 0 10px rgba(255,255,255,.9)}
+#overlay{position:fixed;inset:0;pointer-events:none}
+#overlay.hide-labels~#labels{opacity:0}
+#overlay #bar,#overlay #modwrap{display:none}
+
+/* site bar */
+:root{--cyan:#48d8ff;--violet:#b45cff;--ink:#eef3ff;--mute:#9aa6c8;--line:rgba(160,190,255,.16);--display:"Rajdhani","Arial Narrow",system-ui,sans-serif}
+.bar{position:fixed;z-index:20;left:0;right:0;top:0;display:flex;align-items:center;gap:12px;
+ padding:calc(env(safe-area-inset-top,0px) + 12px) max(16px,env(safe-area-inset-right)) 12px max(16px,env(safe-area-inset-left));
+ background:linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,0));transition:opacity .35s}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand img{width:42px;height:24px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(72,216,255,.55))}
+.brand b{font:700 18px/1 var(--display);letter-spacing:.32em}
+.here{font:600 12px/1 var(--display);letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);white-space:nowrap}
+.sp{flex:1}
+.toplinks{display:flex;gap:14px}
+.toplinks a{font:600 13px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--mute);text-decoration:none}
+.toplinks a:hover{color:var(--ink)}
+@media (max-width:560px){.toplinks a:not(.home){display:none}.here{font-size:11px;letter-spacing:.16em}}
+.hint{position:fixed;z-index:3;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);text-align:center;margin:0;padding:0 16px;
+ font:600 12px/1.4 var(--display);letter-spacing:.2em;text-transform:uppercase;color:rgba(238,243,255,.72);text-shadow:0 0 8px #000;pointer-events:none;transition:opacity .35s}
+body.gal-open .bar,body.gal-open .hint{opacity:0;pointer-events:none}
+
+/* gallery: one step per screen, sideways */
+#gal{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .45s ease;
+ background:radial-gradient(120% 80% at 50% 0%,rgba(40,20,90,.55),rgba(0,0,0,.94) 60%),#000}
+#gal.on{opacity:1;pointer-events:auto}
+.ghead{display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 12px) max(14px,env(safe-area-inset-right)) 10px max(14px,env(safe-area-inset-left))}
+.gback{height:38px;padding:0 16px 0 12px;border-radius:19px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;
+ font:600 13px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.gtitle{font:700 13px/1 var(--display);letter-spacing:.34em;text-transform:uppercase;color:rgba(238,243,255,.8)}
+.gcount{margin-left:auto;font:600 12px/1 var(--display);letter-spacing:.2em;color:var(--mute)}
+/* the colour line: grows out from the centre both ways when a gallery opens, a light runs along it with every swipe */
+.rail{position:relative;height:5px;margin:0 max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));border-radius:3px;overflow:hidden}
+.rail i{position:absolute;top:0;bottom:0;width:50%;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.rail i.l{right:50%;transform-origin:100% 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--violet),var(--cyan))}
+.rail i.r{left:50%;transform-origin:0 50%;transform:scaleX(0)}
+#gal.on .rail i{transform:scaleX(1)}
+.rail b{position:absolute;top:0;bottom:0;width:28%;left:-30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);opacity:0}
+.rail b.go-r{animation:runR .75s cubic-bezier(.4,0,.2,1)}
+.rail b.go-l{animation:runL .75s cubic-bezier(.4,0,.2,1)}
+@keyframes runR{0%{left:-30%;opacity:1}100%{left:102%;opacity:1}}
+@keyframes runL{0%{left:102%;opacity:1}100%{left:-30%;opacity:1}}
+.prog{display:flex;gap:6px;margin:10px max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left))}
+.prog button{flex:1;height:3px;padding:0;border:0;border-radius:2px;background:rgba(255,255,255,.18);cursor:pointer}
+.prog button.on{background:linear-gradient(90deg,var(--cyan),var(--violet))}
+.track{flex:1;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;overflow-y:auto;overscroll-behavior-y:contain;
+ display:grid;grid-template-columns:1fr;gap:18px;align-content:start;padding:18px max(18px,env(safe-area-inset-right)) calc(env(safe-area-inset-bottom,0px) + 28px) max(18px,env(safe-area-inset-left));box-sizing:border-box}
+.slide .txt{order:-1}   /* phone: read the step, then see it */
+.txt .k{font:700 12px/1 var(--display);letter-spacing:.22em;text-transform:uppercase;color:var(--cyan)}
+.txt h2{margin:8px 0 10px;font:700 clamp(26px,6.4vw,40px)/1.05 var(--display);letter-spacing:.01em}
+.txt p{margin:0 0 10px;font-size:15px;line-height:1.6;color:rgba(238,243,255,.86)}
+.txt ol{margin:0 0 10px;padding-left:20px;font-size:15px;line-height:1.6;color:rgba(238,243,255,.86)}
+.shots{display:grid;grid-template-columns:1fr;gap:14px;justify-items:center}
+.shots figure{margin:0;width:min(100%,340px)}
+.shots img{display:block;width:100%;height:auto;border-radius:22px;border:1px solid rgba(160,190,255,.22);box-shadow:0 12px 40px rgba(0,0,0,.6),0 0 0 1px rgba(0,0,0,.4)}
+.shots figcaption{margin-top:8px;text-align:center;font:600 11px/1.3 var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--cyan)}
+@media (min-width:860px){
+ .slide{grid-template-columns:1.25fr minmax(300px,.75fr);align-content:center;align-items:center;gap:40px;padding-left:max(48px,6vw);padding-right:max(48px,6vw)}
+ .slide .txt{order:0}
+ .shots{display:flex;gap:22px;justify-content:center;align-items:flex-start}
+ .shots figure{width:auto}
+ .shots figure{flex:0 0 auto}
+ .shots img{height:min(64vh,640px,34vw);width:auto;max-width:none}   /* every screenshot at the same height, side by side */
+}
+.arrow{display:none}
+@media (min-width:860px) and (hover:hover){
+ .arrow{display:grid;place-items:center;position:fixed;z-index:31;top:50%;width:46px;height:46px;margin-top:-23px;border-radius:50%;border:1px solid rgba(255,255,255,.22);
+  background:rgba(10,8,26,.6);color:#fff;font-size:24px;cursor:pointer}
+ .arrow.l{left:14px}.arrow.r{right:14px}.arrow[disabled]{opacity:.25;cursor:default}
+}
+.dl{display:grid;gap:12px;max-width:520px}
+.dlbtn{display:inline-flex;align-items:center;justify-content:center;height:52px;padding:0 26px;border-radius:26px;border:0;text-decoration:none;
+ background:linear-gradient(90deg,var(--cyan),var(--violet));color:#05030c;font:700 15px/1 var(--display);letter-spacing:.18em;text-transform:uppercase}
+.dlbtn.off{background:rgba(255,255,255,.1);color:rgba(238,243,255,.7);border:1px solid rgba(255,255,255,.2);pointer-events:none}
+.dlmeta{font-size:12.5px;line-height:1.55;color:var(--mute);overflow-wrap:anywhere}
+.dlmeta code{font-size:11.5px;color:rgba(238,243,255,.8)}
+.beta{display:inline-block;margin-left:8px;padding:3px 8px;border-radius:10px;border:1px solid rgba(72,216,255,.5);font:700 10px/1 var(--display);letter-spacing:.18em;color:var(--cyan);vertical-align:middle}
+@media (prefers-reduced-motion:reduce){.rail i{transition:none}.rail b{animation:none!important}}
+html.still .rail i{transition:none}html.still .rail b{animation:none!important}html.still #gal{transition:none}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-label="Meridian Core menu: Parallel, Gaming, NullCloud, Chat and Core in the centre"></canvas>
+<div id="nogl">This browser cannot draw WebGL2, so the living menu cannot play here.</div>
+<div id="overlay"><div id="bar"><button id="back" type="button" hidden>Back</button><div id="modtitle"></div></div><div id="modwrap"><div id="modhost"></div></div></div>
+<div id="labels"></div>
+
+<header class="bar">
+  <a class="brand" href="index.html" aria-label="Meridian home"><img src="img/emblem.webp" alt=""><b>MERIDIAN</b></a>
+  <span class="here">Explore</span>
+  <span class="sp"></span>
+  <nav class="toplinks" aria-label="Pages"><a class="home" href="index.html">Home</a><a href="showcase.html">Showcase</a><a href="docs.html">Docs</a><a href="about.html">About</a></nav>
+</header>
+<p class="hint" id="hint">Tap a world · Core is in the centre</p>
+
+<section id="gal" role="dialog" aria-modal="true" aria-labelledby="gtitle" aria-hidden="true">
+  <div class="ghead"><button class="gback" id="gback" type="button">‹ Back</button><span class="gtitle" id="gtitle"></span><span class="gcount" id="gcount"></span></div>
+  <div class="rail" aria-hidden="true"><i class="l"></i><i class="r"></i><b id="run"></b></div>
+  <nav class="prog" id="prog" aria-label="Steps"></nav>
+  <div class="track" id="track" tabindex="0"></div>
+  <button class="arrow l" id="prev" type="button" aria-label="Previous step">‹</button>
+  <button class="arrow r" id="next" type="button" aria-label="Next step">›</button>
+</section>
+
+<script>
+/* The site's Motion setting (Options on the home page) drives the menu too: the menu reads m-prefs, like in the app. */
+(function () {
+  try {
+    var site = JSON.parse(localStorage.getItem("meridian-site3") || "{}") || {}, p = JSON.parse(localStorage.getItem("m-prefs") || "{}") || {};
+    if (site.motion && p.motion !== site.motion) { p.motion = site.motion; localStorage.setItem("m-prefs", JSON.stringify(p)); }
+    var off = (site.motion || p.motion) === "off" || (!(site.motion || p.motion) || (site.motion || p.motion) === "system") && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (off) document.documentElement.classList.add("still");
+  } catch (e) {}
+})();
+</script>
+<script src="js/core/motion.js"></script>
+<script src="js/core/hub.js"></script>
+<script>
+(function () {
+  "use strict";
+  var D = document, $ = function (id) { return D.getElementById(id); };
+  var REPO = "kukirin-ui/meridian-releases";
+  var REQ = "Android 11 or newer. Install Meridian Core first: the other apps link through it, and each still works alone.";
+
+  /* Every picture is a real screenshot from a Galaxy S26. Text says only what the app does. */
+  var GAL = {
+    core: { name: "Meridian Core", apk: "meridian-core.apk", steps: [
+      { k: "01 · Pair once", h: "Start in Core", shots: [["core-pair", "Pair sheet"]],
+        p: ["Core's helper gets ADB shell rights over Wireless debugging. No root, no computer.",
+            "Tap Pair again. Core shows the three steps and a Start pairing button. Nothing runs before you tap it."] },
+      { k: "02 · Android settings", h: "Wireless debugging on", shots: [["core-devopts", "Developer options"], ["core-wireless", "Wireless debugging"]],
+        p: ["Start pairing opens Developer options, with Meridian's notification on top.",
+            "Turn Wireless debugging on, then tap Pair device with pairing code. Leave the code window open."] },
+      { k: "03 · The code", h: "Type it in the notification", shots: [["core-code", "Enter code"], ["core-paired", "Paired"]],
+        p: ["Pull the shade down, tap Enter code on the Meridian notification and type the six digits. Settings stays in front, so the code window does not close.",
+            "Meridian paired ✓ means the helper is connecting. You can close Settings."] },
+      { k: "04 · Done", h: "Connected", shots: [["core-connected", "Back in Core"]],
+        p: ["The helper reads Connected. Wi-Fi can be off and mobile data on.",
+            "After a reboot: turn Wireless debugging on once and tap Reconnect. Pairing is needed only once."] }
+    ] },
+    parallel: { name: "Meridian Parallel", apk: "meridian-parallel.apk", steps: [
+      { k: "Termux, with a co-pilot", h: "Diagnose, Console, Plan", shots: [],
+        p: ["Paste an error, a command or a piece of code. Diagnose finds the cause by method across 17 kinds of problems, shows the evidence, and offers one fix at a time. A fix runs only after you approve it, then the result is checked again.",
+            "Tested on 240 failures collected from GitHub issues, Stack Overflow, documentation and forums: on the 203 that are real copied output, 175 right, 18 partly right, none confidently wrong.",
+            "The Console runs sessions side by side. Plans check the phone first. Screenshots of each step are on the way."] }
+    ] },
+    chat: { name: "Meridian Chat", apk: "meridian-chat.apk", steps: [
+      { k: "AI that lives on the phone", h: "Your models, your phone", shots: [],
+        p: ["Run models on the phone with llama.cpp, or your own API key. Only the model you pick answers.",
+            "Linked through Core, Chat reaches the other apps. Screenshots of each step are on the way."] }
+    ] },
+    gaming: { name: "Meridian Gaming", apk: "meridian-gaming.apk", steps: [
+      { k: "Performance, measured", h: "Real numbers from the phone", shots: [],
+        p: ["Live clocks for every CPU cluster and the GPU, memory and battery, read from the phone itself.",
+            "With Core: Isolate mode and manual controls you set yourself. Screenshots of each step are on the way."] }
+    ] },
+    nullcloud: { name: "Meridian NullCloud", apk: "meridian-nullcloud.apk", steps: [
+      { k: "Links in, knowledge out", h: "Read, summarize, learn", shots: [],
+        p: ["Share a link or paste text. NullCloud returns a summary, the steps, or answers to your question, with a model on the phone or your provider.",
+            "What it learns goes to the shared library for the rest of the family. Screenshots of each step are on the way."] }
+    ] }
+  };
+
+  var esc = function (t) { return String(t == null ? "" : t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var gal = $("gal"), track = $("track"), prog = $("prog"), run = $("run"), cur = null, idx = 0, pushed = false, rel = null, relTried = false;
+  var still = function () { return D.documentElement.classList.contains("still"); };
+
+  function slideHtml(s) {
+    return '<article class="slide"><div class="shots">' + s.shots.map(function (x) {
+      return '<figure><img src="img/explore/' + x[0] + '.webp" alt="' + esc(x[1]) + '" loading="lazy" decoding="async"><figcaption>' + esc(x[1]) + '</figcaption></figure>'; }).join("") +
+      '</div><div class="txt"><p class="k">' + esc(s.k) + '</p><h2>' + esc(s.h) + '</h2>' + s.p.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join("") + '</div></article>';
+  }
+  function dlHtml(g) {
+    return '<article class="slide"><div class="txt dl"><p class="k">Download</p><h2>' + esc(g.name) + '<span class="beta">BETA</span></h2><p>' + esc(REQ) + '</p>' +
+      '<a class="dlbtn off" data-dl="' + g.apk + '" href="https://github.com/' + REPO + '/releases">Checking the release…</a>' +
+      '<p class="dlmeta" data-meta="' + g.apk + '">Android asks once to allow installing from your browser. The file is signed with the same key as the other four apps.</p></div></article>';
+  }
+  /* The release is read from GitHub's public API: name, size and SHA-256 come from the release itself, never typed in. */
+  function fillDl() {
+    var apply = function () {
+      Array.prototype.forEach.call(track.querySelectorAll("[data-dl]"), function (a) {
+        var name = a.getAttribute("data-dl"), as = rel && rel.assets ? rel.assets.filter(function (x) { return x.name === name; })[0] : null, meta = track.querySelector('[data-meta="' + name + '"]');
+        if (as) {
+          a.classList.remove("off"); a.href = as.browser_download_url; a.textContent = "Download " + (rel.tag_name || "");
+          var dg = String(as.digest || "").replace(/^sha256:/, "");
+          if (meta) meta.innerHTML = esc((as.size / 1048576).toFixed(1) + " MB · " + new Date(as.updated_at || rel.published_at).toLocaleDateString()) + (dg ? '<br>SHA-256 <code>' + esc(dg) + '</code>' : "") + '<br>' + esc("Android asks once to allow installing from your browser.");
+        } else { a.classList.add("off"); a.textContent = relTried ? "Coming with the beta" : "Checking the release…"; }
+      });
+    };
+    if (relTried) return apply();
+    apply();
+    fetch("https://api.github.com/repos/" + REPO + "/releases/latest", { headers: { Accept: "application/vnd.github+json" } })
+      .then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+      .then(function (j) { rel = j; relTried = true; apply(); });
+  }
+
+  function openGal(id) {
+    var g = GAL[id]; if (!g) return;
+    cur = id; idx = 0;
+    $("gtitle").textContent = g.name; $("gtitle").id = "gtitle";
+    track.innerHTML = g.steps.map(slideHtml).join("") + dlHtml(g);
+    var n = g.steps.length + 1;
+    prog.innerHTML = Array.apply(null, Array(n)).map(function (_, i) { return '<button type="button" aria-label="Step ' + (i + 1) + '" data-i="' + i + '"></button>'; }).join("");
+    track.scrollLeft = 0; paint(0);
+    D.body.classList.add("gal-open"); gal.setAttribute("aria-hidden", "false");
+    gal.classList.remove("on"); void gal.offsetWidth; gal.classList.add("on");
+    if (location.hash !== "#" + id) { history.pushState({ gal: id }, "", "#" + id); pushed = true; }
+    fillDl(); setTimeout(function () { $("gback").focus({ preventScroll: true }); }, 50);
+  }
+  function closeGal(fromHistory) {
+    if (!cur) return;
+    cur = null; gal.classList.remove("on"); gal.setAttribute("aria-hidden", "true"); D.body.classList.remove("gal-open");
+    if (!fromHistory && pushed) { pushed = false; history.back(); }
+    else if (!fromHistory && location.hash) history.replaceState(null, "", location.pathname);
+    pushed = false;
+    setTimeout(function () { if (window.hubResume) window.hubResume(); }, 120);   /* the menu comes back out of the portal */
+  }
+  function paint(i) {
+    var n = prog.children.length;
+    Array.prototype.forEach.call(prog.children, function (b, j) { b.classList.toggle("on", j <= i); });
+    $("gcount").textContent = (i + 1) + " / " + n;
+    $("prev").disabled = i <= 0; $("next").disabled = i >= n - 1;
+  }
+  function sweep(dir) { if (still()) return; run.className = ""; void run.offsetWidth; run.className = dir > 0 ? "go-r" : "go-l"; }
+  function go(i) { var n = prog.children.length; i = Math.max(0, Math.min(n - 1, i)); track.scrollTo({ left: i * track.clientWidth, behavior: still() ? "auto" : "smooth" }); }
+  var st = 0;
+  track.addEventListener("scroll", function () {
+    clearTimeout(st);
+    st = setTimeout(function () { var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); if (i !== idx) { sweep(i - idx); idx = i; paint(i); } }, 70);
+  }, { passive: true });
+  prog.addEventListener("click", function (e) { var b = e.target.closest("button[data-i]"); if (b) go(+b.getAttribute("data-i")); });
+  $("prev").addEventListener("click", function () { go(idx - 1); });
+  $("next").addEventListener("click", function () { go(idx + 1); });
+  $("gback").addEventListener("click", function () { closeGal(false); });
+  D.addEventListener("keydown", function (e) {
+    if (!cur) return;
+    if (e.key === "Escape") closeGal(false); else if (e.key === "ArrowRight") go(idx + 1); else if (e.key === "ArrowLeft") go(idx - 1);
+  });
+  window.addEventListener("popstate", function () { if (cur && location.hash !== "#" + cur) closeGal(true); });
+  window.addEventListener("resize", function () { if (cur) track.scrollLeft = idx * track.clientWidth; });
+
+  /* The menu calls these when a portal (or the centre) finishes its dive, exactly as it opens an app inside Core. */
+  window.MeridianCorePage = { open: function () { openGal("core"); } };
+  window.HubNative = { launch: function (id) { openGal(id); return !!GAL[id]; } };
+
+  /* explore.html#parallel dives straight into that world */
+  var start = location.hash.replace("#", "");
+  if (GAL[start]) { history.replaceState(null, "", location.pathname); setTimeout(function () { if (window.MeridianHub) MeridianHub.enter(start); }, 600); }
+  window.MeridianExplore = { open: openGal, close: closeGal, gallery: GAL };
+})();
+</script>
+</body>

@@ -116,13 +116,13 @@ body > .lsn.on small { display: none; }
 <div class="progress" id="progress" aria-hidden="true"></div>
 <header class="bar">
   <a class="brand" href="index.html" aria-label="Meridian, back to the main page"><img id="emblem" alt=""><b>MERIDIAN</b></a>
-  <nav aria-label="Pages"><a href="index.html">Home</a><a href="showcase.html">Showcase</a><a href="docs.html" aria-current="page">Docs</a><a href="about.html">About</a></nav>
+  <nav aria-label="Pages"><a href="index.html">Home</a><a href="explore.html">Explore</a><a href="showcase.html">Showcase</a><a href="docs.html" aria-current="page">Docs</a><a href="about.html">About</a></nav>
 </header>
 
 <div class="wrap">
   <nav class="toc" id="toc" aria-label="On this page">
     <a href="#what">What it is</a><a href="#apps">The apps</a><a href="#needs">Requirements</a><a href="#start">Getting started</a><a href="#core">No root</a>
-    <a href="#models">Local AI</a><a href="#doctor">Doctor</a><a href="#privacy">Privacy</a><a href="#faq">FAQ</a><a href="#about">About</a><a href="#thanks">Thanks to</a>
+    <a href="#models">Local AI</a><a href="#doctor">Diagnose</a><a href="#privacy">Privacy</a><a href="#faq">FAQ</a><a href="#about">About</a><a href="#thanks">Thanks to</a>
   </nav>
   <main>
     <header class="hero">
@@ -187,8 +187,9 @@ termux-setup-storage</pre>
       <div class="note">Small instruct models in Q4 or Q8 are the best start on a phone. Bigger models answer better but need more RAM and get slower.</div>
     </section>
 
-    <section class="doc rv" id="doctor"><h2><span class="n">07</span>Meridian Doctor</h2>
-      <p>Doctor reads the phone first, finds what is wrong across 10 areas (network, storage, memory, Termux, packages and more), offers one fix at a time, runs it only after you approve, then checks again. Parallel's console also recognises 66 known errors and offers the fix right where the error appears.</p>
+    <section class="doc rv" id="doctor"><h2><span class="n">07</span>Diagnose</h2>
+      <p>Paste an error, a command or a piece of code into Parallel's Diagnose. It sorts the problem into one of 17 kinds (missing tools, permissions, storage, memory, network, versions, builds, configuration, git, crashes, local models and more), runs read-only checks in Termux, and explains the likely cause with its evidence and how sure it is. Then it offers fixes, from looking closer to repairing. A fix runs only after you approve it, and a failed check sends it back to the diagnosis. Code is checked with the real tools in Termux: Python, JavaScript, C, C++, shell, JSON, YAML, TOML, .env and SQL.</p>
+      <p>It was tested on 240 failures collected from GitHub issues, Stack Overflow, documentation and forums. On the 203 with real copied output: 175 right, 18 partly right, none confidently wrong.</p>
       <ol class="steps"><li><span>Diagnose: read the facts, no changes.</span></li><li><span>Approve: you see the exact command.</span></li><li><span>Fix and verify: it runs, then Doctor checks that it worked and remembers what did.</span></li></ol>
     </section>
 
@@ -238,7 +239,7 @@ termux-setup-storage</pre>
     </section>
   </main>
 </div>
-<footer><nav aria-label="Footer"><a href="index.html">Home</a><a href="showcase.html">Showcase</a><a href="about.html">About</a><a href="#top" onclick="scrollTo(0,0);return false">Back to the top</a></nav>Meridian Family · © 2026 Alen Požun · Built on a phone</footer>
+<footer><nav aria-label="Footer"><a href="index.html">Home</a><a href="explore.html">Explore</a><a href="showcase.html">Showcase</a><a href="about.html">About</a><a href="#top" onclick="scrollTo(0,0);return false">Back to the top</a></nav>Meridian Family · © 2026 Alen Požun · Built on a phone</footer>
 
 <script src="js/listen.js"></script>
 <script>
