@@ -215,10 +215,18 @@ html.still .rail i{transition:none}html.still .nudge{display:none}html.still .ra
             "After a reboot: turn Wireless debugging on once and tap Reconnect. Pairing is needed only once."] }
     ] },
     parallel: { name: "Meridian Parallel", apk: "meridian-parallel.apk", steps: [
-      { k: "Termux, with a co-pilot", h: "Diagnose, Console, Plan", shots: [],
-        p: ["Paste an error, a command or a piece of code. Diagnose finds the cause by method across 17 kinds of problems, shows the evidence, and offers one fix at a time. A fix runs only after you approve it, then the result is checked again.",
-            "Tested on 240 failures collected from GitHub issues, Stack Overflow, documentation and forums: on the 203 that are real copied output, 175 right, 18 partly right, none confidently wrong.",
-            "The Console runs sessions side by side. Plans check the phone first. Screenshots of each step are on the way."] }
+      { k: "01 · Paste", h: "An error, a command or code", shots: [["parallel-paste", "Paste it in Diagnose"]],
+        p: ["Paste what went wrong: an error from Termux, a build log, a command, or a piece of code. Each is handled as what it is.",
+            "Code is checked, never run. Python, JavaScript, C, C++, shell, SQL, JSON, YAML and .env."] },
+      { k: "02 · Findings", h: "Each one says where it came from", shots: [["parallel-findings", "Found by a tool"], ["parallel-pattern", "A known mistake, with the fix"]],
+        p: ["TOOL is the real tool's own message: Python, pyflakes, the compiler. PATTERN is a known mistake recognised in the text, with the fix in one line.",
+            "Typos, undefined names, a missing colon, a shared default list, a bare except. Each with its line."] },
+      { k: "03 · One fix at a time", h: "You approve it, then it is checked", shots: [["parallel-fix", "What it changes and how to undo it"], ["parallel-verified", "Run, then verify"]],
+        p: ["A fix shows what it changes, why, the risk, how to check it and how to undo it. Nothing runs until you tap Run.",
+            "Then the check runs again and says if it really worked. Parallel never rewrites your code."] },
+      { k: "04 · Tested", h: "On real failures", shots: [],
+        p: ["Tested on 240 failures collected from GitHub issues, Stack Overflow, documentation and forums: on the 203 that are real copied output, 175 right, 18 partly right, none confidently wrong.",
+            "The Console runs sessions side by side. Plans check the phone first. The Debugger steps through Python, JavaScript and C code with breakpoints."] }
     ] },
     chat: { name: "Meridian Chat", apk: "meridian-chat.apk", steps: [
       { k: "AI that lives on the phone", h: "Your models, your phone", shots: [],
