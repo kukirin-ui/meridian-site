@@ -239,9 +239,15 @@ html.still .rail i{transition:none}html.still .nudge{display:none}html.still .ra
             "With Core: Isolate mode and manual controls you set yourself. Screenshots of each step are on the way."] }
     ] },
     nullcloud: { name: "Meridian NullCloud", apk: "meridian-nullcloud.apk", steps: [
-      { k: "Links in, knowledge out", h: "Read, summarize, learn", shots: [],
-        p: ["Share a link or paste text. NullCloud returns a summary, the steps, or answers to your question, with a model on the phone or your provider.",
-            "What it learns goes to the shared library for the rest of the family. Screenshots of each step are on the way."] }
+      { k: "01 · Source", h: "A link, text or a PDF", shots: [["nullcloud-source", "Paste a link"], ["nullcloud-ask", "Pick what you want"]],
+        p: ["Share a link to NullCloud, paste text, or open a PDF. It opens the page and reads it.",
+            "Pick what you want: a summary, bullet or key points, the facts, a recipe, how-to steps, a claims check, simple words, a translation, or ask your own question. In any language you name."] },
+      { k: "02 · Result", h: "Read on this phone", shots: [["nullcloud-summary", "Summarize"], ["nullcloud-facts", "Knowledge & facts"]],
+        p: ["Run on this phone: the answer comes from a model running on the phone. No account, no server of its own.",
+            "Copy it, share it, save it as a file, or keep it in the Library, which stays in the app on this phone."] },
+      { k: "03 · Models", h: "Picked for phones", shots: [["nullcloud-presets", "Three presets"], ["nullcloud-found", "Models already on the phone"]],
+        p: ["Three presets: fast, balanced and strong. The one that fits the phone's memory is marked.",
+            "Find models on this phone lists the models you already have, with their size and folder. Tap Use to switch."] }
     ] }
   };
 
