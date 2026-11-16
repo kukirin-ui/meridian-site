@@ -269,6 +269,11 @@ footer b { color: var(--ink); font-weight: 600; }
 .loading { position: fixed; z-index: 3; left: 50%; bottom: 20px; transform: translateX(-50%); font: 600 12px/1 var(--display); letter-spacing: .28em; text-transform: uppercase; color: var(--mute); transition: opacity .6s; }
 .loading.done { opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .cue::after { animation: none; } }
+.newstrip{display:inline-flex;align-items:center;gap:10px;max-width:100%;margin-top:18px;padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(10,12,28,.55);color:#eef;text-decoration:none;font:500 14px/1.3 Manrope,system-ui,sans-serif;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.newstrip b{font:700 11px/1 Rajdhani,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7fe3ff;white-space:nowrap}
+.newstrip span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.newstrip i{font-style:normal;opacity:.8}
+.newstrip:focus-visible{outline:2px solid #7fe3ff;outline-offset:3px}
 </style>
 </head>
 <body>
@@ -291,7 +296,7 @@ footer b { color: var(--ink); font-weight: 600; }
     <small class="fps" id="fps"></small></div>
   <div><h3>Colour</h3><div class="swatches" id="sw-color" role="group" aria-label="Colour"></div>
     <small>Blue-purple first. Colours the theme and the pictures.</small></div>
-  <div><h3 class="pages-h">Pages</h3><nav class="pages" aria-label="Pages"><a href="showcase.html">Showcase</a><a href="docs.html">Docs</a><a href="about.html">About</a></nav></div>
+  <div><h3 class="pages-h">Pages</h3><nav class="pages" aria-label="Pages"><a href="showcase.html">Showcase</a><a href="docs.html">Docs</a><a href="about.html">About</a><a href="whatsnew.html">What's new</a></nav></div>
 </section>
 
 <nav class="rail" id="rail" aria-label="Chapters"></nav>
@@ -301,7 +306,7 @@ footer b { color: var(--ink); font-weight: 600; }
     <p class="eyebrow">Meridian Family · five Android apps</p>
     <h1>Five apps.<br>One living phone.</h1>
     <p>Meridian turns an Android phone into an AI workstation: models on the phone, Termux, performance controls and a knowledge cloud, connected through one hub. No root needed.</p>
-    
+    <a class="newstrip" href="whatsnew.html"><b>New in 2.5.6</b><span>Core connects without Wi-Fi</span><i aria-hidden="true">→</i></a>
   </section>
 
   <section class="sec family" id="s-family" data-u="1.2">
@@ -366,7 +371,7 @@ footer b { color: var(--ink); font-weight: 600; }
       <p class="mail">Email: <a href="mailto:kalyx.solutions@proton.me"><b>kalyx.solutions@proton.me</b></a></p></div>
   </section>
 </main>
-<footer><nav aria-label="Footer"><a href="#top">Back to the top</a><a href="about.html">About</a><a href="#s-maker">Contact</a><a href="showcase.html">Showcase</a><a href="docs.html">Docs</a></nav><b>Meridian Family</b> · © 2026 Alen Požun · Built on a phone</footer>
+<footer><nav aria-label="Footer"><a href="#top">Back to the top</a><a href="about.html">About</a><a href="#s-maker">Contact</a><a href="showcase.html">Showcase</a><a href="docs.html">Docs</a><a href="whatsnew.html">What's new</a></nav><b>Meridian Family</b> · © 2026 Alen Požun · Built on a phone</footer>
 <div class="progress" id="progress" aria-hidden="true"></div>
 <button class="track" id="track" type="button" aria-pressed="false"><span class="tk-ic" aria-hidden="true">▶</span><span class="tk-t">Play official Meridian track</span><span class="tk-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
 <p class="loading" id="loading" role="status">Loading the worlds…</p>
