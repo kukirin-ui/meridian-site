@@ -137,6 +137,14 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v260"><h2><span class="n">2.6.0</span>Core stays connected</h2>
+      <ul class="dots">
+        <li><span>2.5.9 switched Wireless debugging off once Core's helper was running. On a Galaxy S26 that stopped the helper, so Core asked to reconnect and Gaming showed it as not started. Core now leaves Wireless debugging as it is: it is encrypted and needs your pairing key.</span></li>
+        <li><span>Port 5555 (<code>adb tcpip</code>) is still handled: on a rooted phone Core closes it to the network once it is connected; without root Core warns you to run <code>adb usb</code>. The setting is now called <b>Close port 5555 after connecting</b> and always shows what is saved.</span></li>
+        <li><span>One Core screen: the link to the old classic Core screen is gone, so Core no longer has three different menus.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v259"><h2><span class="n">2.5.9</span>Clear jobs for every app, a safer Core</h2>
       <ul class="dots">
         <li><span>Every app now knows what this phone allows: Core's helper, root, or neither. Settings the phone cannot run are hidden, not shown greyed out.</span></li>
