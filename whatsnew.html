@@ -137,6 +137,14 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v261"><h2><span class="n">2.6.1</span>Reconnect finds the new port</h2>
+      <ul class="dots">
+        <li><span>Wireless debugging gets a new port every time it is turned on, and Android can still report the old one first. Core tried that old port, was refused and gave up, so <b>Reconnect</b> did nothing.</span></li>
+        <li><span>Core now reads the current port from Android when it is allowed to, and otherwise tries every port Android reports on this phone until one answers. After you turn Wireless debugging back on, Reconnect works without pairing again.</span></li>
+        <li><span>Turning Wireless debugging off still stops Core's helper on some phones (seen on a Galaxy S26); only root could prevent that. Leave it on: it is encrypted and needs your pairing key.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v260"><h2><span class="n">2.6.0</span>Core stays connected</h2>
       <ul class="dots">
         <li><span>2.5.9 switched Wireless debugging off once Core's helper was running. On a Galaxy S26 that stopped the helper, so Core asked to reconnect and Gaming showed it as not started. Core now leaves Wireless debugging as it is: it is encrypted and needs your pairing key.</span></li>
