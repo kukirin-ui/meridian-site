@@ -137,6 +137,14 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2614"><h2><span class="n">2.6.14</span>Cards that teach</h2>
+      <ul class="dots">
+        <li><span>Core now keeps every proven fix in one ICM form (intent, context, method), whichever app found it.</span></li>
+        <li><span>The fixer gets up to 3 matching proven fixes and the helper and judge up to 5, the most-found first, so the models learn from the library as it grows.</span></li>
+        <li><span>CPU clusters apply to the model chosen in llama.cpp settings (each model keeps its own), and a check shows the cores each running model really uses.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2613"><h2><span class="n">2.6.13</span>The fix ladder</h2>
       <ul class="dots">
         <li><span>Diagnose now fixes in up to three steps, each a model you pick: the <b>fixer</b> writes three candidates; if none passes, the <b>helper</b> looks at the problem anew; if that fails, the <b>judge</b> weighs both attempts and writes the last fix. Every fix that passes the Sandbox becomes a card in Core's library.</span></li>
@@ -377,5 +385,15 @@ window.MERIDIAN_EMBLEM = "data:image/webp;base64,UklGRuZzAABXRUJQVlA4WAoAAAAQAAA
     gl.uniform2f(uR, cv.width, cv.height); gl.uniform1f(uT, ms / 1000); gl.uniform1f(uS, W.scrollY / W.innerHeight); gl.drawArrays(gl.TRIANGLES, 0, 3); })(0);
 })();
 </script>
+<!-- meridian-download -->
+<a class="mdl-dl" href="https://github.com/kukirin-ui/meridian-releases/releases/latest" target="_blank" rel="noopener" aria-label="Download Meridian Family (latest release, Android)"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Download</a>
+<style>
+.mdl-dl{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:2147483000;display:inline-flex;align-items:center;gap:8px;
+  padding:13px 22px;border-radius:999px;font:700 16px/1 "Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.02em;text-decoration:none;
+  color:#05030c;background:#48d8ff;box-shadow:0 6px 22px rgba(72,216,255,.45),0 2px 6px rgba(0,0,0,.5);min-height:48px;-webkit-tap-highlight-color:transparent}
+.mdl-dl:hover{background:#7fe4ff}.mdl-dl:active{transform:translateY(1px)}
+.mdl-dl:focus-visible{outline:3px solid #eef3ff;outline-offset:3px}
+@media print{.mdl-dl{display:none}}
+</style>
 </body>
 </html>
