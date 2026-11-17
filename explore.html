@@ -229,14 +229,20 @@ html.still .rail i{transition:none}html.still .nudge{display:none}html.still .ra
             "The Console runs sessions side by side. Plans check the phone first. The Debugger steps through Python, JavaScript and C code with breakpoints."] }
     ] },
     chat: { name: "Meridian Chat", apk: "meridian-chat.apk", steps: [
-      { k: "AI that lives on the phone", h: "Your models, your phone", shots: [],
-        p: ["Run models on the phone with llama.cpp, or your own API key. Only the model you pick answers.",
-            "Linked through Core, Chat reaches the other apps. Screenshots of each step are on the way."] }
+      { k: "01 · Ask", h: "Your models, your phone", shots: [["chat-home", "Chat"]],
+        p: ["Run models on the phone with llama.cpp in Termux, or your own API key. Attach a screenshot, a file or a whole .zip with +."] },
+      { k: "02 · One menu", h: "Everything in reach", shots: [["chat-menu", "The menu"]],
+        p: ["Projects, instructions, memory and files; GitHub, Hugging Face and web search as connectors; the 493-card recipe pack, the shared library and skills."] },
+      { k: "03 · Tweaks", h: "The phone under the model", shots: [["chat-tweaks", "Tweaks"]],
+        p: ["Heat Guard pauses the model at the temperatures you set and Safeguard resumes it. Pick the CPU clusters llama.cpp runs on, and give every model its own settings."] }
     ] },
     gaming: { name: "Meridian Gaming", apk: "meridian-gaming.apk", steps: [
-      { k: "Performance, measured", h: "Real numbers from the phone", shots: [],
-        p: ["Live clocks for every CPU cluster and the GPU, memory and battery, read from the phone itself.",
-            "With Core: Isolate mode and manual controls you set yourself. Screenshots of each step are on the way."] }
+      { k: "01 · Dashboard", h: "Real numbers from the phone", shots: [["gaming-dashboard", "Dashboard"]],
+        p: ["Storage, network, CPU, GPU, RAM and battery, with live clocks, read from the phone itself."] },
+      { k: "02 · Advanced", h: "Every control, no root", shots: [["gaming-advanced", "Advanced"]],
+        p: ["CPU, cores and clusters, GPU, thermal, power, display, game mode, memory and system settings through Meridian Core. Every value is read back, and one tap resets all to default."] },
+      { k: "03 · Isolate", h: "Only the game runs", shots: [["gaming-isolate", "Isolate"]],
+        p: ["Tick the game. Everything else is force-stopped through Core, except what Android and the game need, and it stays that way while the game is open."] }
     ] },
     nullcloud: { name: "Meridian NullCloud", apk: "meridian-nullcloud.apk", steps: [
       { k: "01 · Source", h: "A link, text or a PDF", shots: [["nullcloud-source", "Paste a link"], ["nullcloud-ask", "Pick what you want"]],
