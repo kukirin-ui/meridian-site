@@ -137,6 +137,12 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2612"><h2><span class="n">2.6.12</span>The fixer sees what the program did</h2>
+      <ul class="dots">
+        <li><span>When the fixer's attempts fail, its second try now gets a trace of the failed attempt: for Python the variables that changed on each line, for Bash every command with its real values. Logic bugs print no error, so this shows the model what actually happened.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2611"><h2><span class="n">2.6.11</span>Parallel wakes the models</h2>
       <ul class="dots">
         <li><span>When Chat's fixer or reader is not running (after a speed test, a Fit check or a Termux restart), Parallel's Diagnose starts it again by itself with the exact settings Chat last used, then asks again. No more "Failed to connect" failures in the generator.</span></li>
