@@ -137,6 +137,16 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v267"><h2><span class="n">2.6.7</span>Two-model pipeline</h2>
+      <ul class="dots">
+        <li><span><b>Pipeline</b> in Chat's Tweaks: pick a small <b>reader</b> model and a <b>fixer</b>. Chat runs the reader as a second llama-server; both stay in memory but never compute at the same moment.</span></li>
+        <li><span>Diagnose now goes fix templates &rarr; reader &rarr; fixer. The reader answers in a fixed JSON shape (which file, which lines, what kind of fault, one sentence on what is wrong); the fixer gets only that region and the matching cards. If the reader is slow or off, the old path is used.</span></li>
+        <li><span>The Generator counts fixes by template, by model with the reader and by model without it, so the difference shows in numbers.</span></li>
+        <li><span><b>Speed test</b> is back in sight: on the Local model card, and "Test both" for the reader and the fixer.</span></li>
+        <li><span>Fit check runs its full memory test again.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v266"><h2><span class="n">2.6.6</span>Repair that works on a phone</h2>
       <ul class="dots">
         <li><span><b>Fix templates</b>: Diagnose first tries known fix patterns at the spot the error points to (a misspelled name, a wrong operator, off by one, a missing bracket or keyword, an inverted condition, a missing import), in all 10 languages. Every attempt runs in the Sandbox; no model is needed for these.</span></li>
