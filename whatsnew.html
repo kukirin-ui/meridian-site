@@ -137,6 +137,34 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v264"><h2><span class="n">2.6.4</span>Tweaks</h2>
+      <ul class="dots">
+        <li><span>Chat's <b>Tweaks</b> page now holds everything about the local models: the model that answers, its llama.cpp settings, advanced llama-server options (memory lock, MoE experts on CPU, thread priority, cache reuse, sampling, a draft model), and the list of models with speed tests and downloads.</span></li>
+        <li><span>Temperatures come from Android's thermal service through Core, so CPU, GPU, battery and skin readings show on phones that hide their sensors. Heat Guard goes up to 65 °C for the battery.</span></li>
+        <li><span>A model you chose stays: when its context is full, Chat gives it a bigger context instead of switching to another model.</span></li>
+        <li><span><b>Ask about this phone</b> now answers with the readings and your own speed tests, not a guess.</span></li>
+        <li><span>Local models and Cluster left the menu; the connection button is back in the right corner.</span></li>
+      </ul>
+    </section>
+
+    <section class="doc rv" id="v263"><h2><span class="n">2.6.3</span>Clusters: where the model runs</h2>
+      <ul class="dots">
+        <li><span>On Chat's Phone page, CPU clusters only choose where the local model runs: tick the clusters and Termux starts llama-server on those cores (taskset). No root needed.</span></li>
+        <li><span>The cluster limit sliders are gone.</span></li>
+      </ul>
+    </section>
+
+    <section class="doc rv" id="v262"><h2><span class="n">2.6.2</span>Chat's Phone page</h2>
+      <ul class="dots">
+        <li><span><b>Phone</b> in Chat's menu is now one page: the phone and its chip by the names Android reports, every temperature sensor (read through Core), memory, the model that answers and all of its llama.cpp settings with sliders. <b>Fit check</b> opens from there.</span></li>
+        <li><span><b>Heat Guard</b> pauses the local model when the battery, CPU, GPU or AP reaches its limit; <b>Safeguard</b> lets it continue once everything has cooled down.</span></li>
+        <li><span><b>CPU clusters</b> as the kernel lists them: tick the ones the model runs on. With root through Core you can set each cluster's limit. Core itself now shows only the number of clusters.</span></li>
+        <li><span>Replies now sit in a bubble. The model button left the header, and Settings keeps only look and feel.</span></li>
+        <li><span>New connectors: <b>GitHub</b> (add a file from a repository to your message) and <b>Hugging Face</b> (a token for gated models), next to Web search.</span></li>
+        <li><span>Gaming's number settings got the same sliders.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v261"><h2><span class="n">2.6.1</span>Reconnect finds the new port</h2>
       <ul class="dots">
         <li><span>Wireless debugging gets a new port every time it is turned on, and Android can still report the old one first. Core tried that old port, was refused and gave up, so <b>Reconnect</b> did nothing.</span></li>
