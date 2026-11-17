@@ -137,6 +137,14 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2611"><h2><span class="n">2.6.11</span>Parallel wakes the models</h2>
+      <ul class="dots">
+        <li><span>When Chat's fixer or reader is not running (after a speed test, a Fit check or a Termux restart), Parallel's Diagnose starts it again by itself with the exact settings Chat last used, then asks again. No more "Failed to connect" failures in the generator.</span></li>
+        <li><span>When the fixer is another model than the one that answers, Tweaks › llama.cpp settings lets you edit the fixer's own settings.</span></li>
+        <li><span>Model lists show the quantization (Q4_K_M, Q8_0), so two files of the same model can be told apart.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2610"><h2><span class="n">2.6.10</span>Counters you can reset, failures you can read</h2>
       <ul class="dots">
         <li><span>Parallel's generator has <b>Reset counters</b>, and a <b>Last failures</b> list that says why each case was not fixed, with <b>Copy failures</b>.</span></li>
