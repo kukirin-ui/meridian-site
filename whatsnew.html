@@ -137,6 +137,15 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2613"><h2><span class="n">2.6.13</span>The fix ladder</h2>
+      <ul class="dots">
+        <li><span>Diagnose now fixes in up to three steps, each a model you pick: the <b>fixer</b> writes three candidates; if none passes, the <b>helper</b> looks at the problem anew; if that fails, the <b>judge</b> weighs both attempts and writes the last fix. Every fix that passes the Sandbox becomes a card in Core's library.</span></li>
+        <li><span>Before each next step, Parallel's Debugger runs the failed attempt under the real debugger (pdb, node inspect, lldb or gdb) and hands over the call stack and variables at the line that matters. Bash gets a bash -x trace.</span></li>
+        <li><span>Every model in use has its own full llama.cpp settings, and the cards in Tweaks fold away.</span></li>
+        <li><span>The Sandbox runs 4 jobs at once instead of 2, so cases no longer queue behind each other.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2612"><h2><span class="n">2.6.12</span>The fixer sees what the program did</h2>
       <ul class="dots">
         <li><span>When the fixer's attempts fail, its second try now gets a trace of the failed attempt: for Python the variables that changed on each line, for Bash every command with its real values. Logic bugs print no error, so this shows the model what actually happened.</span></li>
