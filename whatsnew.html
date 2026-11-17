@@ -137,6 +137,37 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v259"><h2><span class="n">2.5.9</span>Clear jobs for every app, a safer Core</h2>
+      <ul class="dots">
+        <li><span>Every app now knows what this phone allows: Core's helper, root, or neither. Settings the phone cannot run are hidden, not shown greyed out.</span></li>
+        <li><span>Gaming's tweaks run through Core's helper, the same way Chat's did. Before, Gaming sent some of them to Termux, where they did nothing. Gaming no longer needs Termux at all.</span></li>
+        <li><span>The apps share data through Core on checked channels: only the app that owns a piece of data can change it, and Core checks every write.</span></li>
+        <li><span>Core closes the debugging port once it is connected: Wireless debugging is switched off, and on a rooted phone port 5555 is blocked from the Wi-Fi. Without root, Core warns you to run <code>adb usb</code>. You can turn this off in Core's settings.</span></li>
+        <li><span>One place for each thing: Settings is the gear at the top of every app. Chat no longer carries a copy of Gaming's tweaks; change them in Gaming.</span></li>
+        <li><span>Removed what had no place: Parallel's hidden mesh, and Gaming's model benchmark, Vulkan driver switch and agent (models belong to Chat).</span></li>
+      </ul>
+    </section>
+
+    <section class="doc rv" id="v258"><h2><span class="n">2.5.8</span>Two clear ways to connect Core</h2>
+      <ul class="dots">
+        <li><span>Core's pairing sheet now has two buttons: <b>Wi-Fi debugging</b> (pairing, unchanged) and <b>USB debugging</b> (<code>adb tcpip 5555</code>, then <b>Connect over USB</b>).</span></li>
+        <li><span>USB: Core no longer asks "Allow USB debugging?" at launch and gives up before you can answer. A tap on Connect over USB is never lost, and after you allow it Core connects again by itself.</span></li>
+        <li><span>Chat: no flicker and no jumping after Apply, Load or Add. The screen stays where you left it.</span></li>
+        <li><span>Chat: Phone tweaks are compact, one line each, with the choice and Apply side by side.</span></li>
+      </ul>
+    </section>
+
+    <section class="doc rv" id="v257"><h2><span class="n">2.5.7</span>USB route fixed, Tweaks back in Chat</h2>
+      <p>A tester on a Galaxy Z Fold4 found that the USB route from 2.5.6 could not be used. Thanks, Tamara.</p>
+      <ul class="dots">
+        <li><span>Core's page refreshes every 2.5 seconds, and it rebuilt the pairing sheet each time. <b>No Wi-Fi? Connect over USB instead</b> closed within a second, and the message under the button vanished.</span></li>
+        <li><span>The pairing sheet now stays as you left it: folded parts stay open, and a typed code stays typed.</span></li>
+        <li><span>After <b>Connect over USB</b>, the line under the button follows Core live: Core's own reason if it fails (for example, nothing answers on port 5555), or <b>Connected over USB</b>, after which the sheet closes.</span></li>
+        <li><span><b>Chat › Local models › Settings for this model</b> has <b>Phone tweaks</b> again: clusters, GPU, heat, memory and Release RAM, the same tweaks as Meridian Gaming, through Core and without root. Every command is shown before you approve it.</span></li>
+        <li><span>The model's number fields (threads, cores, context, GPU layers, batch, micro batch, max reply) now line up two per row. A label that wraps no longer pushes its field out of line.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v256"><h2><span class="n">2.5.6</span>Core connects without Wi-Fi</h2>
       <p>Wireless debugging needs Wi-Fi, so a phone without working Wi-Fi could not start Core's helper. Now there is a second way.</p>
       <ul class="dots">
