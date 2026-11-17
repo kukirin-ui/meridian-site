@@ -137,6 +137,16 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v266"><h2><span class="n">2.6.6</span>Repair that works on a phone</h2>
+      <ul class="dots">
+        <li><span><b>Fix templates</b>: Diagnose first tries known fix patterns at the spot the error points to (a misspelled name, a wrong operator, off by one, a missing bracket or keyword, an inverted condition, a missing import), in all 10 languages. Every attempt runs in the Sandbox; no model is needed for these.</span></li>
+        <li><span>When the templates don't find it, the <b>model</b> answers in a fixed JSON shape with whole functions (llama-server enforces the shape), thinking is off for repairs, up to 3 candidates are tested, and the best failed one goes back with its new error once more.</span></li>
+        <li><span>Everything starts at <b>1 line</b>: the generator writes tiny real programs (1, 5, 10, 25 and 50 lines) in every language, and Diagnose and Code on request take 1 to 5000 lines.</span></li>
+        <li><span><b>Code on request</b> checks the tests first: tests that don't even run are repaired before they are locked, so a broken test can't block the program.</span></li>
+        <li><span>The Generator shows how many cases were fixed by templates and how many by the model.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v265"><h2><span class="n">2.6.5</span>The generator</h2>
       <ul class="dots">
         <li><span><b>Generator</b> in Parallel's Diagnose: writes real programs in 10 languages (Python, C, C++, JavaScript, TypeScript, Bash, Go, Rust, Lua, Ruby), from 100 up to 5000 lines, puts 1 to 3 faults in them and runs them in Termux for the real error. With <b>Auto feed</b> on, every case goes to Diagnose by itself.</span></li>
