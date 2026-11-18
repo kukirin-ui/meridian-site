@@ -137,6 +137,14 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2621"><h2><span class="n">2.6.21</span>The models stop timing out</h2>
+      <ul class="dots">
+        <li><span>Parallel gives the models one case at a time. Fix templates still work on three cases at once, but a local model answers one request at a time, and three cases queued up on it ran out of time while they waited.</span></li>
+        <li><span>A model stops writing by itself before its deadline, so an answer that is given up on no longer blocks the model for the next case.</span></li>
+        <li><span>A model with Thinking on gets a thinking budget it can finish on a phone.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2620"><h2><span class="n">2.6.20</span>A generator that does not repeat itself</h2>
       <ul class="dots">
         <li><span>Parallel's generator remembers every case it made, across runs. A case it has seen before is made again with a new seed, and when a size has nothing new left (the 1-line programs run out fast) it moves up a size by itself, so cases get harder instead of repeating.</span></li>
