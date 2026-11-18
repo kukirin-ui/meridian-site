@@ -137,6 +137,26 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2627"><h2><span class="n">2.6.27</span>Fixes on the skill tree</h2>
+      <ul class="dots">
+        <li><span>Every proven fix is now placed on the Code Master skill tree: the kind of error, the language and the patterns that fixed it each map to a skill (for example L-16 Debugging method, L-08 Algorithm design, L-13 JavaScript). The skills travel with the card into Meridian Core, in its intent, context and method form.</span></li>
+        <li><span>Diagnose shows how many proven fixes each skill holds, and a model working on a case now gets the skill card that kind of error calls for, next to its language card.</span></li>
+      </ul>
+    </section>
+
+    <section class="doc rv" id="v2626"><h2><span class="n">2.6.26</span>Templates read the cards</h2>
+      <ul class="dots">
+        <li><span>Fix templates now use the proven cards in Meridian Core. A card whose wrong line has the same shape as a line in the new case (numbers aside) has its change tried first, so a bug the library has seen before is often fixed on the first attempt.</span></li>
+        <li><span>Cards that a template proved also seed what the templates learned, so the order of attempts starts from the library's experience instead of from zero.</span></li>
+      </ul>
+    </section>
+
+    <section class="doc rv" id="v2625"><h2><span class="n">2.6.25</span>Two bugs at once</h2>
+      <ul class="dots">
+        <li><span>Fix templates now measure how close a wrong output is to the right one: matching words, and numbers by how near they are. Fixing one of two bugs moves the output closer, the search sees it as progress and builds the second fix on top, instead of throwing the half-fix away.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2624"><h2><span class="n">2.6.24</span>Fix templates that learn</h2>
       <ul class="dots">
         <li><span>Every Sandbox run of a fix template now updates a success estimate for that pattern, per language and kind of error (wrong output, syntax, unknown name, import, type, crash). Templates are tried in the order of what has actually worked, so a kind of bug that took 7 tries the first time takes 2 the next.</span></li>
