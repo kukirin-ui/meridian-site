@@ -137,6 +137,13 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2632"><h2><span class="n">2.6.32</span>Tools that stand alone, seats in order</h2>
+      <ul class="dots">
+        <li><span>The fix templates and the debugger work on their own, with or without a model. With no model set up, Parallel still runs them and says plainly that no model was there to try more.</span></li>
+        <li><span>Model seats run strictly in order, 1, 2, then 3, and a seat with no model is skipped. Model 1 no longer stands in for an empty seat 2.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2631"><h2><span class="n">2.6.31</span>A fix ladder that builds on itself</h2>
       <ul class="dots">
         <li><span>The models write their fix as plain code, not inside JSON. The small local model no longer breaks its own answer with escape characters, and it gets the program as it really is.</span></li>
