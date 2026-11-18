@@ -137,6 +137,13 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2630"><h2><span class="n">2.6.30</span>Your own code in the Sandbox</h2>
+      <ul class="dots">
+        <li><span>Diagnose takes your own program: paste Python, C, C++ or JavaScript code (up to 5000 lines) and the output it should print. The Sandbox runs it as it is, then the fix templates and the models try to fix it, the same way they fix a practice case.</span></li>
+        <li><span>A fix counts only when a real run in the Sandbox prints exactly the expected output and exits with 0. Without an expected output your code runs once and you see what it printed and its errors; nothing is called fixed.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2629"><h2><span class="n">2.6.29</span>Method typos and Go type bugs</h2>
       <ul class="dots">
         <li><span>Fix templates know the built-in method names of JavaScript, Python and Go, so a typo like toUppercase becomes toUpperCase on the first try. In Go, a number joined to a string becomes a string.</span></li>
