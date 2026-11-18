@@ -137,6 +137,14 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2622"><h2><span class="n">2.6.22</span>Templates and models work together</h2>
+      <ul class="dots">
+        <li><span>When fix templates get part of the way (a build error fixed, one of three faults gone), the models start from that program and its real remaining error instead of the original.</span></li>
+        <li><span>Every failed step says why: no answer in time, no change, does not build, or wrong output.</span></li>
+        <li><span>A language whose tools are missing, such as TypeScript without tsc, is left out of the run instead of failing every few cases.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2621"><h2><span class="n">2.6.21</span>The models stop timing out</h2>
       <ul class="dots">
         <li><span>Parallel gives the models one case at a time. Fix templates still work on three cases at once, but a local model answers one request at a time, and three cases queued up on it ran out of time while they waited.</span></li>
