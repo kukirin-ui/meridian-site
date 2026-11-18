@@ -137,6 +137,13 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2629"><h2><span class="n">2.6.29</span>Method typos and Go type bugs</h2>
+      <ul class="dots">
+        <li><span>Fix templates know the built-in method names of JavaScript, Python and Go, so a typo like toUppercase becomes toUpperCase on the first try. In Go, a number joined to a string becomes a string.</span></li>
+        <li><span>Diagnose's counters show the fixes made by models 1, 2 and 3 correctly.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2628"><h2><span class="n">2.6.28</span>Type bugs fixed on the first try</h2>
       <ul class="dots">
         <li><span>Fix templates now handle type bugs: a number written as text ("3" - 1) loses its quotes, and in Python a text + number join gets str() around the number. These used to crash, fail to build or segfault until a model guessed the fix.</span></li>
