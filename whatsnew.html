@@ -137,6 +137,14 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2620"><h2><span class="n">2.6.20</span>A generator that does not repeat itself</h2>
+      <ul class="dots">
+        <li><span>Parallel's generator remembers every case it made, across runs. A case it has seen before is made again with a new seed, and when a size has nothing new left (the 1-line programs run out fast) it moves up a size by itself, so cases get harder instead of repeating.</span></li>
+        <li><span>The status line says what is happening now: templates, model 1 starting and writing fixes, the debugger, 2 or 3, instead of showing the last template count while a model works.</span></li>
+        <li><span>The Sandbox shows its real 4 sessions.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2619"><h2><span class="n">2.6.19</span>Models 1, 2, 3 and four new recipes</h2>
       <ul class="dots">
         <li><span>Chat's Tweaks has a model board instead of the system picker: three slots on top show which models are 1, 2 and 3 and whether they run, and every model in the list has its own 1 2 3 boxes and an × to take it off the list (the file stays).</span></li>
