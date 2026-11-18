@@ -137,6 +137,14 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2619"><h2><span class="n">2.6.19</span>Models 1, 2, 3 and four new recipes</h2>
+      <ul class="dots">
+        <li><span>Chat's Tweaks has a model board instead of the system picker: three slots on top show which models are 1, 2 and 3 and whether they run, and every model in the list has its own 1 2 3 boxes and an × to take it off the list (the file stays).</span></li>
+        <li><span>The fix pipeline reads 1 → 2 → 3: model 1 writes three fixes, 2 looks at the best failed one with the debugger's view, 3 decides last. Parallel's counters and steps use the same numbers.</span></li>
+        <li><span>The knowledge pack gains four proven recipes (Vanguard IOMMU BSOD, phone inference battery drain, local vision in Termux with llama.cpp mtmd, OpenStick EDL backup) and one unreviewed note. Every fix card now carries its intent, context and method, and small models get that form when the whole card would not fit.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2618"><h2><span class="n">2.6.18</span>Every model on the phone, the fix library in Chat</h2>
       <ul class="dots">
         <li><span>Chat now finds model files anywhere on the phone: Termux, all of the phone's storage and SD cards. A listed model whose file was moved is found again by itself instead of being called missing.</span></li>
