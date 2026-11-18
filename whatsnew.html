@@ -137,6 +137,15 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2631"><h2><span class="n">2.6.31</span>A fix ladder that builds on itself</h2>
+      <ul class="dots">
+        <li><span>The models write their fix as plain code, not inside JSON. The small local model no longer breaks its own answer with escape characters, and it gets the program as it really is.</span></li>
+        <li><span>Three seats, each building on the one before: model 1 works together with the fix templates (the model finds the place, the templates finish the fix), model 2 works with the debugger and sees everything model 1 tried, model 3 gets all of it. A change that already failed is never tried again.</span></li>
+        <li><span>Models of any size: when the phone has too little free memory for all of them, they load one after another. When nothing works, Parallel says Not fixed and shows what every step did.</span></li>
+        <li><span>Meridian Core keeps lessons next to proven fixes: what was tried and failed, so no app tries it again. The practice feed brings more of what is still hard and less of what is already mastered.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2630"><h2><span class="n">2.6.30</span>Your own code in the Sandbox</h2>
       <ul class="dots">
         <li><span>Diagnose takes your own program: paste Python, C, C++ or JavaScript code (up to 5000 lines) and the output it should print. The Sandbox runs it as it is, then the fix templates and the models try to fix it, the same way they fix a practice case.</span></li>
