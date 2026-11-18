@@ -137,6 +137,12 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2628"><h2><span class="n">2.6.28</span>Type bugs fixed on the first try</h2>
+      <ul class="dots">
+        <li><span>Fix templates now handle type bugs: a number written as text ("3" - 1) loses its quotes, and in Python a text + number join gets str() around the number. These used to crash, fail to build or segfault until a model guessed the fix.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2627"><h2><span class="n">2.6.27</span>Fixes on the skill tree</h2>
       <ul class="dots">
         <li><span>Every proven fix is now placed on the Code Master skill tree: the kind of error, the language and the patterns that fixed it each map to a skill (for example L-16 Debugging method, L-08 Algorithm design, L-13 JavaScript). The skills travel with the card into Meridian Core, in its intent, context and method form.</span></li>
