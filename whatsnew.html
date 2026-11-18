@@ -137,6 +137,13 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2624"><h2><span class="n">2.6.24</span>Fix templates that learn</h2>
+      <ul class="dots">
+        <li><span>Every Sandbox run of a fix template now updates a success estimate for that pattern, per language and kind of error (wrong output, syntax, unknown name, import, type, crash). Templates are tried in the order of what has actually worked, so a kind of bug that took 7 tries the first time takes 2 the next.</span></li>
+        <li><span>Old results fade, so the order follows the bugs of now. Diagnose shows what was learned for each kind of error.</span></li>
+      </ul>
+    </section>
+
     <section class="doc rv" id="v2623"><h2><span class="n">2.6.23</span>Model 1 searches like the templates</h2>
       <ul class="dots">
         <li><span>Model 1 no longer bets on three big rewrites. It tries up to 12 small fixes, one line or one expression each, and the Sandbox checks every one as it arrives, stopping at the first that passes.</span></li>
