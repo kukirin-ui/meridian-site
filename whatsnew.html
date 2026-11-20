@@ -137,6 +137,95 @@ body > .lsn.on small { display: none; }
       <div class="lsn-slot"><div class="lsn" id="lsn-docs"></div></div>
     </header>
 
+    <section class="doc rv" id="v2658"><h2><span class="n">2.6.58</span>Meridian Family release</h2>
+      <ul class="dots">
+        <li><span>feat(parallel): ICM heal is back, under Tools &gt; Doctor</span></li>
+        <li><span>fix(parallel): a tool under Plan &gt; Tools to install opens its commands on the Build page</span></li>
+        <li><span>fix(parallel): Tools to install on the Plan page add their steps (they did nothing)</span></li>
+        <li><span>fix(chat): an empty Add (memory fact, seat) says what to type instead of doing nothing (pagesweep)</span></li>
+        <li><span>feat(tools): build-local.sh builds, signs and installs on the phone without GitHub</span></li>
+        <li><span>test: retire the tests of Parallel&#x27;s mesh that Phase C removed (1887e4a), keep them in tests/retired</span></li>
+        <li><span>test: bridgecheck knows the guarded older Core bridge names and keeps an alias to its own scope</span></li>
+        <li><span>test(parallel): Diagnose page tests wait for the tapped job instead of a fixed 0.7 s</span></li>
+        <li><span>test(chat): termuxconnect follows the model picker on the Tweaks page</span></li>
+        <li><span>test(gaming): looktest reads the gauge ring from ::before (041c6fc draws it as ticks there)</span></li>
+        <li><span>fix(chat): router-picked cards can make a learned card; one lesson is one card</span></li>
+        <li><span>test(chat): scrolltest checks the llama.cpp settings on the Tweaks page</span></li>
+        <li><span>fix(chat): Tweaks page fixes from the test suite</span></li>
+        <li><span>fix(chat): a cut model scan no longer marks every model missing; help on Tweaks</span></li>
+        <li><span>fix(chat): the phone cluster (cluster-switch.js) is back in Chat&#x27;s menu</span></li>
+        <li><span>fix(chat): the Tweaks page shows the GPU clock and each cluster&#x27;s Now · Limit again</span></li>
+        <li><span>fix(chat): Settings has Models and Data again (Import, Delete all chats)</span></li>
+        <li><span>feat(nullcloud): Chat&#x27;s models through Core come first; own 8083 only as the fallback</span></li>
+        <li><span>chore(release): Meridian 2.6.58 (NullCloud fixed, Chat&#x27;s models shared through Core)</span></li>
+        <li><span>feat(nullcloud): own model first, then Chat&#x27;s free model, all through Core</span></li>
+        <li><span>fix(core): read /slots as text so a cut answer still shows a busy slot</span></li>
+        <li><span>chore(pins): Chat, Gaming, Parallel, NullCloud take the port topology with the tlm.work gate</span></li>
+        <li><span>feat(core): share Chat&#x27;s model servers through Core (ModelGate)</span></li>
+        <li><span>fix(nullcloud): restore the working reader from cc07d60</span></li>
+        <li><span>Match NullCloud availability checks to the shared Meridian bridge</span></li>
+        <li><span>Document NullCloud inference over the shared Core bridge</span></li>
+        <li><span>Cover Chat reader endpoint selection in NullCloud tests</span></li>
+        <li><span>Harden NullCloud Core bridge and honor Chat reader endpoint</span></li>
+        <li><span>Verify Core cancellation and absence of the old endpoint</span></li>
+        <li><span>Complete Core bridge test harness and remove stale model fixture</span></li>
+        <li><span>Test NullCloud through the shared Meridian Core bridge</span></li>
+        <li><span>Clean NullCloud model-only remnants and clarify Core bridge privacy</span></li>
+        <li><span>Remove obsolete NullCloud local model lifecycle</span></li>
+        <li><span>Route NullCloud inference and app messaging through the shared Core bridge</span></li>
+        <li><span>fix(nullcloud): retain manual device details in Tools</span></li>
+        <li><span>test(nullcloud): cover restored reader and Chat-hosted inference</span></li>
+        <li><span>restore(nullcloud): route reading through Meridian Chat and Core</span></li>
+        <li><span>restore(nullcloud): bring back reader, library and suite tools without model UI</span></li>
+        <li><span>fix(nullcloud): remove legacy model preset dependency</span></li>
+        <li><span>cleanup(nullcloud): remove obsolete Chat mode handler</span></li>
+        <li><span>polish(nullcloud): remove family mode and clarify standalone server</span></li>
+        <li><span>test(nullcloud): verify manual model selection and single 8083 server</span></li>
+        <li><span>refactor(nullcloud): keep standalone local model workflow only</span></li>
+        <li><span>fix(nullcloud): remove Chat mode and model catalogue UI</span></li>
+        <li><span>refactor(nullcloud): remove Chat model coupling and legacy server path</span></li>
+        <li><span>refactor(nullcloud): remove model catalogue and auto-download flow</span></li>
+        <li><span>chore(release): bump Meridian to 2.6.57</span></li>
+        <li><span>docs(nullcloud): document single standalone server on 8083</span></li>
+        <li><span>fix(nullcloud): use one local inference server on 8083</span></li>
+        <li><span>docs(nullcloud): align API 8083 and inference 8084</span></li>
+        <li><span>fix(nullcloud): move model inference to port 8084</span></li>
+        <li><span>fix(nullcloud): move legacy endpoint from 8080 to 8083</span></li>
+        <li><span>Resolve Chat model file for NullCloud port isolation</span></li>
+        <li><span>Start NullCloud family reading model on dedicated port</span></li>
+        <li><span>Test NullCloud port isolation in both family modes</span></li>
+        <li><span>Document NullCloud always isolated on port 8083</span></li>
+        <li><span>Clarify dedicated NullCloud model server behavior</span></li>
+        <li><span>Route all NullCloud inference through dedicated port 8083</span></li>
+        <li><span>Clarify NullCloud family reader port behavior</span></li>
+        <li><span>Cover NullCloud family reader port isolation</span></li>
+        <li><span>Document NullCloud isolated server lifecycle</span></li>
+        <li><span>Clarify NullCloud dedicated family and standalone port</span></li>
+        <li><span>Isolate NullCloud family reader on port 8083</span></li>
+        <li><span>Fix NullCloud port test assertion</span></li>
+        <li><span>Test NullCloud dedicated model port 8083</span></li>
+        <li><span>Document NullCloud standalone inference port 8083</span></li>
+        <li><span>Move NullCloud standalone model server to port 8083</span></li>
+        <li><span>Fix Termux website update payload size limit</span></li>
+        <li><span>Harden release uploads with per-asset retry and resume</span></li>
+        <li><span>Meridian 2.6.55 model intelligence</span></li>
+        <li><span>Add Meridian installation instructions</span></li>
+        <li><span>Fix Meridian one-confirmation release pipeline</span></li>
+        <li><span>2.6.44: measure model chance, code returned, applied</span></li>
+        <li><span>2.6.43: smart profile with preset toggle, adaptive CTX, extract after &lt;/think&gt;</span></li>
+        <li><span>2.6.42: extract code from thinking-only replies, or pass reasoning forward</span></li>
+        <li><span>2.6.41: reject thinking-only model replies (no code block)</span></li>
+        <li><span>2.6.40: zero-telemetry note, append-only audit log, detonation check before apply</span></li>
+        <li><span>2.6.39: reject placeholder/garbage model replies before applying</span></li>
+        <li><span>2.6.38: fix syntax error in diag-fix (literal newline in top-3 injection)</span></li>
+        <li><span>2.6.37: Ochiai auto-applied in localize when coverage present, mining proposal in candidates</span></li>
+        <li><span>2.6.36: restore full structural retrieval (TF-IDF, BM25, PATH, detailed mining)</span></li>
+        <li><span>2.6.35: top-3 in fixer prompt, mining, Ochiai auto-rank, regressionOk, structural retrieval</span></li>
+        <li><span>2.6.34: full structural retrieval, verified mining on proven cards, Ochiai, top-3 seat context, UI, competitors</span></li>
+      </ul>
+      <p><a href="https://github.com/kukirin-ui/meridian-releases/releases/tag/v2.6.58-beta" target="_blank" rel="noopener">Release assets and checksums</a></p>
+    </section>
+
     <section class="doc rv" id="v2657"><h2><span class="n">2.6.57</span>Meridian Family release</h2>
       <ul class="dots">
         <li><span>fix(nullcloud): remove legacy model preset dependency</span></li>
