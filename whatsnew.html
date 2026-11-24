@@ -139,6 +139,8 @@ body > .lsn.on small { display: none; }
 
 
 
+
+
     <section class="doc rv" id="v3000"><h2><span class="n">3.0.00</span>Meridian Family release</h2>
       <ul class="dots">
         <li><span><b>Core is the family&#x27;s mind.</b> One library and one memory for all five apps, in one database inside Core: documents, recipe cards, proven fixes, lessons and learned cards. What Core trusts rises only with evidence, and every change of trust is written to the Trust Ledger, a hash chain anyone can verify.</span></li>
@@ -153,7 +155,7 @@ body > .lsn.on small { display: none; }
         <li><span><b>The internet switch.</b> One switch per app and a master switch in Core; Hard offline drops all internet traffic of the Meridian apps and Termux while the phone&#x27;s own network keeps working.</span></li>
         <li><span><b>The whole family from the release, from any app&#x27;s drawer:</b> what you are missing, what is behind, versions and sizes, one tap to update.</span></li>
         <li><span><b>A model-free helper in every app and the Core Reasoner,</b> which names the three likeliest causes of a failure and the check that tells them apart, without a model.</span></li>
-        <li><span><b>14 job adapters on one local model:</b> six code languages, a fixer and a worker for Termux, a judge, recipe cards, Android, local models, networking and conversation. Each answer gets the adapter its job needs, and the Adapters page shows every one.</span></li>
+        <li><span><b>14 LoRA adapters, made only for Qwen3.5-4B.</b> Meridian&#x27;s own adapters were trained exclusively on Qwen3.5-4B: six code languages, a fixer and a worker for Termux, a judge, recipe cards, Android, local models, networking and conversation. Each answer gets the adapter its job needs, and the Adapters page shows every one. They load only with a Qwen3.5-4B model (any quant of it, Q4_K_M recommended); with any other model they stay off and that model answers on its own.</span></li>
         <li><span><b>Me mode:</b> your message is your permission. Commands run at once, files are checked in a sandbox and the old file is backed up first, and anything destructive waits for your tap.</span></li>
         <li><span><b>Teacher mode:</b> when a local model&#x27;s command or file fails, an online model you choose tries the same turn, and its passing fix becomes a training example for the local adapter. Optionally, the teacher also checks local answers in the background.</span></li>
         <li><span><b>Any model can have a program built:</b> Chat asks Parallel to write it, test it and deliver it, and the result comes back into the conversation.</span></li>
