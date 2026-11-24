@@ -108,6 +108,7 @@ body.gal-open .bar,body.gal-open .hint{opacity:0;pointer-events:none}
 .dlmeta{font-size:12.5px;line-height:1.55;color:var(--mute);overflow-wrap:anywhere}
 .dlmeta code{font-size:11.5px;color:rgba(238,243,255,.8)}
 .beta{display:inline-block;margin-left:8px;padding:3px 8px;border-radius:10px;border:1px solid rgba(72,216,255,.5);font:700 10px/1 var(--display);letter-spacing:.18em;color:var(--cyan);vertical-align:middle}
+.beta[hidden]{display:none}
 /* Inside a world: its living picture is behind the steps (world.html in a frame, the app's own engine), the steps sit
    on glass, and the lines, counters and buttons take the world's colour (--w, --w2, set when it opens). */
 #gal{--w:#48d8ff;--w2:#b45cff;--wrgb:72,216,255}
@@ -277,11 +278,12 @@ html.still .rail i{transition:none}html.still .nudge{display:none}html.still .ra
       '</div><div class="txt"><p class="k">' + esc(s.k) + '</p><h2>' + esc(s.h) + '</h2>' + s.p.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join("") + '</div></article>';
   }
   function dlHtml(g) {
-    return '<article class="slide"><div class="txt dl"><p class="k">Download</p><h2>' + esc(g.name) + '<span class="beta">BETA</span></h2><p>' + esc(REQ) + '</p>' +
+    return '<article class="slide"><div class="txt dl"><p class="k">Download</p><h2>' + esc(g.name) + '<span class="beta" data-beta hidden>BETA</span></h2><p>' + esc(REQ) + '</p>' +
       '<a class="dlbtn off" data-dl="' + g.apk + '" href="https://github.com/' + REPO + '/releases">Checking the release…</a>' +
       '<p class="dlmeta" data-meta="' + g.apk + '">Android asks once to allow installing from your browser. The file is signed with the same key as the other four apps.</p></div></article>';
   }
-  /* The release is read from GitHub's public API: name, size and SHA-256 come from the release itself, never typed in. */
+  /* The release is read from GitHub's public API: name, size and SHA-256 come from the release itself, never typed in.
+     The BETA mark too: shown only while the release GitHub serves is a pre-release or a -beta tag (3.0.00 is stable). */
   function fillDl() {
     var apply = function () {
       Array.prototype.forEach.call(track.querySelectorAll("[data-dl]"), function (a) {
@@ -290,8 +292,10 @@ html.still .rail i{transition:none}html.still .nudge{display:none}html.still .ra
           a.classList.remove("off"); a.href = as.browser_download_url; a.textContent = "Download " + (rel.tag_name || "");
           var dg = String(as.digest || "").replace(/^sha256:/, "");
           if (meta) meta.innerHTML = esc((as.size / 1048576).toFixed(1) + " MB · " + new Date(as.updated_at || rel.published_at).toLocaleDateString()) + (dg ? '<br>SHA-256 <code>' + esc(dg) + '</code>' : "") + '<br>' + esc("Android asks once to allow installing from your browser.");
-        } else { a.classList.add("off"); a.textContent = relTried ? "Coming with the beta" : "Checking the release…"; }
+        } else { a.classList.add("off"); a.textContent = relTried ? "Coming with the next release" : "Checking the release…"; }
       });
+      var beta = !!(rel && (rel.prerelease || /-beta/i.test(rel.tag_name || "")));
+      Array.prototype.forEach.call(track.querySelectorAll("[data-beta]"), function (b) { b.hidden = !beta; });
     };
     if (relTried) return apply();
     apply();
@@ -396,5 +400,6 @@ html.still .rail i{transition:none}html.still .nudge{display:none}html.still .ra
 <a class="mdl-dl" href="https://github.com/kukirin-ui/meridian-releases/releases/latest" target="_blank" rel="noopener" aria-label="Download Meridian Family (latest release, Android)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Download</a>
 <style>.mdl-dl{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(max(16px,env(safe-area-inset-bottom)) + 58px);z-index:2147483000;display:inline-flex;align-items:center;gap:8px;
 padding:12px 20px;border-radius:999px;font:700 15px/1 "Manrope",system-ui,sans-serif;text-decoration:none;color:#05030c;background:#48d8ff;box-shadow:0 6px 22px rgba(72,216,255,.45),0 2px 6px rgba(0,0,0,.5);min-height:46px}
-.mdl-dl:focus-visible{outline:3px solid #eef3ff;outline-offset:3px}@media print{.mdl-dl{display:none}}</style>
+.mdl-dl:focus-visible{outline:3px solid #eef3ff;outline-offset:3px}@media print{.mdl-dl{display:none}}
+body.gal-open .mdl-dl{display:none}</style>
 </body>
