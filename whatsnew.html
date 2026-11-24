@@ -149,6 +149,7 @@ body > .lsn.on small { display: none; }
         <li><span><b>Core opens the apps for their work.</b> Only Core runs all the time, so the other apps leave memory free. Work sent from one app to another goes through Core; Core opens the app that gets it and closes it again when the work is done. Doctor plans no longer wait for you to open Parallel.</span></li>
         <li><span><b>A shared view of Core&#x27;s knowledge for every app,</b> read-only and checked before it is trusted, so the apps read it without waking Core.</span></li>
         <li><span><b>The Caretaker.</b> Core looks after itself while the phone charges and rests: it compacts and checks its database, merges duplicates, retires knowledge that kept failing (restorable for 90 days) and learns your week so upkeep never runs during a game. Clearing files is always asked first.</span></li>
+        <li><span><b>Core learns every day.</b> Once a day the Caretaker writes the verified work every app did (a command that ran, a fix the Sandbox proved, an answer the teacher judged) to Download/meridian-train, one file per adapter. Where the Meridian source is cloned in Termux, it merges them into the training data (tools/learn_daily.sh): no duplicates and nothing that looks like a key, token or password. When an adapter has gathered about 100 new rows, Core shows one quiet notice that it is worth training again.</span></li>
         <li><span><b>Constitution, Proof Engine and Survival Mode.</b> Eight rules every app follows; a consequential action (deleting files, changing system settings, saving a build) needs a proof first and is verified after; when storage runs critically low the family protects itself and says so.</span></li>
         <li><span><b>Knowledge that is checked where it was earned.</b> Trust remembers the phone and Android version it was proven on, and knowledge whose use keeps failing is kept out of advice until it recovers.</span></li>
         <li><span><b>No artificial limits.</b> No caps on document, card, PDF or program size; only free storage sets the limit.</span></li>
@@ -181,6 +182,12 @@ body > .lsn.on small { display: none; }
         <li><span><b>Looks and Effects:</b> lens glass, tilt, depth and shadows on Meridian&#x27;s own scene, and a whole palette from one colour.</span></li>
         <li><span><b>Each app&#x27;s page runs only its own scripts,</b> Core&#x27;s own screen can no longer be opened by other apps, and Core&#x27;s page has no file access.</span></li>
         <li><span><b>Knowledge pack checked line by line:</b> every recipe card rewritten into one format and checked, Meridian&#x27;s own cards proven against the 3.0.00 source, and more than 200 verified question-and-answer packs for the adapters.</span></li>
+        <li><span><b>1,392 new source-verified answers</b> for local models, networking and Termux (llm 400, net 300, fixer 392, worker 300), every source quote checked word for word on its live page and every key fact stated in its answer. The library now holds 3,553 cards.</span></li>
+        <li><span><b>Every verified answer reaches the apps:</b> a card carries the checked answer to the question it was written for, and a question with no library card gets a verified card of its own.</span></li>
+        <li><span><b>Training data at 1,500 rows</b> each for the local-models, networking, fixer and worker adapters, from Meridian&#x27;s own verified knowledge only.</span></li>
+        <li><span><b>Core&#x27;s Merge button</b> is hidden when no learned cards look alike.</span></li>
+        <li><span><b>Chat history:</b> a long press on a chat opens rename and delete on touch screens again.</span></li>
+        <li><span><b>Adapters</b> recognize a Qwen3.5-4B file whose name starts with an uploader&#x27;s prefix.</span></li>
       </ul>
       <p><a href="https://github.com/kukirin-ui/meridian-releases/releases/tag/v3.0.00" target="_blank" rel="noopener">Release assets and checksums</a></p>
     </section>
