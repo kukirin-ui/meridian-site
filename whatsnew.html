@@ -147,6 +147,8 @@ body > .lsn.on small { display: none; }
 
 
 
+
+
     <section class="doc rv" id="v3000"><h2><span class="n">3.0.00</span>Meridian Family release</h2>
       <ul class="dots">
         <li><span>Models answer code, maths and explanations themselves when no library card fits. NO CARD used to tell every model not to answer at all.</span></li>
@@ -160,6 +162,7 @@ body > .lsn.on small { display: none; }
         <li><span>Every placement (your settings, the published setup for your chip, CPU core groups read from your phone, GPU, CPU+GPU), then flash attention × batch size × SME2, then the top 3 confirmed with 3 runs. Applied only when really faster, with Undo. &quot;All combinations&quot; runs the full grid.</span></li>
         <li><span>At most 4 adapters loaded at once (chat + the most recently used by any app), not all 14 (about 1 GB). A missing one swaps in when the model is idle.</span></li>
         <li><span>Training: adapters are trained the way the phone uses them (Qwen&#x27;s chat template, Meridian&#x27;s system text, thinking off), on attention and MLP only, gentler, and only exported when a quality gate shows they help. The code slots now get their full 1500 rows (the public data&#x27;s fields were not read).</span></li>
+        <li><span>Find models finds the new, smaller adapters, and scanning a typed folder (like ~/models) works again (it silently found nothing).</span></li>
         <li><span>Chat answers in the language you write in: an English message gets an English answer (Core read English &quot;I&quot; as Croatian &quot;i&quot;, and the Translator then turned the answer into Croatian).</span></li>
         <li><span>Diagnose says exactly why no model could try a case (no Core link, Core not allowed, Chat never shared its model, local models off, Core not answering) instead of &quot;no model seats&quot;.</span></li>
         <li><span>Card fixes, the skill-tree router and the fix library now actually ship in Chat, Parallel and NullCloud (they were built but never pinned).</span></li>
