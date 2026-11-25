@@ -143,53 +143,25 @@ body > .lsn.on small { display: none; }
 
 
 
+
+
     <section class="doc rv" id="v3000"><h2><span class="n">3.0.00</span>Meridian Family release</h2>
       <ul class="dots">
-        <li><span><b>Core is the family&#x27;s mind.</b> One library and one memory for all five apps, in one database inside Core: documents, recipe cards, proven fixes, lessons and learned cards. What Core trusts rises only with evidence, and every change of trust is written to the Trust Ledger, a hash chain anyone can verify.</span></li>
-        <li><span><b>Learning Kernel.</b> Every app&#x27;s results teach Core which answers, fixes and models work on this phone (Thompson sampling, change detection, duplicate detection), and advice is ranked by how often it really worked.</span></li>
-        <li><span><b>Every app&#x27;s verified work is shared.</b> A command that ran, a file that passed its check, a fix the Sandbox proved and a program whose tests passed are kept in Core with their evidence; before it answers, every model, local or online, gets the most similar verified work as an example.</span></li>
-        <li><span><b>Core opens the apps for their work.</b> Only Core runs all the time, so the other apps leave memory free. Work sent from one app to another goes through Core; Core opens the app that gets it and closes it again when the work is done. Doctor plans no longer wait for you to open Parallel.</span></li>
-        <li><span><b>A shared view of Core&#x27;s knowledge for every app,</b> read-only and checked before it is trusted, so the apps read it without waking Core.</span></li>
-        <li><span><b>The Caretaker.</b> Core looks after itself while the phone charges and rests: it compacts and checks its database, merges duplicates, retires knowledge that kept failing (restorable for 90 days) and learns your week so upkeep never runs during a game. Clearing files is always asked first.</span></li>
-        <li><span><b>Core learns every day.</b> Once a day the Caretaker writes the verified work every app did (a command that ran, a fix the Sandbox proved, an answer the teacher judged) to Download/meridian-train, one file per adapter. Where the Meridian source is cloned in Termux, it merges them into the training data (tools/learn_daily.sh): no duplicates and nothing that looks like a key, token or password. When an adapter has gathered about 100 new rows, Core shows one quiet notice that it is worth training again.</span></li>
-        <li><span><b>Constitution, Proof Engine and Survival Mode.</b> Eight rules every app follows; a consequential action (deleting files, changing system settings, saving a build) needs a proof first and is verified after; when storage runs critically low the family protects itself and says so.</span></li>
-        <li><span><b>Knowledge that is checked where it was earned.</b> Trust remembers the phone and Android version it was proven on, and knowledge whose use keeps failing is kept out of advice until it recovers.</span></li>
-        <li><span><b>No artificial limits.</b> No caps on document, card, PDF or program size; only free storage sets the limit.</span></li>
-        <li><span><b>The internet switch.</b> One switch per app and a master switch in Core; Hard offline drops all internet traffic of the Meridian apps and Termux while the phone&#x27;s own network keeps working.</span></li>
-        <li><span><b>The whole family from the release, from any app&#x27;s drawer:</b> what you are missing, what is behind, versions and sizes, one tap to update.</span></li>
-        <li><span><b>A model-free helper in every app and the Core Reasoner,</b> which names the three likeliest causes of a failure and the check that tells them apart, without a model.</span></li>
-        <li><span><b>14 LoRA adapters, made only for Qwen3.5-4B.</b> Meridian&#x27;s own adapters were trained exclusively on Qwen3.5-4B: six code languages, a fixer and a worker for Termux, a judge, recipe cards, Android, local models, networking and conversation. Each answer gets the adapter its job needs, and the Adapters page shows every one. They load only with a Qwen3.5-4B model (any quant of it, Q4_K_M recommended); with any other model they stay off and that model answers on its own.</span></li>
-        <li><span><b>Me mode:</b> your message is your permission. Commands run at once, files are checked in a sandbox and the old file is backed up first, and anything destructive waits for your tap.</span></li>
-        <li><span><b>Teacher mode:</b> when a local model&#x27;s command or file fails, an online model you choose tries the same turn, and its passing fix becomes a training example for the local adapter. Optionally, the teacher also checks local answers in the background.</span></li>
-        <li><span><b>Any model can have a program built:</b> Chat asks Parallel to write it, test it and deliver it, and the result comes back into the conversation.</span></li>
-        <li><span><b>Tools for local models:</b> models the Model Lab measured as reliable with tools call Meridian&#x27;s tools (run a command, write a file, build a program) directly.</span></li>
-        <li><span><b>Model Lab:</b> a live speed test with the phone&#x27;s temperatures, and tests checked by code (tool calling, code against unit tests, strict JSON, instructions, long context) that show which model is better at what; the Store finds and downloads GGUF models with this phone&#x27;s measurements beside them.</span></li>
-        <li><span><b>The chain never ends empty:</b> when no local model can answer, an online seat with a key answers, otherwise the closest library card comes with the reason.</span></li>
-        <li><span><b>Chat is the family&#x27;s one home for API platforms:</b> the keys live in Chat, and the other apps use them through Chat.</span></li>
-        <li><span><b>Tweaks in sections,</b> with llama.cpp built from source in Termux, Vulkan drivers (Mesa Turnip included), presets and 19 more llama-server options.</span></li>
-        <li><span><b>Storage:</b> the phone&#x27;s files from inside Chat.</span></li>
-        <li><span><b>Croatian with English-only models:</b> Core&#x27;s Translator turns your Croatian into English for the model and the answer back into Croatian.</span></li>
-        <li><span><b>Training data from every answer,</b> exported per adapter, ready to train.</span></li>
-        <li><span><b>Forge:</b> from an idea to a proven product with the whole suite. Spec, knowledge, architecture review, every part written with its tests and proven in the Sandbox, diagnosis by every free model, a security review of every line, and the product with README, FORGE.json and checksums.</span></li>
-        <li><span><b>Programs for any app and any model:</b> Parallel takes a build request from the family, writes the program with its tests, repairs what fails and saves the working program in Termux.</span></li>
-        <li><span><b>Recipe Compiler:</b> from &quot;it worked once&quot; to a recipe that is safe to run again, with a rollback for every change.</span></li>
-        <li><span><b>Repro Lab:</b> every problem as a package that runs again, minimized to the smallest case that still fails.</span></li>
-        <li><span><b>Every fix the Sandbox proves is kept in Core</b> with its evidence and teaches the family.</span></li>
-        <li><span><b>Training traces</b> (opt-in): each fix attempt with the Sandbox&#x27;s verdict, secrets masked.</span></li>
-        <li><span><b>Studio:</b> &quot;what should we write, learn or scrape today?&quot; Learn a topic from ranked sources into Core&#x27;s library as fact cards with every site that said them, scrape a page or a site with robots.txt respected, and write from sources only, with a check for every unsourced sentence.</span></li>
-        <li><span><b>Only the public web,</b> checked on every hop: no redirect can lead the reader into your local network.</span></li>
-        <li><span><b>No size caps</b> on pages or PDFs.</span></li>
-        <li><span><b>Smart gaming:</b> the least power that still holds the game. The Sweet Spot Finder, the chip&#x27;s own efficiency fingerprint, a throttle forecast, a flight recorder of frame times, and an exact restore when you leave the game.</span></li>
-        <li><span><b>Theme Studio:</b> one theme for all five apps, part by part: colours, shapes, cards, glass, spacing, typeface, icon sets and living backgrounds, with 27 presets from Meridian and open projects, every licence credited, and contrast checked as you go.</span></li>
-        <li><span><b>Looks and Effects:</b> lens glass, tilt, depth and shadows on Meridian&#x27;s own scene, and a whole palette from one colour.</span></li>
-        <li><span><b>Each app&#x27;s page runs only its own scripts,</b> Core&#x27;s own screen can no longer be opened by other apps, and Core&#x27;s page has no file access.</span></li>
-        <li><span><b>Knowledge pack checked line by line:</b> every recipe card rewritten into one format and checked, Meridian&#x27;s own cards proven against the 3.0.00 source, and more than 200 verified question-and-answer packs for the adapters.</span></li>
-        <li><span><b>1,392 new source-verified answers</b> for local models, networking and Termux (llm 400, net 300, fixer 392, worker 300), every source quote checked word for word on its live page and every key fact stated in its answer. The library now holds 3,553 cards.</span></li>
-        <li><span><b>Every verified answer reaches the apps:</b> a card carries the checked answer to the question it was written for, and a question with no library card gets a verified card of its own.</span></li>
-        <li><span><b>Training data at 1,500 rows</b> each for the local-models, networking, fixer and worker adapters, from Meridian&#x27;s own verified knowledge only.</span></li>
-        <li><span><b>Core&#x27;s Merge button</b> is hidden when no learned cards look alike.</span></li>
-        <li><span><b>Chat history:</b> a long press on a chat opens rename and delete on touch screens again.</span></li>
-        <li><span><b>Adapters</b> recognize a Qwen3.5-4B file whose name starts with an uploader&#x27;s prefix.</span></li>
+        <li><span>Models answer code, maths and explanations themselves when no library card fits. NO CARD used to tell every model not to answer at all.</span></li>
+        <li><span>The right card reaches small models: &quot;Wi-Fi&quot; = &quot;wifi&quot;, Croatian word endings, and the question&#x27;s most specific word must be in the card (no more Python-variables card for &quot;reverse a string&quot;). A card comes in its short form (intent, method, check) instead of being cut mid-command.</span></li>
+        <li><span>Qwen models get the sampling from their own model card (temperature 0.7, top-p 0.8, top-k 20, presence 1.5; 0.6 / 0.95 when thinking). Values you type still win.</span></li>
+        <li><span>Exact calculator for sums and percentages (&quot;15% od 240&quot;); Chat checks the model&#x27;s arithmetic and puts the exact result under a wrong answer.</span></li>
+        <li><span>With Thinking on, maths and logic word problems may think too.</span></li>
+        <li><span>Plain two-line pipeline in Chat: line 1 (the model you pick to answer) takes easy turns, line 2 (picked in Tweaks › Pipeline) takes code, long and step-by-step turns on its own server. No model is swapped per turn. When line 1 is not sure, line 2 answers the same turn.</span></li>
+        <li><span>No automatic draft model: llama.cpp runs a draft behind the main model on a phone GPU (issue #23126). Auto is the MTP head plus n-gram; a draft model only if you pick &quot;Draft model only&quot;.</span></li>
+        <li><span>Real tests on the model you pick, one llama-bench run per setup (512 read, 64 written), each result on screen as it finishes, with its command, temperature and llama.cpp&#x27;s own error.</span></li>
+        <li><span>Every placement (your settings, the published setup for your chip, CPU core groups read from your phone, GPU, CPU+GPU), then flash attention × batch size × SME2, then the top 3 confirmed with 3 runs. Applied only when really faster, with Undo. &quot;All combinations&quot; runs the full grid.</span></li>
+        <li><span>At most 4 adapters loaded at once (chat + the most recently used by any app), not all 14 (about 1 GB). A missing one swaps in when the model is idle.</span></li>
+        <li><span>Training: adapters are trained the way the phone uses them (Qwen&#x27;s chat template, Meridian&#x27;s system text, thinking off), on attention and MLP only, gentler, and only exported when a quality gate shows they help. The code slots now get their full 1500 rows (the public data&#x27;s fields were not read).</span></li>
+        <li><span>Diagnose says exactly why no model could try a case (no Core link, Core not allowed, Chat never shared its model, local models off, Core not answering) instead of &quot;no model seats&quot;.</span></li>
+        <li><span>Card fixes, the skill-tree router and the fix library now actually ship in Chat, Parallel and NullCloud (they were built but never pinned).</span></li>
+        <li><span>Gaming&#x27;s battery guard (60 Hz cap when hot) is your switch, off by default: the app never lowers quality by itself.</span></li>
+        <li><span>NullCloud links open in its own web pane when nothing else can.</span></li>
       </ul>
       <p><a href="https://github.com/kukirin-ui/meridian-releases/releases/tag/v3.0.00" target="_blank" rel="noopener">Release assets and checksums</a></p>
     </section>
