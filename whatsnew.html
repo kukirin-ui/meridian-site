@@ -149,25 +149,17 @@ body > .lsn.on small { display: none; }
 
 
 
+
+
     <section class="doc rv" id="v3000"><h2><span class="n">3.0.00</span>Meridian Family release</h2>
       <ul class="dots">
-        <li><span>Models answer code, maths and explanations themselves when no library card fits. NO CARD used to tell every model not to answer at all.</span></li>
-        <li><span>The right card reaches small models: &quot;Wi-Fi&quot; = &quot;wifi&quot;, Croatian word endings, and the question&#x27;s most specific word must be in the card (no more Python-variables card for &quot;reverse a string&quot;). A card comes in its short form (intent, method, check) instead of being cut mid-command.</span></li>
-        <li><span>Qwen models get the sampling from their own model card (temperature 0.7, top-p 0.8, top-k 20, presence 1.5; 0.6 / 0.95 when thinking). Values you type still win.</span></li>
-        <li><span>Exact calculator for sums and percentages (&quot;15% od 240&quot;); Chat checks the model&#x27;s arithmetic and puts the exact result under a wrong answer.</span></li>
-        <li><span>With Thinking on, maths and logic word problems may think too.</span></li>
-        <li><span>Plain two-line pipeline in Chat: line 1 (the model you pick to answer) takes easy turns, line 2 (picked in Tweaks › Pipeline) takes code, long and step-by-step turns on its own server. No model is swapped per turn. When line 1 is not sure, line 2 answers the same turn.</span></li>
-        <li><span>No automatic draft model: llama.cpp runs a draft behind the main model on a phone GPU (issue #23126). Auto is the MTP head plus n-gram; a draft model only if you pick &quot;Draft model only&quot;.</span></li>
-        <li><span>Real tests on the model you pick, one llama-bench run per setup (512 read, 64 written), each result on screen as it finishes, with its command, temperature and llama.cpp&#x27;s own error.</span></li>
-        <li><span>Every placement (your settings, the published setup for your chip, CPU core groups read from your phone, GPU, CPU+GPU), then flash attention × batch size × SME2, then the top 3 confirmed with 3 runs. Applied only when really faster, with Undo. &quot;All combinations&quot; runs the full grid.</span></li>
-        <li><span>At most 4 adapters loaded at once (chat + the most recently used by any app), not all 14 (about 1 GB). A missing one swaps in when the model is idle.</span></li>
-        <li><span>Training: adapters are trained the way the phone uses them (Qwen&#x27;s chat template, Meridian&#x27;s system text, thinking off), on attention and MLP only, gentler, and only exported when a quality gate shows they help. The code slots now get their full 1500 rows (the public data&#x27;s fields were not read).</span></li>
-        <li><span>Find models finds the new, smaller adapters, and scanning a typed folder (like ~/models) works again (it silently found nothing).</span></li>
-        <li><span>Chat answers in the language you write in: an English message gets an English answer (Core read English &quot;I&quot; as Croatian &quot;i&quot;, and the Translator then turned the answer into Croatian).</span></li>
-        <li><span>Diagnose says exactly why no model could try a case (no Core link, Core not allowed, Chat never shared its model, local models off, Core not answering) instead of &quot;no model seats&quot;.</span></li>
-        <li><span>Card fixes, the skill-tree router and the fix library now actually ship in Chat, Parallel and NullCloud (they were built but never pinned).</span></li>
-        <li><span>Gaming&#x27;s battery guard (60 Hz cap when hot) is your switch, off by default: the app never lowers quality by itself.</span></li>
-        <li><span>NullCloud links open in its own web pane when nothing else can.</span></li>
+        <li><span>Models are optional: the whole suite runs without a big local model. Chat, Parallel, Gaming, NullCloud and Core keep working on their own tools, cards and engines, and use a model only when one is there.</span></li>
+        <li><span>Small dedicated roles instead of one big model: line 2 (port 8081) classifies a message for routing, line 3 (8082) only reformats a reply when you ask for a format (table, steps, JSON). Both take models up to 1.5B and never change facts.</span></li>
+        <li><span>Fixed port contract for every app: 8080 main model, 8081 classify, 8082 format, 8083 reserved, 8085 embedding search, 8086 search proxy, 8087 NullCloud.</span></li>
+        <li><span>Peer mesh in Core: Meridian phones nearby can share model work over Wi-Fi with a checked protocol and task rules.</span></li>
+        <li><span>Every tool call and model answer is checked against a schema before anything runs; a malformed answer runs nothing.</span></li>
+        <li><span>Card search by meaning (local Qwen3-Embedding-0.6B, CPU only), merged with keyword search; without it, search works as before.</span></li>
+        <li><span>Parallel&#x27;s Diagnose: deeper error analysis and a timeout guard.</span></li>
       </ul>
       <p><a href="https://github.com/kukirin-ui/meridian-releases/releases/tag/v3.0.00" target="_blank" rel="noopener">Release assets and checksums</a></p>
     </section>
